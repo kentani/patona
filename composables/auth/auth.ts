@@ -28,8 +28,6 @@ const useAuth = () => {
   }
 
   const getLoginResult = async () => {
-    console.log('getLoginResult')
-
     await getRedirectResult(auth)
       .then(async (result: UserCredential | null) => {
         if(result) {
@@ -63,21 +61,21 @@ const useAuth = () => {
     // return val
   }
 
-  const confirmLoginStatus = async () => {
-    // await new Promise<void>((resolve) => {
+  const checkLoginState = async () => {
+    await new Promise<void>((resolve) => {
 
-    //   onAuthStateChanged(auth, async (currentUser) => {
-    //     if(currentUser) {
-    //       state.currentUser = auth.currentUser
-    //       await fetchUser({ uid: currentUser?.uid })
-    //     } else {
-    //       state.currentUser = null
-    //       state.user = null
-    //     }
+      onAuthStateChanged(auth, async (user) => {
+        if (user) {
+          authUser.value = user
+          await findUser({ uid: user.uid })
+        } else {
+          authUser.value = null
+          appUser.value = null
+        }
 
-    //     resolve()
-    //   })
-    // })
+        resolve()
+      })
+    })
   }
 
   const findUser = async (params: { id?: string, uid?: string }) => {
@@ -152,7 +150,7 @@ const useAuth = () => {
     login,
     getLoginResult,
     logout,
-    confirmLoginStatus,
+    checkLoginState,
     findUser,
     createUser,
     updateUser

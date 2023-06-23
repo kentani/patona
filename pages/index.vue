@@ -6,11 +6,11 @@
       </v-card-title>
 
       <v-card-text>
-        <div>id: {{ appUser.id }}</div>
-        <div>name: {{ appUser.name }}</div>
-        <div>admin: {{ appUser.admin }}</div>
-        <div>approved: {{ appUser.approved }}</div>
-        <div>registered: {{ appUser.registered }}</div>
+        <div>id: {{ appUser?.id }}</div>
+        <div>name: {{ appUser?.name }}</div>
+        <div>admin: {{ appUser?.admin }}</div>
+        <div>approved: {{ appUser?.approved }}</div>
+        <div>registered: {{ appUser?.registered }}</div>
       </v-card-text>
 
       <v-card-actions>

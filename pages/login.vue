@@ -31,21 +31,11 @@
 import { AuthType } from "@/composables/auth/auth"
 import AuthKey from "@/composables/auth/auth-key"
 
-const { appUser, login, getLoginResult } = inject(AuthKey) as AuthType
-
-const router = useRouter()
+const { login } = inject(AuthKey) as AuthType
 
 const onClickGoogleLogin = async () => {
   await login()
 }
-
-onMounted(async () => {
-  await getLoginResult()
-
-  if(appUser.value) {
-    router.replace('/')
-  }
-})
 
 definePageMeta({
   layout: 'login'
