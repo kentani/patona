@@ -5,6 +5,14 @@
         Root Page
       </v-card-title>
 
+      <v-card-text>
+        <div>id: {{ appUser.id }}</div>
+        <div>name: {{ appUser.name }}</div>
+        <div>admin: {{ appUser.admin }}</div>
+        <div>approved: {{ appUser.approved }}</div>
+        <div>registered: {{ appUser.registered }}</div>
+      </v-card-text>
+
       <v-card-actions>
         <v-spacer />
 
@@ -23,3 +31,10 @@
     </v-card>
   </v-container>
 </template>
+
+<script setup lang="ts">
+import { AuthType } from "@/composables/auth/auth"
+import AuthKey from "@/composables/auth/auth-key"
+
+const { appUser } = inject(AuthKey) as AuthType
+</script>

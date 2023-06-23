@@ -1,0 +1,163 @@
+import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged, signInWithRedirect, getRedirectResult, UserCredential } from "firebase/auth"
+import { collection, query, where, getDocs, orderBy, limit, doc, setDoc, serverTimestamp, DocumentData, updateDoc, getDoc } from "firebase/firestore"
+import useFirebase from "../firebase/firebase"
+
+const useAuth = () => {
+  const { db } = useFirebase()
+  const auth = getAuth()
+  const googleProvider = new GoogleAuthProvider()
+  googleProvider.addScope('https://www.googleapis.com/auth/contacts.readonly')
+  ////////////////////
+  // data
+  ////////////////////
+  const authUser: DocumentData|null = ref(null)
+  const appUser: DocumentData|null = ref(null)
+
+  ////////////////////
+  // computed
+  ////////////////////
+  const isLogined = computed(() => {
+    return !!authUser.value && !!appUser.value
+  })
+
+  ////////////////////
+  // logic
+  ////////////////////
+  const login = async () => {
+    await signInWithRedirect(auth, googleProvider)
+  }
+
+  const getLoginResult = async () => {
+    console.log('getLoginResult')
+
+    await getRedirectResult(auth)
+      .then(async (result: UserCredential | null) => {
+        if(result) {
+          authUser.value = result.user
+          await findUser({ uid: result.user.uid })
+
+          if(appUser.value) {
+            return appUser.value
+          } else {
+            await createUser({ uid: result.user.uid, name: result.user.displayName })
+
+            return appUser.value
+          }
+        }
+      }).catch((error) => {
+        console.error(error)
+      })
+  }
+
+  const logout = () => {
+    // let val = false
+
+    // signOut(auth).then(() => {
+    //   state.currentUser = null
+    //   state.user = null
+    //   val = true
+    // }).catch((error) => {
+    //   console.log(error)
+    // })
+
+    // return val
+  }
+
+  const confirmLoginStatus = async () => {
+    // await new Promise<void>((resolve) => {
+
+    //   onAuthStateChanged(auth, async (currentUser) => {
+    //     if(currentUser) {
+    //       state.currentUser = auth.currentUser
+    //       await fetchUser({ uid: currentUser?.uid })
+    //     } else {
+    //       state.currentUser = null
+    //       state.user = null
+    //     }
+
+    //     resolve()
+    //   })
+    // })
+  }
+
+  const findUser = async (params: { id?: string, uid?: string }) => {
+    const { id, uid } = params
+
+    if(!appUser.value) {
+
+      if(!!id) {
+        const docRef = doc(db, "users", id)
+        const docSnap = await getDoc(docRef)
+
+        appUser.value = docSnap.data()
+
+      } else if(!!uid) {
+        const querySnapshot = await getDocs(query(
+          collection(db, 'users'),
+          where("uid", "==", uid),
+          limit(1)
+        ))
+
+        querySnapshot.forEach((doc) => {
+          appUser.value = doc.data()
+        })
+      }
+    }
+
+    return appUser.value
+  }
+
+  const createUser = async (params: { uid: string, name: string|null }) => {
+    const { uid, name } = params
+
+    const docRef = doc(collection(db, "users"))
+
+    await setDoc(docRef, {
+      id: docRef.id,
+      uid: uid,
+      name: name || '',
+      admin: false,
+      approved: false,
+      registered: false,
+      creatableGymCount: 0,
+      joinedGyms: [],
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp(),
+    })
+
+    await findUser({ uid: uid })
+
+    return appUser.value
+  }
+
+  const updateUser = async (params: { id: string, name: string }) => {
+    const { id } = params
+
+    const docRef = doc(db, "users", id)
+
+    await updateDoc(docRef, {
+      ...params,
+      updatedAt: serverTimestamp(),
+    })
+
+    await findUser({ id: id })
+
+    return appUser.value
+  }
+
+  return {
+    authUser,
+    appUser,
+    isLogined,
+    login,
+    getLoginResult,
+    logout,
+    confirmLoginStatus,
+    findUser,
+    createUser,
+    updateUser
+  }
+}
+
+export default useAuth
+export type AuthType = ReturnType<typeof useAuth>

@@ -1,7 +1,7 @@
 import { initializeApp } from 'firebase/app'
 import { defineNuxtPlugin } from '#app'
 
-export default defineNuxtPlugin(() => {
+export default defineNuxtPlugin(nuxtApp => {
   const config = useRuntimeConfig()
 
   const firebaseConfig = {
@@ -12,5 +12,8 @@ export default defineNuxtPlugin(() => {
     messagingSenderId: config.public.firebaseMessagingSenderID,
     appId: config.public.firebaseAppID,
   }
-  initializeApp(firebaseConfig)
+
+  const app = initializeApp(firebaseConfig)
+
+  nuxtApp.provide('firebase', app)
 })
