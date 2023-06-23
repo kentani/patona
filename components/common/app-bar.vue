@@ -12,7 +12,7 @@
         align="center"
         class="px-2"
       >
-        <v-col class="text-h6 text-center font-weight-bold">
+        <v-col class="text-h6 text-left font-weight-bold">
           {{ title }}
         </v-col>
 

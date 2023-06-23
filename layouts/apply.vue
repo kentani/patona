@@ -18,18 +18,20 @@ const router = useRouter()
 const showable = ref(false)
 
 const isShow = computed(() => {
-  return(
-    showable.value &&
-    appUser.value &&
-    (appUser.value.admin || appUser.value.approved || appUser.value.invited)
-  )
+  return showable.value
 })
 
-onBeforeMount(async () => {
+onMounted(async () => {
   await checkLoginState()
     .then(() => {
       if(appUser.value) {
-        showable.value = true
+        if(appUser.value.admin) {
+          router.replace('/admin/menus')
+        } else if(appUser.value.approved || appUser.value.invited) {
+          router.replace('/i/gyms')
+        } else {
+          showable.value = true
+        }
       } else {
         router.replace('/login')
       }

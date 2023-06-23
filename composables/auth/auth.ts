@@ -114,7 +114,7 @@ const useAuth = () => {
       name: name || '',
       admin: false,
       approved: false,
-      registered: false,
+      invited: false,
       creatableGymCount: 0,
       joinedGyms: [],
       createdAt: serverTimestamp(),

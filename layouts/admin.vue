@@ -29,7 +29,11 @@ onBeforeMount(async () => {
   await checkLoginState()
     .then(() => {
       if(appUser.value) {
-        showable.value = true
+        if(appUser.value.admin) {
+          showable.value = true
+        } else {
+          throw createError({ statusCode: 404, statusMessage: 'Page Not Found', fatal: true })
+        }
       } else {
         router.replace('/login')
       }
