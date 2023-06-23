@@ -47,18 +47,16 @@ const useAuth = () => {
       })
   }
 
-  const logout = () => {
-    // let val = false
+  const logout = async () => {
+    await signOut(auth)
+      .then(() => {
+        authUser.value = null
+        appUser.value = null
+      }).catch((error) => {
+        console.log(error)
+      })
 
-    // signOut(auth).then(() => {
-    //   state.currentUser = null
-    //   state.user = null
-    //   val = true
-    // }).catch((error) => {
-    //   console.log(error)
-    // })
-
-    // return val
+    return appUser.value
   }
 
   const checkLoginState = async () => {
