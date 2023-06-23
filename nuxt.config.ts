@@ -24,4 +24,14 @@ export default defineNuxtConfig({
   build: {
     transpile: ['vuetify'],
   },
+  runtimeConfig: {
+    public: {
+      firebaseApiKey: process.env.FIREBASE_API_KEY,
+      firebaseAuthDomain: process.env.FIREBASE_AUTH_DOMAIN,
+      firebaseProjectID: process.env.FIREBASE_PROJECT_ID,
+      firebaseStoragebucket: process.env.FIREBASE_STORAGEBUCKET,
+      firebaseMessagingSenderID: process.env.FIREBASE_MESSAGING_SENDER_ID,
+      firebaseAppID: process.env.FIREBASE_APP_ID,
+    }
+  },
 })
