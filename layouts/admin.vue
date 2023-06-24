@@ -1,5 +1,5 @@
 <template>
-  <v-app v-show="isShow">
+  <v-app v-show="showable">
     <common-app-bar />
 
     <v-main>
@@ -16,14 +16,6 @@ const { appUser, checkLoginState } = inject(AuthKey) as AuthType
 const router = useRouter()
 
 const showable = ref(false)
-
-const isShow = computed(() => {
-  return(
-    showable.value &&
-    appUser.value &&
-    (appUser.value.admin || appUser.value.approved || appUser.value.invited)
-  )
-})
 
 onMounted(async () => {
   await checkLoginState()

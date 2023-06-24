@@ -1,5 +1,5 @@
 <template>
-  <v-app v-show="isShow">
+  <v-app v-show="showable">
     <common-app-bar />
 
     <v-main>
@@ -11,24 +11,28 @@
 <script setup lang="ts">
 import { AuthType } from "@/composables/auth/auth"
 import AuthKey from "@/composables/auth/auth-key"
+import { InstructorType } from "@/composables/instructor/instructor"
+import InstructorKey from "@/composables/instructor/instructor-key"
 
 const { appUser, checkLoginState } = inject(AuthKey) as AuthType
+const { instructors, whereInstructor } = inject(InstructorKey) as InstructorType
 const router = useRouter()
 
 const showable = ref(false)
 
-const isShow = computed(() => {
-  return showable.value
-})
-
 onMounted(async () => {
   await checkLoginState()
-    .then(() => {
+    .then(async () => {
       if(appUser.value) {
         if(appUser.value.admin) {
           router.replace('/admin/menus')
         } else if(appUser.value.approved || appUser.value.invited) {
-          router.replace('/i/gyms')
+          await whereInstructor({ userId: appUser.value?.id })
+          if(instructors.value.length === 1) {
+            router.replace({ path: '/i/menus', query: { gymId: instructors.value[0].gymId } })
+          } else {
+            router.replace('/i/gyms')
+          }
         } else {
           showable.value = true
         }

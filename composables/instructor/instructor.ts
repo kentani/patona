@@ -20,7 +20,8 @@ const useInstructor = () => {
   const whereInstructor = async (params: { userId?: string, gymId?: string }) => {
     const { userId, gymId } = params
 
-    if(!instructors.value) {
+    if(!instructors.value.length) {
+
       let tmpInstructors: Array<DocumentData> = []
 
       if(userId && userId.length) {

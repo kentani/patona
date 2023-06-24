@@ -154,13 +154,17 @@ const useAuth = () => {
     return appUser.value
   }
 
-  const onLoadedAppUser = async () => {
+  const onLoadedAppUser = async (params?: { timeout?: number, interval?: number }) => {
     return new Promise<void>((resolve) => {
+      const timeout = params?.timeout || 10
+      const interval = params?.interval || 200
+      let count = 0
       const intervalId = setInterval(() => {
-        if(!appUser.value) return
+        count++
+        if(!appUser.value && count <= timeout) return
         clearInterval(intervalId)
         resolve()
-      }, 100)
+      }, interval)
     });
   }
 

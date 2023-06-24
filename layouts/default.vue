@@ -1,5 +1,5 @@
 <template>
-  <v-app v-show="isShow">
+  <v-app v-show="showable">
     <common-app-bar />
 
     <v-main>
@@ -17,19 +17,15 @@ const router = useRouter()
 
 const showable = ref(false)
 
-const isShow = computed(() => {
-  return(
-    showable.value &&
-    appUser.value &&
-    (appUser.value.admin || appUser.value.approved || appUser.value.invited)
-  )
-})
-
 onMounted(async () => {
   await checkLoginState()
     .then(() => {
       if(appUser.value) {
-        showable.value = true
+        if(appUser.value.admin || appUser.value.approved || appUser.value.invited) {
+          showable.value = true
+        } else {
+          router.replace('/apply')
+        }
       } else {
         router.replace('/login')
       }
