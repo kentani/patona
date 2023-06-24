@@ -10,8 +10,9 @@ const useAuth = () => {
   ////////////////////
   // data
   ////////////////////
-  const authUser: DocumentData|null = ref(null)
-  const appUser: DocumentData|null = ref(null)
+  const authUser: Ref<DocumentData|null> = ref(null)
+  const appUser: Ref<DocumentData|null> = ref(null)
+  const allAppUsers: Ref<Array<DocumentData>> = ref([])
 
   ////////////////////
   // computed
@@ -76,6 +77,19 @@ const useAuth = () => {
     })
   }
 
+  const whereAllUser = async () => {
+    const querySnapshot = await getDocs(collection(db, "users"))
+    let users: Array<DocumentData> = []
+
+    querySnapshot.forEach((doc) => {
+      users.push(doc.data() || null)
+    })
+
+    allAppUsers.value = users
+
+    return allAppUsers.value
+  }
+
   const findUser = async (params: { id?: string, uid?: string }) => {
     const { id, uid } = params
 
@@ -85,7 +99,7 @@ const useAuth = () => {
         const docRef = doc(db, "users", id)
         const docSnap = await getDoc(docRef)
 
-        appUser.value = docSnap.data()
+        appUser.value = docSnap.data() || null
 
       } else if(!!uid) {
         const querySnapshot = await getDocs(query(
@@ -95,7 +109,7 @@ const useAuth = () => {
         ))
 
         querySnapshot.forEach((doc) => {
-          appUser.value = doc.data()
+          appUser.value = doc.data() || null
         })
       }
     }
@@ -144,12 +158,14 @@ const useAuth = () => {
   return {
     authUser,
     appUser,
+    allAppUsers,
     isLogined,
     login,
     getLoginResult,
     logout,
     checkLoginState,
     findUser,
+    whereAllUser,
     createUser,
     updateUser
   }

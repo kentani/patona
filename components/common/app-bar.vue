@@ -50,7 +50,7 @@
                 style="min-height: 0px;"
                 @click="onClickMenu(index)"
               >
-                <v-list-item-title class="pa-0">{{ item.title }}</v-list-item-title>
+                <v-list-item-title class="pa-0 text-caption">{{ item.title }}</v-list-item-title>
               </v-list-item>
             </v-list>
           </v-menu>
