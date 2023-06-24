@@ -25,7 +25,7 @@ const isShow = computed(() => {
   )
 })
 
-onBeforeMount(async () => {
+onMounted(async () => {
   await checkLoginState()
     .then(() => {
       if(appUser.value) {

@@ -1,7 +1,5 @@
 <template>
   <v-container>
-    <div>
-      Menus
-    </div>
+    <div>顧客一覧</div>
   </v-container>
 </template>

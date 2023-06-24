@@ -61,7 +61,7 @@ const useAuth = () => {
   }
 
   const checkLoginState = async () => {
-    await new Promise<void>((resolve) => {
+    return new Promise<void>((resolve) => {
 
       onAuthStateChanged(auth, async (user) => {
         if (user) {
@@ -94,7 +94,6 @@ const useAuth = () => {
     const { id, uid } = params
 
     if(!appUser.value) {
-
       if(!!id) {
         const docRef = doc(db, "users", id)
         const docSnap = await getDoc(docRef)
@@ -155,6 +154,16 @@ const useAuth = () => {
     return appUser.value
   }
 
+  const onLoadedAppUser = async () => {
+    return new Promise<void>((resolve) => {
+      const intervalId = setInterval(() => {
+        if(!appUser.value) return
+        clearInterval(intervalId)
+        resolve()
+      }, 100)
+    });
+  }
+
   return {
     authUser,
     appUser,
@@ -167,7 +176,8 @@ const useAuth = () => {
     findUser,
     whereAllUser,
     createUser,
-    updateUser
+    updateUser,
+    onLoadedAppUser
   }
 }
 

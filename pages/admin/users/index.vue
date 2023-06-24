@@ -56,7 +56,7 @@ const { allAppUsers, whereAllUser } = inject(AuthKey) as AuthType
 
 const breadcrumbs = ref([
   { id: '1', title: 'メニュー', to: '/admin/menus', disabled: false },
-  { id: '1', title: 'ユーザー一覧', to: '/admin/users', disabled: true },
+  { id: '2', title: 'ユーザー一覧', to: '/admin/users', disabled: true },
 ])
 
 definePageMeta({
