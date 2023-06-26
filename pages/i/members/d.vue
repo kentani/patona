@@ -9,29 +9,22 @@
       </template>
     </v-breadcrumbs>
 
-    <v-row
-      justify="center"
-      align="center"
-    >
+    <v-row>
       <v-col
-        v-for="menu in menus"
-        :key="menu.id"
-        cols="12"
-        sm="4"
-        lg="3"
+        v-for="tab in tabs"
+        :key="tab.id"
+        cols="auto"
       >
-        <v-card
-          rounded="xl"
-          elevation="8"
-          @click="onClickMenu(menu)"
+        <v-btn
+          variant="text"
+          @click=onClickTab(tab)
         >
-          <v-card-text class="text-body-1 font-weight-bold text-center">
-            <v-icon size="150">{{ menu.icon }}</v-icon>
-            <p class="mb-0">{{ menu.name }}</p>
-          </v-card-text>
-        </v-card>
+          {{ tab.name }}
+        </v-btn>
       </v-col>
     </v-row>
+
+    <NuxtPage page-key="member" />
   </v-container>
 </template>
 
@@ -42,36 +35,42 @@ import { GymType } from "@/composables/gym/gym"
 import GymKey from "@/composables/gym/gym-key"
 import { InstructorType } from "@/composables/instructor/instructor"
 import InstructorKey from "@/composables/instructor/instructor-key"
+import { MemberType } from "@/composables/member/member"
+import MemberKey from "@/composables/member/member-key"
 import { ScreenControllerType } from "@/composables/screen-controller/screen-controller"
 import ScreenControllerKey from "@/composables/screen-controller/screen-controller-key"
 
-const { appUser, onLoadedAppUser } = inject(AuthKey) as AuthType
+const { onLoadedAppUser } = inject(AuthKey) as AuthType
 const { gym, findGym } = inject(GymKey) as GymType
 const { instructor, findInstructor } = inject(InstructorKey) as InstructorType
+const { member, findMember } = inject(MemberKey) as MemberType
 const { show } = inject(ScreenControllerKey) as ScreenControllerType
 
 const router = useRouter()
 const route = useRoute()
 
-const menus = ref([
-  { id: '1', name: '顧客一覧', icon: 'mdi-account-group', to: '/i/members' },
-  // { id: '2', name: '設定', icon: 'mdi-cog ', to: '/i/settings' },
-])
 const breadcrumbs = ref([
   { id: '1', title: 'ジム一覧', to: '/i/gyms', disabled: false },
-  { id: '2', title: 'メニュー', to: `/i/menus?gymId=${route.query.gymId}`, disabled: true },
+  { id: '2', title: 'メニュー', to: `/i/menus?gymId=${member.value?.gymId}`, disabled: false },
+  { id: '3', title: '顧客一覧', to: `/i/members?gymId=${member.value?.gymId}`, disabled: false },
+  { id: '4', title: member.value?.name, to: `/i/members/d/member-personal-data?memberId=${route.query.memberId}`, disabled: true },
+])
+const tabs = ref([
+{ id: '1', name: 'パーソナルデータ', to: 'personal-data', active: false },
+{ id: '2', name: 'トレーニング履歴', to: 'training-data', active: false },
+{ id: '3', name: '身体数値', to: 'physical-data', active: false },
+{ id: '4', name: '身体画像', to: 'physical-image', active: false },
 ])
 
-const onClickMenu = (menu: { id: string, name: string, icon: string, to: string }) => {
-  router.push({ path: menu.to, query: { gymId: route.query.gymId } })
+const onClickTab = (tab: any) => {
+  router.push({ path: `/i/members/d/member-${tab.to}`, query: { memberId: route.query.memberId } })
 }
 
 onMounted(async () => {
   await onLoadedAppUser().then(async () => {
-    await findGym({ id: String(route.query.gymId) })
-    await findInstructor({ userId: appUser.value?.id, gymId: String(route.query.gymId) })
+    await findMember({ id: String(route.query.memberId) })
 
-    if(!gym.value || (!appUser.value?.admin && !instructor.value)) {
+    if(!member.value) {
       throw createError({ statusCode: 404, statusMessage: 'Page Not Found', fatal: true })
     }
   })

@@ -1,5 +1,14 @@
 <template>
   <v-container class="pt-0">
+    <v-breadcrumbs
+      :items="breadcrumbs"
+      class="px-0 pt-1"
+    >
+      <template v-slot:divider>
+        <v-icon icon="mdi-chevron-right"></v-icon>
+      </template>
+    </v-breadcrumbs>
+
     <v-row>
       <v-col cols="6">
         <v-btn @click="onClickAddMember">
@@ -99,6 +108,11 @@ const route = useRoute()
 
 const dialog = ref(false)
 const name = ref('')
+const breadcrumbs = ref([
+  { id: '1', title: 'ジム一覧', to: '/i/gyms', disabled: false },
+  { id: '2', title: 'メニュー', to: `/i/menus?gymId=${route.query.gymId}`, disabled: false },
+  { id: '3', title: '顧客一覧', to: `/i/members?gymId=${route.query.gymId}`, disabled: true },
+])
 
 const onClickAddMember = () => {
   dialog.value = true
@@ -125,7 +139,7 @@ const onClickCancelAddMember = async () => {
 }
 
 const onClickMember = (member: any) => {
-  router.push({ path: '/i/members/d/personal-data', query: { memberId: member.id } })
+  router.push({ path: '/i/members/d/member-personal-data', query: { memberId: member.id } })
 }
 
 onMounted(async () => {
