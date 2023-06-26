@@ -83,10 +83,13 @@ import { GymType } from "@/composables/gym/gym"
 import GymKey from "@/composables/gym/gym-key"
 import { InstructorType } from "@/composables/instructor/instructor"
 import InstructorKey from "@/composables/instructor/instructor-key"
+import { ScreenControllerType } from "@/composables/screen-controller/screen-controller"
+import ScreenControllerKey from "@/composables/screen-controller/screen-controller-key"
 
 const { appUser, onLoadedAppUser } = inject(AuthKey) as AuthType
 const { gyms, gym, whereGym, createGym } = inject(GymKey) as GymType
 const { instructors, whereInstructor, createInstructor } = inject(InstructorKey) as InstructorType
+const { show } = inject(ScreenControllerKey) as ScreenControllerType
 
 const router = useRouter()
 
@@ -124,5 +127,7 @@ onMounted(async () => {
       await whereGym({ ids: instructors.value.map(i => i.gymId) })
     }
   })
+
+  show()
 })
 </script>

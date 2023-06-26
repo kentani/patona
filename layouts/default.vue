@@ -1,5 +1,5 @@
 <template>
-  <v-app v-show="showable">
+  <v-app v-show="showable && screenShowable">
     <common-app-bar />
 
     <v-main>
@@ -11,8 +11,11 @@
 <script setup lang="ts">
 import { AuthType } from "@/composables/auth/auth"
 import AuthKey from "@/composables/auth/auth-key"
+import { ScreenControllerType } from "@/composables/screen-controller/screen-controller"
+import ScreenControllerKey from "@/composables/screen-controller/screen-controller-key"
 
 const { appUser, checkLoginState } = inject(AuthKey) as AuthType
+const { screenShowable } = inject(ScreenControllerKey) as ScreenControllerType
 const router = useRouter()
 
 const showable = ref(false)

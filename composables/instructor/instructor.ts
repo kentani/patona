@@ -50,14 +50,27 @@ const useInstructor = () => {
     return instructors.value
   }
 
-  const findInstructor = async (params: { id: string }) => {
-    const { id } = params
+  const findInstructor = async (params: { id?: string, userId?: string, gymId?: string }) => {
+    const { id, userId, gymId } = params
 
     if(!instructor.value) {
-      const docRef = doc(db, "users", id)
-      const docSnap = await getDoc(docRef)
+      if(id) {
+        const docRef = doc(db, "instructors", id)
+        const docSnap = await getDoc(docRef)
 
-      instructor.value = docSnap.data() || null
+        instructor.value = docSnap.data() || null
+      } else if(userId && gymId) {
+        const querySnapshot = await getDocs(query(
+          collection(db, 'instructors'),
+          where("gymId", "==", gymId),
+          where("userId", "==", userId),
+          limit(1)
+        ))
+
+        querySnapshot.forEach((doc) => {
+          instructor.value = doc.data() || null
+        })
+      }
     }
 
     return instructor.value
