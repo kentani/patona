@@ -13,12 +13,15 @@ import useGym from "@/composables/gym/gym"
 import GymKey from "@/composables/gym/gym-key"
 import useInstructor from "@/composables/instructor/instructor"
 import InstructorKey from "@/composables/instructor/instructor-key"
+import useMember from "@/composables/member/member"
+import MemberKey from "@/composables/member/member-key"
 import useScreenController from "@/composables/screen-controller/screen-controller"
 import ScreenControllerKey from "@/composables/screen-controller/screen-controller-key"
 
 provide(AuthKey, useAuth())
 provide(GymKey, useGym())
 provide(InstructorKey, useInstructor())
+provide(MemberKey, useMember())
 provide(ScreenControllerKey, useScreenController())
 </script>
 

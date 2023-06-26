@@ -102,7 +102,7 @@ const onClickAddGym = () => {
 
 const onClickCompleteAddGym = async () => {
   await createGym({ userId: appUser.value?.id, name: name.value })
-  await createInstructor({ userId: appUser.value?.id, gymId: gym.value?.id, owner: true, name: appUser.value?.name, members: [] })
+  await createInstructor({ userId: appUser.value?.id, gymId: gym.value?.id, owner: true, name: appUser.value?.name })
   await whereInstructor({ userId: appUser.value?.id })
   await whereGym({ ids: instructors.value.map(i => i.gymId) })
   dialog.value = false

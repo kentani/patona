@@ -78,8 +78,12 @@ const useAuth = () => {
   }
 
   const whereAllUser = async () => {
-    const querySnapshot = await getDocs(collection(db, "users"))
     let users: Array<DocumentData> = []
+
+    const querySnapshot = await getDocs(query(
+      collection(db, "users"),
+      orderBy('createdAt', 'asc')
+    ))
 
     querySnapshot.forEach((doc) => {
       users.push(doc.data() || null)

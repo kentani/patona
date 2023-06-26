@@ -28,6 +28,7 @@ const useInstructor = () => {
         const querySnapshot = await getDocs(query(
           collection(db, 'instructors'),
           where("userId", "==", userId),
+          orderBy('createdAt', 'asc')
         ))
 
         querySnapshot.forEach((doc) => {
@@ -37,6 +38,7 @@ const useInstructor = () => {
         const querySnapshot = await getDocs(query(
           collection(db, 'instructors'),
           where("gymId", "==", gymId),
+          orderBy('createdAt', 'asc')
         ))
 
         querySnapshot.forEach((doc) => {
@@ -76,7 +78,7 @@ const useInstructor = () => {
     return instructor.value
   }
 
-  const createInstructor = async (params: { userId: string, gymId: string, owner: boolean, name: string, members: Array<string> }) => {
+  const createInstructor = async (params: { userId: string, gymId: string, owner: boolean, name: string }) => {
     const docRef = doc(collection(db, "instructors"))
 
     await setDoc(docRef, {

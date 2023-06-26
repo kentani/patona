@@ -2,7 +2,7 @@
   <v-container class="pt-0">
     <v-row>
       <v-col cols="6">
-        <v-btn @click="onClickAddGym">
+        <v-btn @click="onClickAddMember">
           顧客を追加
         </v-btn>
       </v-col>
@@ -23,14 +23,14 @@
           <v-card-actions>
             <v-btn
               variant="text"
-              @click="onClickCancelAddGym"
+              @click="onClickCancelAddMember"
             >
               閉じる
             </v-btn>
 
             <v-btn
               variant="text"
-              @click="onClickCompleteAddGym"
+              @click="onClickCompleteAddMember"
             >
               完了
             </v-btn>
@@ -44,8 +44,8 @@
       align="center"
     >
       <v-col
-        v-for="gym in []"
-        :key="gym.id"
+        v-for="member in members"
+        :key="member.id"
         cols="12"
         sm="4"
         lg="3"
@@ -53,12 +53,12 @@
         <v-card
           rounded="lg"
           :ripple="false"
-          @click="onClickGym(gym)"
+          @click="onClickMember(member)"
         >
 
           <v-card-title>
             <div>
-              {{ gym.name }}
+              {{ member.name }}
             </div>
           </v-card-title>
 
@@ -68,7 +68,7 @@
 
               </v-list-item>
             </v-list-group>
-            <div>userId: {{ gym.userId }}</div>
+            <div>userId: {{ member.instructorId }}</div>
           </v-card-text>
         </v-card>
       </v-col>
@@ -83,12 +83,15 @@ import { GymType } from "@/composables/gym/gym"
 import GymKey from "@/composables/gym/gym-key"
 import { InstructorType } from "@/composables/instructor/instructor"
 import InstructorKey from "@/composables/instructor/instructor-key"
+import { MemberType } from "@/composables/member/member"
+import MemberKey from "@/composables/member/member-key"
 import { ScreenControllerType } from "@/composables/screen-controller/screen-controller"
 import ScreenControllerKey from "@/composables/screen-controller/screen-controller-key"
 
 const { appUser, onLoadedAppUser } = inject(AuthKey) as AuthType
 const { gym, findGym } = inject(GymKey) as GymType
 const { instructor, findInstructor } = inject(InstructorKey) as InstructorType
+const { members, whereMember, createMember } = inject(MemberKey) as MemberType
 const { show } = inject(ScreenControllerKey) as ScreenControllerType
 
 const router = useRouter()
@@ -97,25 +100,32 @@ const route = useRoute()
 const dialog = ref(false)
 const name = ref('')
 
-const onClickAddGym = () => {
+const onClickAddMember = () => {
   dialog.value = true
 }
 
-const onClickCompleteAddGym = async () => {
-  // await createGym({ userId: appUser.value?.id, name: name.value })
-  // await createInstructor({ userId: appUser.value?.id, gymId: gym.value?.id, owner: true, name: appUser.value?.name, members: [] })
-  // await whereInstructor({ userId: appUser.value?.id })
-  // await whereGym({ ids: instructors.value.map(i => i.gymId) })
-  dialog.value = false
-}
-
-const onClickCancelAddGym = async () => {
+const onClickCompleteAddMember = async () => {
+  await createMember({
+    gymId: String(route.query.gymId),
+    instructorId: instructor.value?.id,
+    archived: false,
+    name: name.value,
+    imageName: '',
+    imageURL: '',
+    detail: { profiles: [] }
+  })
+  await whereMember({ gymId: String(route.query.gymId), instructorId: instructor.value?.id })
   name.value = ''
   dialog.value = false
 }
 
-const onClickGym = (gym: any) => {
-  router.push({ path: '/i/menus', query: { gymId: gym.id } })
+const onClickCancelAddMember = async () => {
+  name.value = ''
+  dialog.value = false
+}
+
+const onClickMember = (member: any) => {
+  router.push({ path: '/i/members/d/personal-data', query: { memberId: member.id } })
 }
 
 onMounted(async () => {
@@ -126,6 +136,8 @@ onMounted(async () => {
     if(!gym.value || (!appUser.value?.admin && !instructor.value)) {
       throw createError({ statusCode: 404, statusMessage: 'Page Not Found', fatal: true })
     }
+
+    await whereMember({ gymId: String(route.query.gymId), instructorId: instructor.value?.id })
   })
 
   show()
