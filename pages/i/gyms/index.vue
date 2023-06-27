@@ -1,5 +1,14 @@
 <template>
   <v-container class="pt-0">
+    <v-breadcrumbs
+      :items="breadcrumbs"
+      class="px-0 pt-1"
+    >
+      <template v-slot:divider>
+        <v-icon icon="mdi-chevron-right"></v-icon>
+      </template>
+    </v-breadcrumbs>
+
     <v-row>
       <v-col cols="6">
         <v-btn @click="onClickAddGym">
@@ -95,6 +104,9 @@ const router = useRouter()
 
 const dialog = ref(false)
 const name = ref('')
+const breadcrumbs = ref([
+  { id: '1', title: 'ジム一覧', to: '/i/gyms', disabled: true },
+])
 
 const onClickAddGym = () => {
   dialog.value = true
