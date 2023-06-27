@@ -55,7 +55,7 @@ const route = useRoute()
 
 const menus = ref([
   { id: '1', name: '顧客一覧', icon: 'mdi-account-group', to: '/i/members' },
-  // { id: '2', name: '設定', icon: 'mdi-cog ', to: '/i/settings' },
+  { id: '2', name: '設定', icon: 'mdi-cog ', to: '/i/settings/d/setting-gym' },
 ])
 const breadcrumbs = ref([
   { id: '1', title: 'ジム一覧', to: '/i/gyms', disabled: false },
