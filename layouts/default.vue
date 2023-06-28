@@ -6,6 +6,10 @@
       <slot />
     </v-main>
   </v-app>
+
+  <v-app v-show="!showable && !screenShowable">
+    <common-loading />
+  </v-app>
 </template>
 
 <script setup lang="ts">
