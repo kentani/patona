@@ -20,35 +20,32 @@ const useTraining = () => {
   const whereTraining = async (params: { gymId: string, memberId?: string }) => {
     const { gymId, memberId } = params
 
-    if(!trainings.value.length) {
+    let tmpTrainings: Array<DocumentData> = []
 
-      let tmpTrainings: Array<DocumentData> = []
+    if(memberId) {
+      const querySnapshot = await getDocs(query(
+        collection(db, 'trainings'),
+        where("gymId", "==", gymId),
+        where("memberId", "==", memberId),
+        orderBy('createdAt', 'asc')
+      ))
 
-      if(memberId) {
-        const querySnapshot = await getDocs(query(
-          collection(db, 'trainings'),
-          where("gymId", "==", gymId),
-          where("memberId", "==", memberId),
-          orderBy('createdAt', 'asc')
-        ))
+      querySnapshot.forEach((doc) => {
+        tmpTrainings.push(doc.data() || null)
+      })
+    } else {
+      const querySnapshot = await getDocs(query(
+        collection(db, 'trainings'),
+        where("gymId", "==", gymId),
+        orderBy('createdAt', 'asc')
+      ))
 
-        querySnapshot.forEach((doc) => {
-          tmpTrainings.push(doc.data() || null)
-        })
-      } else {
-        const querySnapshot = await getDocs(query(
-          collection(db, 'trainings'),
-          where("gymId", "==", gymId),
-          orderBy('createdAt', 'asc')
-        ))
-
-        querySnapshot.forEach((doc) => {
-          tmpTrainings.push(doc.data() || null)
-        })
-      }
-
-      training.value = tmpTrainings
+      querySnapshot.forEach((doc) => {
+        tmpTrainings.push(doc.data() || null)
+      })
     }
+
+    training.value = tmpTrainings
 
     return training.value
   }

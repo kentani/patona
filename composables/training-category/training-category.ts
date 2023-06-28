@@ -20,22 +20,19 @@ const useTrainingCategory = () => {
   const whereTrainingCategory = async (params: { gymId: string }) => {
     const { gymId } = params
 
-    if(!trainingCategories.value.length) {
+    let tmpCategories: Array<DocumentData> = []
 
-      let tmpCategories: Array<DocumentData> = []
+    const querySnapshot = await getDocs(query(
+      collection(db, 'training-categories'),
+      where("gymId", "==", gymId),
+      orderBy('createdAt', 'asc')
+    ))
 
-      const querySnapshot = await getDocs(query(
-        collection(db, 'training-categories'),
-        where("gymId", "==", gymId),
-        orderBy('createdAt', 'asc')
-      ))
+    querySnapshot.forEach((doc) => {
+      tmpCategories.push(doc.data() || null)
+    })
 
-      querySnapshot.forEach((doc) => {
-        tmpCategories.push(doc.data() || null)
-      })
-
-      trainingCategories.value = tmpCategories
-    }
+    trainingCategories.value = tmpCategories
 
     return trainingCategories.value
   }

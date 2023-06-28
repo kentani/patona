@@ -20,42 +20,38 @@ const useGym = () => {
   const whereGym = async (params: { ids?: Array<string>, all?: boolean, reload?: boolean }) => {
     const { ids, all, reload } = params
 
-    if(!gyms.value.length || reload) {
-      let tmpGyms: Array<DocumentData> = []
+    let tmpGyms: Array<DocumentData> = []
 
-      if(ids?.length) {
-        const querySnapshot = await getDocs(query(
-          collection(db, 'gyms'),
-          where('id', 'in', ids),
-          orderBy('createdAt', 'asc')
-        ))
+    if(ids?.length) {
+      const querySnapshot = await getDocs(query(
+        collection(db, 'gyms'),
+        where('id', 'in', ids),
+        orderBy('createdAt', 'asc')
+      ))
 
-        querySnapshot.forEach((doc) => {
-          tmpGyms.push(doc.data() || null)
-        })
-      } else if(all) {
-        const querySnapshot = await getDocs(collection(db, 'gyms'))
+      querySnapshot.forEach((doc) => {
+        tmpGyms.push(doc.data() || null)
+      })
+    } else if(all) {
+      const querySnapshot = await getDocs(collection(db, 'gyms'))
 
-        querySnapshot.forEach((doc) => {
-          tmpGyms.push(doc.data() || null)
-        })
-      }
-
-      gyms.value = tmpGyms
+      querySnapshot.forEach((doc) => {
+        tmpGyms.push(doc.data() || null)
+      })
     }
+
+    gyms.value = tmpGyms
 
     return gyms.value
   }
 
-  const findGym = async (params: { id: string }) => {
-    const { id } = params
+  const findGym = async (params: { id: string, reload?: boolean }) => {
+    const { id, reload } = params
 
-    if(!gym.value) {
-      const docRef = doc(db, "gyms", id)
-      const docSnap = await getDoc(docRef)
+    const docRef = doc(db, "gyms", id)
+    const docSnap = await getDoc(docRef)
 
-      gym.value = docSnap.data() || null
-    }
+    gym.value = docSnap.data() || null
 
     return gym.value
   }
@@ -102,10 +98,6 @@ const useGym = () => {
     });
   }
 
-  const resetGym = () => {
-    gym.value = null
-  }
-
   return {
     gyms,
     gym,
@@ -114,7 +106,6 @@ const useGym = () => {
     createGym,
     updateGym,
     onLoadedGym,
-    resetGym,
   }
 }
 

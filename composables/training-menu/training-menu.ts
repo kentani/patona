@@ -20,22 +20,19 @@ const useTrainingMenu = () => {
   const whereTrainingMenu = async (params: { gymId: string }) => {
     const { gymId } = params
 
-    if(!trainingMenus.value.length) {
+    let tmpMenus: Array<DocumentData> = []
 
-      let tmpMenus: Array<DocumentData> = []
+    const querySnapshot = await getDocs(query(
+      collection(db, 'training-menus'),
+      where("gymId", "==", gymId),
+      orderBy('createdAt', 'asc')
+    ))
 
-      const querySnapshot = await getDocs(query(
-        collection(db, 'training-menus'),
-        where("gymId", "==", gymId),
-        orderBy('createdAt', 'asc')
-      ))
+    querySnapshot.forEach((doc) => {
+      tmpMenus.push(doc.data() || null)
+    })
 
-      querySnapshot.forEach((doc) => {
-        tmpMenus.push(doc.data() || null)
-      })
-
-      trainingMenus.value = tmpMenus
-    }
+    trainingMenus.value = tmpMenus
 
     return trainingMenus.value
   }

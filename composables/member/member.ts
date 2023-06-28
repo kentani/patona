@@ -20,62 +20,59 @@ const useMember = () => {
   const whereMember = async (params: { gymId: string, instructorId?: string, includeArchive?: boolean }) => {
     const { gymId, instructorId, includeArchive } = params
 
-    if(!members.value.length) {
+    let tmpMembers: Array<DocumentData> = []
 
-      let tmpMembers: Array<DocumentData> = []
+    if(instructorId) {
+      if(includeArchive) {
+        const querySnapshot = await getDocs(query(
+          collection(db, 'members'),
+          where("gymId", "==", gymId),
+          where("instructorId", "==", instructorId),
+          orderBy('createdAt', 'asc')
+        ))
 
-      if(instructorId) {
-        if(includeArchive) {
-          const querySnapshot = await getDocs(query(
-            collection(db, 'members'),
-            where("gymId", "==", gymId),
-            where("instructorId", "==", instructorId),
-            orderBy('createdAt', 'asc')
-          ))
-
-          querySnapshot.forEach((doc) => {
-            tmpMembers.push(doc.data() || null)
-          })
-        } else {
-          const querySnapshot = await getDocs(query(
-            collection(db, 'members'),
-            where("gymId", "==", gymId),
-            where("instructorId", "==", instructorId),
-            where('archived', '==', false),
-            orderBy('createdAt', 'asc')
-          ))
-
-          querySnapshot.forEach((doc) => {
-            tmpMembers.push(doc.data() || null)
-          })
-        }
+        querySnapshot.forEach((doc) => {
+          tmpMembers.push(doc.data() || null)
+        })
       } else {
-        if(includeArchive) {
-          const querySnapshot = await getDocs(query(
-            collection(db, 'members'),
-            where("gymId", "==", gymId),
-            orderBy('createdAt', 'asc')
-          ))
+        const querySnapshot = await getDocs(query(
+          collection(db, 'members'),
+          where("gymId", "==", gymId),
+          where("instructorId", "==", instructorId),
+          where('archived', '==', false),
+          orderBy('createdAt', 'asc')
+        ))
 
-          querySnapshot.forEach((doc) => {
-            tmpMembers.push(doc.data() || null)
-          })
-        } else {
-          const querySnapshot = await getDocs(query(
-            collection(db, 'members'),
-            where("gymId", "==", gymId),
-            where('archived', '==', false),
-            orderBy('createdAt', 'asc')
-          ))
-
-          querySnapshot.forEach((doc) => {
-            tmpMembers.push(doc.data() || null)
-          })
-        }
+        querySnapshot.forEach((doc) => {
+          tmpMembers.push(doc.data() || null)
+        })
       }
+    } else {
+      if(includeArchive) {
+        const querySnapshot = await getDocs(query(
+          collection(db, 'members'),
+          where("gymId", "==", gymId),
+          orderBy('createdAt', 'asc')
+        ))
 
-      members.value = tmpMembers
+        querySnapshot.forEach((doc) => {
+          tmpMembers.push(doc.data() || null)
+        })
+      } else {
+        const querySnapshot = await getDocs(query(
+          collection(db, 'members'),
+          where("gymId", "==", gymId),
+          where('archived', '==', false),
+          orderBy('createdAt', 'asc')
+        ))
+
+        querySnapshot.forEach((doc) => {
+          tmpMembers.push(doc.data() || null)
+        })
+      }
     }
+
+    members.value = tmpMembers
 
     return members.value
   }
@@ -83,24 +80,22 @@ const useMember = () => {
   const findMember = async (params: { id?: string, gymId?: string, instructorId?: string }) => {
     const { id, gymId, instructorId } = params
 
-    if(!member.value) {
-      if(id) {
-        const docRef = doc(db, "members", id)
-        const docSnap = await getDoc(docRef)
+    if(id) {
+      const docRef = doc(db, "members", id)
+      const docSnap = await getDoc(docRef)
 
-        member.value = docSnap.data() || null
-      } else if(gymId && instructorId) {
-        const querySnapshot = await getDocs(query(
-          collection(db, 'members'),
-          where("gymId", "==", gymId),
-          where("instructorId", "==", instructorId),
-          limit(1)
-        ))
+      member.value = docSnap.data() || null
+    } else if(gymId && instructorId) {
+      const querySnapshot = await getDocs(query(
+        collection(db, 'members'),
+        where("gymId", "==", gymId),
+        where("instructorId", "==", instructorId),
+        limit(1)
+      ))
 
-        querySnapshot.forEach((doc) => {
-          member.value = doc.data() || null
-        })
-      }
+      querySnapshot.forEach((doc) => {
+        member.value = doc.data() || null
+      })
     }
 
     return member.value
