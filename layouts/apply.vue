@@ -20,6 +20,7 @@ import InstructorKey from "@/composables/instructor/instructor-key"
 
 const { appUser, checkLoginState } = inject(AuthKey) as AuthType
 const { instructors, whereInstructor } = inject(InstructorKey) as InstructorType
+
 const router = useRouter()
 
 const showable = ref(false)

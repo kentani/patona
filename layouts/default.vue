@@ -20,6 +20,7 @@ import ScreenControllerKey from "@/composables/screen-controller/screen-controll
 
 const { appUser, checkLoginState } = inject(AuthKey) as AuthType
 const { screenShowable } = inject(ScreenControllerKey) as ScreenControllerType
+
 const router = useRouter()
 
 const showable = ref(false)

@@ -148,7 +148,6 @@ const onClickCompleteAddCategory = async () => {
 // メニュー
 const onChangeCategory = () => {
   setMenu()
-  console.log('currentMenus.value', currentMenus.value)
 }
 const onClickAddMenu = () => {
   menuDialog.value = true

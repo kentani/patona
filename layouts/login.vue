@@ -20,31 +20,30 @@ import InstructorKey from "@/composables/instructor/instructor-key"
 
 const { appUser, getLoginResult, checkLoginState } = inject(AuthKey) as AuthType
 const { instructors, whereInstructor } = inject(InstructorKey) as InstructorType
+
 const router = useRouter()
 
 const showable = ref(false)
 
 onMounted(async () => {
   await getLoginResult()
-
-  await checkLoginState()
-    .then(async () => {
-      if(appUser.value) {
-        if(appUser.value.admin) {
-          router.replace('/admin/menus')
-        } else if(appUser.value.approved || appUser.value.invited) {
-          await whereInstructor({ userId: appUser.value?.id })
-          if(instructors.value.length === 1) {
-            router.replace({ path: '/i/menus', query: { gymId: instructors.value[0].gymId } })
-          } else {
-            router.replace('/i/gyms')
-          }
+  await checkLoginState().then(async () => {
+    if(appUser.value) {
+      if(appUser.value.admin) {
+        router.replace('/admin/menus')
+      } else if(appUser.value.approved || appUser.value.invited) {
+        await whereInstructor({ userId: appUser.value?.id })
+        if(instructors.value.length === 1) {
+          router.replace({ path: '/i/menus', query: { gymId: instructors.value[0].gymId } })
         } else {
-          router.replace('/apply')
+          router.replace('/i/gyms')
         }
       } else {
-        showable.value = true
+        router.replace('/apply')
       }
-    })
+    } else {
+      showable.value = true
+    }
+  })
 })
 </script>

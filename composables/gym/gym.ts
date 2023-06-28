@@ -102,6 +102,10 @@ const useGym = () => {
     });
   }
 
+  const resetGym = () => {
+    gym.value = null
+  }
+
   return {
     gyms,
     gym,
@@ -110,6 +114,7 @@ const useGym = () => {
     createGym,
     updateGym,
     onLoadedGym,
+    resetGym,
   }
 }
 

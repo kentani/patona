@@ -13,6 +13,7 @@ const useAuth = () => {
   const authUser: Ref<DocumentData|null> = ref(null)
   const appUser: Ref<DocumentData|null> = ref(null)
   const allAppUsers: Ref<Array<DocumentData>> = ref([])
+  const beforePath: Ref<string> = ref('')
 
   ////////////////////
   // computed
@@ -29,23 +30,22 @@ const useAuth = () => {
   }
 
   const getLoginResult = async () => {
-    await getRedirectResult(auth)
-      .then(async (result: UserCredential | null) => {
-        if(result) {
-          authUser.value = result.user
-          await findUser({ uid: result.user.uid })
+    await getRedirectResult(auth).then(async (result: UserCredential | null) => {
+      if(result) {
+        authUser.value = result.user
+        await findUser({ uid: result.user.uid })
 
-          if(appUser.value) {
-            return appUser.value
-          } else {
-            await createUser({ uid: result.user.uid, name: result.user.displayName })
+        if(appUser.value) {
+          return appUser.value
+        } else {
+          await createUser({ uid: result.user.uid, name: result.user.displayName })
 
-            return appUser.value
-          }
+          return appUser.value
         }
-      }).catch((error) => {
-        console.error(error)
-      })
+      }
+    }).catch((error) => {
+      console.error(error)
+    })
   }
 
   const logout = async () => {
@@ -94,10 +94,10 @@ const useAuth = () => {
     return allAppUsers.value
   }
 
-  const findUser = async (params: { id?: string, uid?: string }) => {
-    const { id, uid } = params
+  const findUser = async (params: { id?: string, uid?: string, reload?: boolean }) => {
+    const { id, uid, reload } = params
 
-    if(!appUser.value) {
+    if(!appUser.value || reload) {
       if(!!id) {
         const docRef = doc(db, "users", id)
         const docSnap = await getDoc(docRef)
@@ -138,14 +138,12 @@ const useAuth = () => {
       updatedAt: serverTimestamp(),
     })
 
-    await findUser({ uid: uid })
+    await findUser({ uid: uid, reload: true })
 
     return appUser.value
   }
 
-  const updateUser = async (params: { id: string, name: string }) => {
-    const { id } = params
-
+  const updateUser = async (id: string, params: { name?: string, invited?: boolean }) => {
     const docRef = doc(db, "users", id)
 
     await updateDoc(docRef, {
@@ -153,7 +151,7 @@ const useAuth = () => {
       updatedAt: serverTimestamp(),
     })
 
-    await findUser({ id: id })
+    await findUser({ id: id, reload: true })
 
     return appUser.value
   }
@@ -172,10 +170,15 @@ const useAuth = () => {
     });
   }
 
+  const setBeforePath = (path: string) => {
+    beforePath.value = path
+  }
+
   return {
     authUser,
     appUser,
     allAppUsers,
+    beforePath,
     isLogined,
     login,
     getLoginResult,
@@ -185,7 +188,8 @@ const useAuth = () => {
     whereAllUser,
     createUser,
     updateUser,
-    onLoadedAppUser
+    onLoadedAppUser,
+    setBeforePath,
   }
 }
 
