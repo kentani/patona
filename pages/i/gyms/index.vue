@@ -96,7 +96,7 @@ import { ScreenControllerType } from "@/composables/screen-controller/screen-con
 import ScreenControllerKey from "@/composables/screen-controller/screen-controller-key"
 
 const { appUser, onLoadedAppUser } = inject(AuthKey) as AuthType
-const { gyms, gym, whereGym, createGym } = inject(GymKey) as GymType
+const { gyms, gym, whereGym, createGym, resetGym } = inject(GymKey) as GymType
 const { instructors, whereInstructor, createInstructor } = inject(InstructorKey) as InstructorType
 const { show } = inject(ScreenControllerKey) as ScreenControllerType
 
@@ -131,6 +131,8 @@ const onClickGym = (gym: any) => {
 
 onMounted(async () => {
   await onLoadedAppUser().then(async () => {
+    resetGym()
+
     await whereInstructor({ userId: appUser.value?.id })
 
     if(appUser.value?.admin) {
