@@ -88,6 +88,20 @@ const useGym = () => {
     return gym.value
   }
 
+  const onLoadedGym = async (params?: { timeout?: number, interval?: number }) => {
+    return new Promise<void>((resolve) => {
+      const timeout = params?.timeout || 10
+      const interval = params?.interval || 200
+      let count = 0
+      const intervalId = setInterval(() => {
+        count++
+        if(!gym.value && count <= timeout) return
+        clearInterval(intervalId)
+        resolve()
+      }, interval)
+    });
+  }
+
   return {
     gyms,
     gym,
@@ -95,6 +109,7 @@ const useGym = () => {
     findGym,
     createGym,
     updateGym,
+    onLoadedGym,
   }
 }
 

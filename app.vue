@@ -15,6 +15,12 @@ import useInstructor from "@/composables/instructor/instructor"
 import InstructorKey from "@/composables/instructor/instructor-key"
 import useMember from "@/composables/member/member"
 import MemberKey from "@/composables/member/member-key"
+import useTrainingCategory from "@/composables/training-category/training-category"
+import TrainingCategoryKey from "@/composables/training-category/training-category-key"
+import useTrainingMenu from "@/composables/training-menu/training-menu"
+import TrainingMenuKey from "@/composables/training-menu/training-menu-key"
+import useTraining from "@/composables/training/training"
+import TrainingKey from "@/composables/training/training-key"
 import useScreenController from "@/composables/screen-controller/screen-controller"
 import ScreenControllerKey from "@/composables/screen-controller/screen-controller-key"
 
@@ -22,6 +28,9 @@ provide(AuthKey, useAuth())
 provide(GymKey, useGym())
 provide(InstructorKey, useInstructor())
 provide(MemberKey, useMember())
+provide(TrainingCategoryKey, useTrainingCategory())
+provide(TrainingMenuKey, useTrainingMenu())
+provide(TrainingKey, useTraining())
 provide(ScreenControllerKey, useScreenController())
 </script>
 
