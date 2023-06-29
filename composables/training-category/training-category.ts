@@ -9,6 +9,7 @@ const useTrainingCategory = () => {
   ////////////////////
   const trainingCategories: Ref<Array<DocumentData>> = ref([])
   const trainingCategory: Ref<DocumentData|null> = ref(null)
+  const selectedCategory = ref({ id: '0', name: '' })
 
   ////////////////////
   // computed
@@ -58,6 +59,7 @@ const useTrainingCategory = () => {
     })
 
     await findTrainingCategory({ id: docRef.id })
+    await whereTrainingCategory({ gymId: params.gymId })
 
     return trainingCategory.value
   }
@@ -72,16 +74,29 @@ const useTrainingCategory = () => {
 
     await findTrainingCategory({ id: id })
 
+    const index = trainingCategories.value.findIndex(c => c.id === trainingCategory.value?.id)
+    trainingCategories.value.splice(index, 1, trainingCategory.value || {})
+
     return trainingCategory.value
+  }
+
+  const setTrainingCategory = (category: any) => {
+    trainingCategory.value = category
+  }
+  const setSelectedCategory = (category: any) => {
+    selectedCategory.value = category
   }
 
   return {
     trainingCategories,
     trainingCategory,
+    selectedCategory,
     whereTrainingCategory,
     findTrainingCategory,
     createTrainingCategory,
     updateTrainingCategory,
+    setTrainingCategory,
+    setSelectedCategory,
   }
 }
 

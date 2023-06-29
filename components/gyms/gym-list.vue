@@ -52,7 +52,6 @@ const onClickGym = (gym: any) => {
 }
 
 const formattedDate = (timestamp: any) => {
-  console.log(timestamp.toDate())
   return format(timestamp.toDate(), 'yyyy-MM-dd')
 }
 </script>

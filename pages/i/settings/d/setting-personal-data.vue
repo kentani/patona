@@ -1,5 +1,3 @@
 <template>
-  <v-container>
-    <div>パーソナルデータ</div>
-  </v-container>
+  <div>パーソナルデータ</div>
 </template>

@@ -72,6 +72,9 @@ const useTrainingMenu = () => {
 
     await findTrainingMenu({ id: id })
 
+    const index = trainingMenus.value.findIndex(m => m.id === trainingMenu.value?.id)
+    trainingMenus.value.splice(index, 1, trainingMenu.value || {})
+
     return trainingMenu.value
   }
 

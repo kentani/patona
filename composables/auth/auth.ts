@@ -54,7 +54,7 @@ const useAuth = () => {
         authUser.value = null
         appUser.value = null
       }).catch((error) => {
-        console.log(error)
+        console.error(error)
       })
 
     return appUser.value

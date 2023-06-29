@@ -1,30 +1,29 @@
 <template>
-  <v-container class="pt-0">
-    <v-breadcrumbs
-      :items="breadcrumbs"
-      class="px-0 pt-1"
-    >
-      <template v-slot:divider>
-        <v-icon icon="mdi-chevron-right"></v-icon>
-      </template>
-    </v-breadcrumbs>
+  <v-container>
+    <common-breadcrumbs
+      :breadcrumbs="breadcrumbs"
+    />
 
     <v-row>
       <v-col
-        v-for="tab in tabs"
-        :key="tab.id"
-        cols="auto"
+        cols="12"
+        sm="4"
+        md="3"
       >
-        <v-btn
-          variant="text"
-          @click=onClickTab(tab)
-        >
-          {{ tab.name }}
-        </v-btn>
+        <common-tabs
+          base-url="/i/settings/d/setting-"
+          :tabs="tabs"
+        />
+      </v-col>
+
+      <v-col
+        cols="12"
+        sm="8"
+        md="9"
+      >
+        <NuxtPage page-key="setting" />
       </v-col>
     </v-row>
-
-    <NuxtPage page-key="setting" />
   </v-container>
 </template>
 
@@ -35,18 +34,14 @@ import { GymType } from "@/composables/gym/gym"
 import GymKey from "@/composables/gym/gym-key"
 import { InstructorType } from "@/composables/instructor/instructor"
 import InstructorKey from "@/composables/instructor/instructor-key"
-import { MemberType } from "@/composables/member/member"
-import MemberKey from "@/composables/member/member-key"
 import { ScreenControllerType } from "@/composables/screen-controller/screen-controller"
 import ScreenControllerKey from "@/composables/screen-controller/screen-controller-key"
 
 const { appUser, onLoadedAppUser } = inject(AuthKey) as AuthType
 const { gym, findGym } = inject(GymKey) as GymType
 const { instructor, findInstructor } = inject(InstructorKey) as InstructorType
-const { member, findMember } = inject(MemberKey) as MemberType
 const { show } = inject(ScreenControllerKey) as ScreenControllerType
 
-const router = useRouter()
 const route = useRoute()
 
 const breadcrumbs = ref([
@@ -54,16 +49,13 @@ const breadcrumbs = ref([
   { id: '2', title: 'メニュー', to: `/i/menus?gymId=${route.query.gymId}`, disabled: false },
   { id: '3', title: '設定', to: `/i/settings/d/setting-gym?gymId=${route.query.gymId}`, disabled: true },
 ])
-const tabs = ref([
-  { id: '1', name: 'ジム情報', to: 'gym', active: false },
-  { id: '2', name: '権限', to: 'role', active: false },
-  { id: '3', name: 'パーソナルデータ', to: 'personal-data', active: false },
-  { id: '4', name: 'トレーニング', to: 'training', active: false },
-])
 
-const onClickTab = (tab: any) => {
-  router.push({ path: `/i/settings/d/setting-${tab.to}`, query: { gymId: route.query.gymId } })
-}
+const tabs = ref([
+  { id: '1', title: 'ジム情報', to: 'gym', disabled: false },
+  { id: '2', title: '権限', to: 'role', disabled: true },
+  { id: '3', title: 'パーソナルデータ', to: 'personal-data', disabled: true },
+  { id: '4', title: 'トレーニング', to: 'training', disabled: false },
+])
 
 onMounted(async () => {
   await onLoadedAppUser().then(async () => {

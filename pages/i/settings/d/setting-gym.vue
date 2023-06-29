@@ -1,42 +1,71 @@
 <template>
-  <v-container>
-    <v-card variant="flat">
-      <v-card-title>
-        <div>{{ gym?.name }}</div>
-      </v-card-title>
+  <v-card
+    rounded="lg"
+    variant="flat"
+  >
+    <v-card-text>
+      <v-row>
+        <v-col cols="12">
+          <common-underlined-text
+            text="ジム名"
+            class="text-h6 font-weight-bold"
+          />
 
-      <v-card-text>
-        <div>招待リンク</div>
-        <div>
-          {{ invitationURL }}
-          <v-icon @click="onClickCopy">mdi-content-copy</v-icon>
-        </div>
-      </v-card-text>
-    </v-card>
+          <div class="mt-4 text-body-1">
+            <span class="pr-2">
+              {{ gym?.name }}
+            </span>
+          </div>
+        </v-col>
 
-  </v-container>
+        <v-col cols="12">
+          <common-underlined-text
+            text="招待リンク"
+            class="text-h6 font-weight-bold"
+          />
+
+          <div class="mt-2 text-body-1">
+            <span>
+              {{ invitationURL }}
+            </span>
+
+            <v-btn
+              variant="flat"
+              size="small"
+              icon
+            >
+              <v-icon
+                icon="mdi-content-copy"
+                @click="onClickCopy"
+              ></v-icon>
+            </v-btn>
+
+            <v-snackbar
+              v-model="snackbar"
+              :timeout="1500"
+            >
+              招待リンクをコピーしました
+            </v-snackbar>
+          </div>
+        </v-col>
+      </v-row>
+    </v-card-text>
+  </v-card>
 </template>
 
 <script setup lang="ts">
-import { AuthType } from "@/composables/auth/auth"
-import AuthKey from "@/composables/auth/auth-key"
 import { GymType } from "@/composables/gym/gym"
 import GymKey from "@/composables/gym/gym-key"
-import { TrainingCategoryType } from "@/composables/training-category/training-category"
-import TrainingCategoryKey from "@/composables/training-category/training-category-key"
-import { TrainingMenuType } from "@/composables/training-menu/training-menu"
-import TrainingMenuKey from "@/composables/training-menu/training-menu-key"
-import { DocumentData } from "@firebase/firestore"
 
-const { appUser, onLoadedAppUser } = inject(AuthKey) as AuthType
 const { gym, onLoadedGym } = inject(GymKey) as GymType
-const { trainingCategories, whereTrainingCategory, createTrainingCategory } = inject(TrainingCategoryKey) as TrainingCategoryType
-const { trainingMenus, whereTrainingMenu, createTrainingMenu } = inject(TrainingMenuKey) as TrainingMenuType
 
 const invitationURL = ref('')
+const snackbar = ref(false)
 
 const onClickCopy = () => {
-  navigator.clipboard.writeText(invitationURL.value)
+  navigator.clipboard.writeText(invitationURL.value).then(() => {
+    snackbar.value = true
+  })
 }
 
 onMounted(async () => {
