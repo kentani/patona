@@ -4,72 +4,46 @@
     fixed
     flat
     density="compact"
+    color="green1"
   >
     <v-toolbar-title class="text-body-1 font-weight-bold">
       {{ title }}
     </v-toolbar-title>
 
-    <v-row
-      v-if="isLogined"
-      dense
-      no-gutters
-      align="center"
-      class="px-2 text-body-2 text-center"
-    >
-      <v-spacer />
+    <template v-slot:append>
+      <div class="text-body-2">{{ gym?.name }}</div>
 
-      <v-col
-        cols="auto"
-      >
-        {{ gym?.name }}
-      </v-col>
+      <div v-if="gym" class="px-2 text-body-2">|</div>
 
-      <v-col
-        v-if="gym"
-        cols="auto"
-        class="mx-1"
-      >
-        |
-      </v-col>
+      <div class="pr-2 text-body-2">{{ appUser?.name }}</div>
 
-      <v-col
-        cols="auto"
-      >
-        {{ appUser?.name }}
-      </v-col>
-
-      <v-col
-        cols="auto"
-        class="ml-2"
-      >
-        <v-menu>
-          <template v-slot:activator="{ props }">
-            <v-btn
-              v-bind="props"
-              icon="mdi-dots-vertical"
-              density="compact"
-              :ripple="false"
-            ></v-btn>
-          </template>
-
-          <v-list
+      <v-menu>
+        <template v-slot:activator="{ props }">
+          <v-btn
+            v-bind="props"
+            icon="mdi-dots-vertical"
             density="compact"
-            class="pa-0"
+            :ripple="false"
+          ></v-btn>
+        </template>
+
+        <v-list
+          density="compact"
+          class="pa-0"
+        >
+          <v-list-item
+            v-for="menu in menus"
+            :key="menu.id"
+            density="compact"
+            class="pb-1 px-4"
+            style="min-height: 0px;"
+            @click="onClickMenu(menu)"
           >
-            <v-list-item
-              v-for="(menu, index) in menus"
-              :key="menu.id"
-              density="compact"
-              class="pb-1 px-4"
-              style="min-height: 0px;"
-              @click="onClickMenu(menu)"
-            >
-              <v-list-item-title class="pa-0 text-caption">{{ menu.title }}</v-list-item-title>
-            </v-list-item>
-          </v-list>
-        </v-menu>
-      </v-col>
-    </v-row>
+            <v-list-item-title class="pa-0 text-caption">{{ menu.title }}</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
+    </template>
   </v-app-bar>
 </template>
 

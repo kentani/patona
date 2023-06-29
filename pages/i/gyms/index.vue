@@ -1,85 +1,33 @@
 <template>
-  <v-container class="pt-0">
-    <v-breadcrumbs
-      :items="breadcrumbs"
-      class="px-0 pt-1"
-    >
-      <template v-slot:divider>
-        <v-icon icon="mdi-chevron-right"></v-icon>
-      </template>
-    </v-breadcrumbs>
+  <v-container>
+    <common-breadcrumbs
+      :breadcrumbs="breadcrumbs"
+    />
 
     <v-row>
-      <v-col cols="6">
-        <v-btn @click="onClickAddGym">
-          ジムを追加
-        </v-btn>
-      </v-col>
-
-      <v-dialog
-        v-model="dialog"
-      >
-        <v-card
-          variant="flat"
-        >
-          <v-card-text>
-            <v-text-field
-              v-model="name"
-              label="ジム名"
-            ></v-text-field>
-          </v-card-text>
-
-          <v-card-actions>
-            <v-btn
-              variant="text"
-              @click="onClickCancelAddGym"
-            >
-              閉じる
-            </v-btn>
-
-            <v-btn
-              variant="text"
-              @click="onClickCompleteAddGym"
-            >
-              完了
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-    </v-row>
-
-    <v-row
-      justify="start"
-      align="center"
-    >
       <v-col
-        v-for="gym in gyms"
-        :key="gym.id"
         cols="12"
         sm="4"
-        lg="3"
+        md="3"
       >
-        <v-card
-          rounded="lg"
-          :ripple="false"
-          @click="onClickGym(gym)"
-        >
+        <v-row>
+          <v-col cols="12">
+            <gyms-search />
+          </v-col>
 
-          <v-card-title>
-            <div>
-              {{ gym.name }}
-            </div>
-          </v-card-title>
+          <v-col cols="12">
+            <gyms-add-gym />
+          </v-col>
+        </v-row>
 
-          <v-card-text class="text-body-1 text-left">
-            <v-list-group>
-              <v-list-item>
+      </v-col>
 
-              </v-list-item>
-            </v-list-group>
-            <div>userId: {{ gym.userId }}</div>
-          </v-card-text>
-        </v-card>
+      <v-col
+        cols="12"
+        sm="8"
+        md="9"
+      >
+        <gyms-gym-list />
       </v-col>
     </v-row>
   </v-container>
@@ -96,38 +44,13 @@ import { ScreenControllerType } from "@/composables/screen-controller/screen-con
 import ScreenControllerKey from "@/composables/screen-controller/screen-controller-key"
 
 const { appUser, onLoadedAppUser } = inject(AuthKey) as AuthType
-const { gyms, gym, whereGym, createGym, resetGym } = inject(GymKey) as GymType
-const { instructors, whereInstructor, createInstructor } = inject(InstructorKey) as InstructorType
+const { whereGym, resetGym } = inject(GymKey) as GymType
+const { instructors, whereInstructor } = inject(InstructorKey) as InstructorType
 const { show } = inject(ScreenControllerKey) as ScreenControllerType
 
-const router = useRouter()
-
-const dialog = ref(false)
-const name = ref('')
 const breadcrumbs = ref([
   { id: '1', title: 'ジム一覧', to: '/i/gyms', disabled: true },
 ])
-
-const onClickAddGym = () => {
-  dialog.value = true
-}
-
-const onClickCompleteAddGym = async () => {
-  await createGym({ userId: appUser.value?.id, name: name.value })
-  await createInstructor({ userId: appUser.value?.id, gymId: gym.value?.id, owner: true, name: appUser.value?.name })
-  await whereInstructor({ userId: appUser.value?.id })
-  await whereGym({ ids: instructors.value.map(i => i.gymId) })
-  dialog.value = false
-}
-
-const onClickCancelAddGym = async () => {
-  name.value = ''
-  dialog.value = false
-}
-
-const onClickGym = (gym: any) => {
-  router.push({ path: '/i/menus', query: { gymId: gym.id } })
-}
 
 onMounted(async () => {
   await onLoadedAppUser().then(async () => {

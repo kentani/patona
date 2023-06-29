@@ -8,6 +8,7 @@
       <v-col cols="auto">
         <v-progress-circular
           size="large"
+          color="green1"
           indeterminate
         ></v-progress-circular>
       </v-col>
