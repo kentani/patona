@@ -7,9 +7,11 @@ import '@mdi/font/css/materialdesignicons.css'
 const customLightTheme: ThemeDefinition = {
   dark: false,
   colors: {
-    brown1: '#795548',
-    brown2: '#EFEBE9',
-    brown3: '#D7CCC8',
+    background: '#F5F5F5',
+    font: '#4e4e4e',
+    green1: '#006666',
+    green2: 'c85554',
+    black: '#4e4e4e'
   }
 }
 
