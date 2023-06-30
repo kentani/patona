@@ -101,6 +101,20 @@ const useInstructor = () => {
     return instructor.value
   }
 
+  const onLoadedInstructor = async (params?: { timeout?: number, interval?: number }) => {
+    return new Promise<void>((resolve) => {
+      const timeout = params?.timeout || 10
+      const interval = params?.interval || 200
+      let count = 0
+      const intervalId = setInterval(() => {
+        count++
+        if(!instructor.value && count <= timeout) return
+        clearInterval(intervalId)
+        resolve()
+      }, interval)
+    });
+  }
+
   const resetInstructor = () => {
     instructor.value = null
   }
@@ -112,6 +126,7 @@ const useInstructor = () => {
     findInstructor,
     createInstructor,
     updateInstructor,
+    onLoadedInstructor,
     resetInstructor,
   }
 }

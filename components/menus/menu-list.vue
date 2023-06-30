@@ -45,7 +45,7 @@ import InstructorKey from "@/composables/instructor/instructor-key"
 
 const { appUser, onLoadedAppUser } = inject(AuthKey) as AuthType
 const { gym } = inject(GymKey) as GymType
-const { instructor } = inject(InstructorKey) as InstructorType
+const { instructor, onLoadedInstructor } = inject(InstructorKey) as InstructorType
 
 const router = useRouter()
 
@@ -59,8 +59,10 @@ const onClickMenu = (menu: { id: string, name: string, icon: string, to: string 
 }
 
 onMounted(async () => {
-  await onLoadedAppUser().then(() => {
-    menus.value[1].disabled = !appUser.value?.admin && !instructor.value?.owner
+  await onLoadedAppUser().then(async () => {
+    await onLoadedInstructor().then(() => {
+      menus.value[1].disabled = !appUser.value?.admin && !instructor.value?.owner
+    })
   })
 })
 </script>

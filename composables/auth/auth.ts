@@ -167,7 +167,7 @@ const useAuth = () => {
         clearInterval(intervalId)
         resolve()
       }, interval)
-    });
+    })
   }
 
   return {
