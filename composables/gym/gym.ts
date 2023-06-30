@@ -11,6 +11,7 @@ const useGym = () => {
   const gym: Ref<DocumentData|null> = ref(null)
 
   const filteredGyms: Ref<Array<DocumentData>> = ref([])
+  const searchGymName: Ref<string> = ref('')
 
   ////////////////////
   // computed
@@ -118,31 +119,47 @@ const useGym = () => {
     filteredGyms.value = gyms
   }
 
-  const filterGym = (params: { searchGymName: string }) => {
-    const { searchGymName } = params
-    let tmpGyms = gyms.value
+  const setSearchGymName = (name: string) => {
+    searchGymName.value = name
+  }
 
-    if(searchGymName.length === 0) {
-      setFilteredGyms(tmpGyms)
-      return filteredGyms.value
-    }
+  const resetGyms = () => {
+    gyms.value = []
   }
 
   const resetGym = () => {
     gym.value = null
   }
 
+  const filterGym = () => {
+    let tmpGyms = gyms.value
+
+    if(searchGymName.value.length === 0) {
+      setFilteredGyms(tmpGyms)
+      return filteredGyms.value
+    }
+
+    tmpGyms = tmpGyms.filter(m => m.name.includes(searchGymName.value))
+    setFilteredGyms(tmpGyms)
+
+    return filteredGyms.value
+  }
+
   return {
     gyms,
     gym,
+    filteredGyms,
+    searchGymName,
     whereGym,
     findGym,
     createGym,
     updateGym,
     onLoadedGym,
+    resetGyms,
+    resetGym,
+    setSearchGymName,
     setFilteredGyms,
     filterGym,
-    resetGym,
   }
 }
 

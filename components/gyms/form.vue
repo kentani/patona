@@ -55,7 +55,7 @@ import { InstructorType } from "@/composables/instructor/instructor"
 import InstructorKey from "@/composables/instructor/instructor-key"
 
 const { appUser, updateUser } = inject(AuthKey) as AuthType
-const { gym, createGym } = inject(GymKey) as GymType
+const { gym, createGym, filterGym } = inject(GymKey) as GymType
 const { createInstructor } = inject(InstructorKey) as InstructorType
 
 const dialog = ref(false)
@@ -71,6 +71,7 @@ const onClickComplete = async () => {
   await updateUser(appUser.value?.id, { createdGymCount: createdGymCount })
   await createInstructor({ userId: appUser.value?.id, gymId: gym.value?.id, owner: true, name: appUser.value?.name })
 
+  filterGym()
   close()
 }
 

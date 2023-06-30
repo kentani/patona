@@ -4,7 +4,7 @@
     align="center"
   >
     <v-col
-      v-for="gym in gyms"
+      v-for="gym in filteredGyms"
       :key="gym.id"
       cols="12"
       sm="6"
@@ -43,7 +43,7 @@ import { format } from 'date-fns'
 import { GymType } from "@/composables/gym/gym"
 import GymKey from "@/composables/gym/gym-key"
 
-const { gyms } = inject(GymKey) as GymType
+const { filteredGyms } = inject(GymKey) as GymType
 
 const router = useRouter()
 

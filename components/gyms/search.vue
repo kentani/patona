@@ -10,7 +10,7 @@
 
     <v-card-text>
       <v-text-field
-        v-model="searchGymName"
+        v-model="searchGymNameModel"
         variant="underlined"
         density="compact"
         placeholder="ジム名を入力"
@@ -26,11 +26,12 @@
 import { GymType } from "@/composables/gym/gym"
 import GymKey from "@/composables/gym/gym-key"
 
-const { gyms, filterGym } = inject(GymKey) as GymType
+const { gyms, filterGym, setSearchGymName } = inject(GymKey) as GymType
 
-const searchGymName = ref('')
+const searchGymNameModel = ref('')
 
 const onInputSearchGym = () => {
-  filterGym({ searchGymName: searchGymName.value })
+  setSearchGymName(searchGymNameModel.value)
+  filterGym()
 }
 </script>

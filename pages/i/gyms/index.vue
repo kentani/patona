@@ -65,7 +65,7 @@ onMounted(async () => {
       await whereGym({ ids: instructors.value.map(i => i.gymId) })
     }
 
-    filterGym({ searchGymName: '' })
+    filterGym()
   })
 
   show()
