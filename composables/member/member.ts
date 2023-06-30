@@ -10,6 +10,18 @@ const useMember = () => {
   const members: Ref<Array<DocumentData>> = ref([])
   const member: Ref<DocumentData|null> = ref(null)
 
+  const filteredMembers: Ref<Array<DocumentData>> = ref([])
+
+  const profiles: Ref<Array<{ id: string, name: string }>> = ref([
+    { id: '1', name: '生年月日' },
+    { id: '2', name: '性別' },
+    { id: '3', name: '運動経験' },
+    { id: '4', name: 'けが・病気' },
+    { id: '5', name: '目的' },
+    { id: '6', name: '目標' },
+    { id: '7', name: 'メモ' },
+  ])
+
   ////////////////////
   // computed
   ////////////////////
@@ -113,6 +125,8 @@ const useMember = () => {
 
     await findMember({ id: docRef.id })
 
+    await whereMember({ gymId: params.gymId, instructorId: params.instructorId })
+
     return member.value
   }
 
@@ -129,13 +143,36 @@ const useMember = () => {
     return member.value
   }
 
+  const setFilteredMembers = (members: Array<DocumentData>) => {
+    filteredMembers.value = members
+  }
+
+  const filterMember = (params: { searchMemberName: string }) => {
+    const { searchMemberName } = params
+    let tmpMembers = members.value
+
+    if(searchMemberName.length === 0) {
+      setFilteredMembers(tmpMembers)
+      return filteredMembers.value
+    }
+
+    tmpMembers = tmpMembers.filter(m => m.name.includes(searchMemberName))
+    setFilteredMembers(tmpMembers)
+
+    return filteredMembers.value
+  }
+
   return {
     members,
     member,
+    filteredMembers,
+    profiles,
     whereMember,
     findMember,
     createMember,
     updateMember,
+    setFilteredMembers,
+    filterMember,
   }
 }
 

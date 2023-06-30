@@ -50,7 +50,7 @@ const { instructor } = inject(InstructorKey) as InstructorType
 const router = useRouter()
 
 const menus = ref([
-  { id: '1', name: '顧客一覧', icon: 'mdi-account-group', to: '/i/members', disabled: false },
+  { id: '1', name: '会員一覧', icon: 'mdi-account-group', to: '/i/members', disabled: false },
   { id: '2', name: '設定', icon: 'mdi-cog ', to: '/i/settings/d/setting-gym', disabled: true },
 ])
 
