@@ -52,7 +52,7 @@ const route = useRoute()
 const breadcrumbs = ref([
   { id: '1', title: 'ジム一覧', to: '/i/gyms', disabled: false },
   { id: '2', title: 'メニュー', to: `/i/menus?gymId=${member.value?.gymId}`, disabled: false },
-  { id: '3', title: '顧客一覧', to: `/i/members?gymId=${member.value?.gymId}`, disabled: false },
+  { id: '3', title: '会員一覧', to: `/i/members?gymId=${member.value?.gymId}`, disabled: false },
   { id: '4', title: member.value?.name, to: `/i/members/d/member-personal-data?memberId=${route.query.memberId}`, disabled: true },
 ])
 const tabs = ref([
