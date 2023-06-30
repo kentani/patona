@@ -48,7 +48,7 @@ import ScreenControllerKey from "@/composables/screen-controller/screen-controll
 const { appUser, onLoadedAppUser } = inject(AuthKey) as AuthType
 const { gym, findGym } = inject(GymKey) as GymType
 const { instructor, findInstructor, whereInstructor } = inject(InstructorKey) as InstructorType
-const { searchMemberName, whereMember, filterMember } = inject(MemberKey) as MemberType
+const { whereMember, filterMember, resetMembers } = inject(MemberKey) as MemberType
 const { show } = inject(ScreenControllerKey) as ScreenControllerType
 
 const route = useRoute()
@@ -60,6 +60,8 @@ const breadcrumbs = ref([
 ])
 
 onMounted(async () => {
+  resetMembers()
+
   await onLoadedAppUser().then(async () => {
     await findGym({ id: String(route.query.gymId) })
     await findInstructor({ userId: appUser.value?.id, gymId: String(route.query.gymId) })

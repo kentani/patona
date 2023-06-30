@@ -152,6 +152,15 @@ const useMember = () => {
     searchMemberName.value = name
   }
 
+  const resetMembers = () => {
+    members.value = []
+    filterMember()
+  }
+
+  const resetMember = () => {
+    member.value = null
+  }
+
   const filterMember = () => {
     let tmpMembers = members.value
 
@@ -178,6 +187,8 @@ const useMember = () => {
     updateMember,
     setFilteredMembers,
     setSearchMemberName,
+    resetMembers,
+    resetMember,
     filterMember,
   }
 }
