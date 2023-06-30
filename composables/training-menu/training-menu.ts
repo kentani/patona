@@ -59,6 +59,8 @@ const useTrainingMenu = () => {
 
     await findTrainingMenu({ id: docRef.id })
 
+    await whereTrainingMenu({ gymId: trainingMenu.value?.gymId })
+
     return trainingMenu.value
   }
 
@@ -72,8 +74,7 @@ const useTrainingMenu = () => {
 
     await findTrainingMenu({ id: id })
 
-    const index = trainingMenus.value.findIndex(m => m.id === trainingMenu.value?.id)
-    trainingMenus.value.splice(index, 1, trainingMenu.value || {})
+    await whereTrainingMenu({ gymId: trainingMenu.value?.gymId })
 
     return trainingMenu.value
   }
