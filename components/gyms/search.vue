@@ -26,11 +26,11 @@
 import { GymType } from "@/composables/gym/gym"
 import GymKey from "@/composables/gym/gym-key"
 
-const { gyms } = inject(GymKey) as GymType
+const { gyms, filterGym } = inject(GymKey) as GymType
 
 const searchGymName = ref('')
 
 const onInputSearchGym = () => {
-
+  filterGym({ searchGymName: searchGymName.value })
 }
 </script>

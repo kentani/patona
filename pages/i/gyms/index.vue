@@ -16,7 +16,7 @@
           </v-col>
 
           <v-col cols="12">
-            <gyms-add-gym />
+            <gyms-add-btn />
           </v-col>
         </v-row>
 
@@ -27,7 +27,7 @@
         sm="8"
         md="9"
       >
-        <gyms-gym-list />
+        <gyms-list />
       </v-col>
     </v-row>
   </v-container>
@@ -44,8 +44,8 @@ import { ScreenControllerType } from "@/composables/screen-controller/screen-con
 import ScreenControllerKey from "@/composables/screen-controller/screen-controller-key"
 
 const { appUser, onLoadedAppUser } = inject(AuthKey) as AuthType
-const { whereGym, resetGym } = inject(GymKey) as GymType
-const { instructors, whereInstructor } = inject(InstructorKey) as InstructorType
+const { whereGym, filterGym, resetGym } = inject(GymKey) as GymType
+const { instructors, whereInstructor, resetInstructor } = inject(InstructorKey) as InstructorType
 const { show } = inject(ScreenControllerKey) as ScreenControllerType
 
 const breadcrumbs = ref([
@@ -53,9 +53,10 @@ const breadcrumbs = ref([
 ])
 
 onMounted(async () => {
-  await onLoadedAppUser().then(async () => {
-    resetGym()
+  resetGym()
+  resetInstructor()
 
+  await onLoadedAppUser().then(async () => {
     await whereInstructor({ userId: appUser.value?.id })
 
     if(appUser.value?.admin) {
@@ -63,6 +64,8 @@ onMounted(async () => {
     } else if(instructors.value.length) {
       await whereGym({ ids: instructors.value.map(i => i.gymId) })
     }
+
+    filterGym({ searchGymName: '' })
   })
 
   show()

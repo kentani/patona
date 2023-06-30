@@ -10,6 +10,8 @@ const useGym = () => {
   const gyms: Ref<Array<DocumentData>> = ref([])
   const gym: Ref<DocumentData|null> = ref(null)
 
+  const filteredGyms: Ref<Array<DocumentData>> = ref([])
+
   ////////////////////
   // computed
   ////////////////////
@@ -17,8 +19,8 @@ const useGym = () => {
   ////////////////////
   // logic
   ////////////////////
-  const whereGym = async (params: { ids?: Array<string>, all?: boolean, reload?: boolean }) => {
-    const { ids, all, reload } = params
+  const whereGym = async (params: { ids?: Array<string>, userId?: string, all?: boolean, reload?: boolean }) => {
+    const { ids, all, userId } = params
 
     let tmpGyms: Array<DocumentData> = []
 
@@ -26,6 +28,16 @@ const useGym = () => {
       const querySnapshot = await getDocs(query(
         collection(db, 'gyms'),
         where('id', 'in', ids),
+        orderBy('createdAt', 'asc')
+      ))
+
+      querySnapshot.forEach((doc) => {
+        tmpGyms.push(doc.data() || null)
+      })
+    } else if(userId) {
+      const querySnapshot = await getDocs(query(
+        collection(db, 'gyms'),
+        where('userId', '==', userId),
         orderBy('createdAt', 'asc')
       ))
 
@@ -68,6 +80,8 @@ const useGym = () => {
 
     await findGym({ id: docRef.id })
 
+    await whereGym({ userId: gym.value?.userId })
+
     return gym.value
   }
 
@@ -80,6 +94,8 @@ const useGym = () => {
     })
 
     await findGym({ id: id })
+
+    await whereGym({ userId: gym.value?.userId })
 
     return gym.value
   }
@@ -98,6 +114,20 @@ const useGym = () => {
     });
   }
 
+  const setFilteredGyms = (gyms: Array<DocumentData>) => {
+    filteredGyms.value = gyms
+  }
+
+  const filterGym = (params: { searchGymName: string }) => {
+    const { searchGymName } = params
+    let tmpGyms = gyms.value
+
+    if(searchGymName.length === 0) {
+      setFilteredGyms(tmpGyms)
+      return filteredGyms.value
+    }
+  }
+
   const resetGym = () => {
     gym.value = null
   }
@@ -110,6 +140,8 @@ const useGym = () => {
     createGym,
     updateGym,
     onLoadedGym,
+    setFilteredGyms,
+    filterGym,
     resetGym,
   }
 }

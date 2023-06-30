@@ -1,42 +1,43 @@
 <template>
-  <v-btn
-    variant="outlined"
-    color="green1"
-    rounded="lg"
-    :ripple="false"
-    block
-    @click="onClickAddGym"
-  >
-    <v-icon
-      size="large"
-      icon="mdi-plus"
-    ></v-icon>ジムを追加
-  </v-btn>
-
   <v-dialog
     v-model="dialog"
+    max-width="500"
+    persistent
   >
     <v-card
       variant="flat"
     >
+      <v-card-title
+        class="ma-2"
+      >
+        <common-underlined-text
+          text="ジムを追加"
+          class="text-body-1 font-weight-bold"
+        />
+      </v-card-title>
+
       <v-card-text>
         <v-text-field
           v-model="gymName"
           label="ジム名"
+          variant="underlined"
+          hide-details
         ></v-text-field>
       </v-card-text>
 
       <v-card-actions>
+        <v-spacer />
+
         <v-btn
           variant="text"
-          @click="onClickCancelAddGym"
+          @click="onClickCancel"
         >
           閉じる
         </v-btn>
 
         <v-btn
           variant="text"
-          @click="onClickCompleteAddGym"
+          @click="onClickComplete"
         >
           完了
         </v-btn>
@@ -60,28 +61,26 @@ const { instructors, whereInstructor, createInstructor } = inject(InstructorKey)
 const dialog = ref(false)
 const gymName = ref('')
 
-const onClickAddGym = () => {
-  openDialog()
+const onClickCancel = async () => {
+  close()
 }
 
-const onClickCancelAddGym = async () => {
-  closeDialog()
-}
-
-const onClickCompleteAddGym = async () => {
+const onClickComplete = async () => {
   await createGym({ userId: appUser.value?.id, name: gymName.value })
   await createInstructor({ userId: appUser.value?.id, gymId: gym.value?.id, owner: true, name: appUser.value?.name })
-  await whereInstructor({ userId: appUser.value?.id })
-  await whereGym({ ids: instructors.value.map(i => i.gymId) })
-  closeDialog()
+  close()
 }
 
-const openDialog = () => {
+const open = () => {
   dialog.value = true
 }
 
-const closeDialog = () => {
+const close = () => {
   gymName.value = ''
   dialog.value = false
 }
+
+defineExpose({
+  open,
+})
 </script>
