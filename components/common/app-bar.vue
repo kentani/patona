@@ -13,9 +13,9 @@
     <template v-slot:append>
       <div class="text-body-2">{{ gym?.name }}</div>
 
-      <div v-if="gym" class="px-2 text-body-2">|</div>
+      <div v-if="gym && instructor" class="px-2 text-body-2">|</div>
 
-      <div class="pr-2 text-body-2">{{ appUser?.name }}</div>
+      <div class="pr-2 text-body-2">{{ instructor?.name }}</div>
 
       <v-menu>
         <template v-slot:activator="{ props }">
@@ -37,6 +37,7 @@
             density="compact"
             class="pb-1 px-4"
             style="min-height: 0px;"
+            :disabled="menu.disabled"
             @click="onClickMenu(menu)"
           >
             <v-list-item-title class="pa-0 text-caption">{{ menu.title }}</v-list-item-title>
@@ -52,20 +53,24 @@ import { AuthType } from "@/composables/auth/auth"
 import AuthKey from "@/composables/auth/auth-key"
 import { GymType } from "@/composables/gym/gym"
 import GymKey from "@/composables/gym/gym-key"
+import { InstructorType } from "@/composables/instructor/instructor"
+import InstructorKey from "@/composables/instructor/instructor-key"
 
-const { appUser, isLogined, logout } = inject(AuthKey) as AuthType
+const { logout } = inject(AuthKey) as AuthType
 const { gym, resetGym } = inject(GymKey) as GymType
+const { instructor, resetInstructor } = inject(InstructorKey) as InstructorType
 const router = useRouter()
 
 const title = ref('PATONA')
 const menus = ref([
-  { id: '1', key: 'my-page', title: 'マイページ' },
-  { id: '2', key: 'logout', title: 'ログアウト' },
+  { id: '1', key: 'my-page', title: 'マイページ', disabled: !instructor.value },
+  { id: '2', key: 'logout', title: 'ログアウト', disabled: false },
 ])
 
 const onClickMenu = async (menu: any) => {
   if(menu.key === 'logout') {
     resetGym()
+    resetInstructor()
     await logout()
     router.replace('/login')
   }

@@ -101,6 +101,10 @@ const useInstructor = () => {
     return instructor.value
   }
 
+  const resetInstructor = () => {
+    instructor.value = null
+  }
+
   return {
     instructors,
     instructor,
@@ -108,6 +112,7 @@ const useInstructor = () => {
     findInstructor,
     createInstructor,
     updateInstructor,
+    resetInstructor,
   }
 }
 
