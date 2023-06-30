@@ -11,6 +11,7 @@ const useMember = () => {
   const member: Ref<DocumentData|null> = ref(null)
 
   const filteredMembers: Ref<Array<DocumentData>> = ref([])
+  const searchMemberName: Ref<string> = ref('')
 
   const profiles: Ref<Array<{ id: string, name: string }>> = ref([
     { id: '1', name: '生年月日' },
@@ -147,16 +148,19 @@ const useMember = () => {
     filteredMembers.value = members
   }
 
-  const filterMember = (params: { searchMemberName: string }) => {
-    const { searchMemberName } = params
+  const setSearchMemberName = (name: string) => {
+    searchMemberName.value = name
+  }
+
+  const filterMember = () => {
     let tmpMembers = members.value
 
-    if(searchMemberName.length === 0) {
+    if(searchMemberName.value.length === 0) {
       setFilteredMembers(tmpMembers)
       return filteredMembers.value
     }
 
-    tmpMembers = tmpMembers.filter(m => m.name.includes(searchMemberName))
+    tmpMembers = tmpMembers.filter(m => m.name.includes(searchMemberName.value))
     setFilteredMembers(tmpMembers)
 
     return filteredMembers.value
@@ -166,12 +170,14 @@ const useMember = () => {
     members,
     member,
     filteredMembers,
+    searchMemberName,
     profiles,
     whereMember,
     findMember,
     createMember,
     updateMember,
     setFilteredMembers,
+    setSearchMemberName,
     filterMember,
   }
 }

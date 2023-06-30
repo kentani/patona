@@ -30,7 +30,7 @@
       ></v-switch> -->
 
       <v-text-field
-        v-model="searchMemberName"
+        v-model="searchMemberNameModel"
         variant="underlined"
         density="compact"
         placeholder="会員名を入力"
@@ -52,11 +52,11 @@ import MemberKey from "@/composables/member/member-key"
 
 const { gym } = inject(GymKey) as GymType
 const { instructor } = inject(InstructorKey) as InstructorType
-const { filteredMembers, whereMember, filterMember } = inject(MemberKey) as MemberType
+const { filteredMembers, whereMember, filterMember, setSearchMemberName } = inject(MemberKey) as MemberType
 
 const showArchivedMember = ref(false)
 
-const searchMemberName = ref('')
+const searchMemberNameModel = ref('')
 
 const onChangeShowArchivedMemberSwitch = async () => {
   await whereMember({
@@ -65,10 +65,11 @@ const onChangeShowArchivedMemberSwitch = async () => {
     includeArchive: showArchivedMember.value
   })
 
-  filterMember({ searchMemberName: searchMemberName.value })
+  filterMember()
 }
 
 const onInputSearchMember = () => {
-  filterMember({ searchMemberName: searchMemberName.value })
+  setSearchMemberName(searchMemberNameModel.value)
+  filterMember()
 }
 </script>

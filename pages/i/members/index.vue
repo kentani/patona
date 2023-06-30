@@ -48,10 +48,9 @@ import ScreenControllerKey from "@/composables/screen-controller/screen-controll
 const { appUser, onLoadedAppUser } = inject(AuthKey) as AuthType
 const { gym, findGym } = inject(GymKey) as GymType
 const { instructor, findInstructor, whereInstructor } = inject(InstructorKey) as InstructorType
-const { whereMember, filterMember } = inject(MemberKey) as MemberType
+const { searchMemberName, whereMember, filterMember } = inject(MemberKey) as MemberType
 const { show } = inject(ScreenControllerKey) as ScreenControllerType
 
-const router = useRouter()
 const route = useRoute()
 
 const breadcrumbs = ref([
@@ -59,10 +58,6 @@ const breadcrumbs = ref([
   { id: '2', title: 'メニュー', to: `/i/menus?gymId=${route.query.gymId}`, disabled: false },
   { id: '3', title: '会員一覧', to: `/i/members?gymId=${route.query.gymId}`, disabled: true },
 ])
-
-const onClickMember = (member: any) => {
-  router.push({ path: '/i/members/d/member-personal-data', query: { memberId: member.id } })
-}
 
 onMounted(async () => {
   await onLoadedAppUser().then(async () => {
@@ -76,7 +71,7 @@ onMounted(async () => {
     await whereInstructor({ gymId: String(route.query.gymId) })
     await whereMember({ gymId: String(route.query.gymId), instructorId: instructor.value?.id })
 
-    filterMember({ searchMemberName: '' })
+    filterMember()
   })
 
   show()

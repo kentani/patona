@@ -58,7 +58,7 @@ import InstructorKey from "@/composables/instructor/instructor-key"
 
 const { gym } = inject(GymKey) as GymType
 const { instructor } = inject(InstructorKey) as InstructorType
-const { createMember } = inject(MemberKey) as MemberType
+const { createMember, filterMember } = inject(MemberKey) as MemberType
 
 const dialog = ref(false)
 const memberName = ref('')
@@ -78,6 +78,7 @@ const onClickComplete = async () => {
     detail: { profiles: [] },
   })
 
+  filterMember()
   close()
 }
 
