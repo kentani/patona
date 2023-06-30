@@ -133,7 +133,7 @@ const useAuth = () => {
       approved: false,
       invited: false,
       creatableGymCount: 0,
-      joinedGyms: [],
+      createdGymCount: 0,
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp(),
     })
@@ -170,10 +170,6 @@ const useAuth = () => {
     });
   }
 
-  const setBeforePath = (path: string) => {
-    beforePath.value = path
-  }
-
   return {
     authUser,
     appUser,
@@ -189,7 +185,6 @@ const useAuth = () => {
     createUser,
     updateUser,
     onLoadedAppUser,
-    setBeforePath,
   }
 }
 

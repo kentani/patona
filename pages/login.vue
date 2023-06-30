@@ -2,26 +2,49 @@
   <v-container style="height: 100%;">
     <v-row
       dense
+      no-gutters
       justify="center"
       align="center"
       style="height: 100%;"
     >
       <v-col
-        cols="12"
+        cols="auto"
         class="text-center"
       >
-        <v-btn
-          size="large"
+        <v-card
+          variant="flat"
           rounded="lg"
-          elevation="4"
-          style="text-transform: none"
-          @click="onClickGoogleLogin"
         >
-          <v-icon left>
-            mdi-google
-          </v-icon>
-          <span class="ml-2">Sign in with Google</span>
-        </v-btn>
+          <v-card-title
+            class="my-3"
+          >
+            <common-underlined-text
+              text="ログイン"
+              class="text-h6 font-weight-bold"
+            />
+          </v-card-title>
+
+          <v-card-text>
+            <div
+              class="pb-4"
+            >
+              Googleアカウントでログインして、ご利用を開始してください。
+            </div>
+
+            <v-btn
+              variant="outlined"
+              rounded="lg"
+              color="green1"
+              style="text-transform: none"
+              @click="onClickGoogleLogin"
+            >
+              <v-icon left>
+                mdi-google
+              </v-icon>
+              <span class="ml-2">Sign in with Google</span>
+            </v-btn>
+          </v-card-text>
+        </v-card>
       </v-col>
     </v-row>
   </v-container>
