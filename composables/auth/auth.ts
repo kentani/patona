@@ -143,7 +143,7 @@ const useAuth = () => {
     return appUser.value
   }
 
-  const updateUser = async (id: string, params: { name?: string, invited?: boolean }) => {
+  const updateUser = async (id: string, params: { name?: string, invited?: boolean, createdGymCount: number }) => {
     const docRef = doc(db, "users", id)
 
     await updateDoc(docRef, {

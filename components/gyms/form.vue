@@ -54,9 +54,9 @@ import GymKey from "@/composables/gym/gym-key"
 import { InstructorType } from "@/composables/instructor/instructor"
 import InstructorKey from "@/composables/instructor/instructor-key"
 
-const { appUser } = inject(AuthKey) as AuthType
-const { gym, whereGym, createGym } = inject(GymKey) as GymType
-const { instructors, whereInstructor, createInstructor } = inject(InstructorKey) as InstructorType
+const { appUser, updateUser } = inject(AuthKey) as AuthType
+const { gym, createGym } = inject(GymKey) as GymType
+const { createInstructor } = inject(InstructorKey) as InstructorType
 
 const dialog = ref(false)
 const gymName = ref('')
@@ -67,7 +67,10 @@ const onClickCancel = async () => {
 
 const onClickComplete = async () => {
   await createGym({ userId: appUser.value?.id, name: gymName.value })
+  const createdGymCount = appUser.value?.createdGymCount + 1
+  await updateUser(appUser.value?.id, { createdGymCount: createdGymCount })
   await createInstructor({ userId: appUser.value?.id, gymId: gym.value?.id, owner: true, name: appUser.value?.name })
+
   close()
 }
 
