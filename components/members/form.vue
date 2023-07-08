@@ -75,7 +75,11 @@ const onClickComplete = async () => {
     name: memberName.value,
     imageName: '',
     imageURL: '',
-    detail: { profiles: [] },
+    detail: {
+      birthday: { yyyy: '', mm: '', dd: '' },
+      gender: '',
+      profiles: []
+    },
   })
 
   filterMember()

@@ -13,14 +13,19 @@ const useMember = () => {
   const filteredMembers: Ref<Array<DocumentData>> = ref([])
   const searchMemberName: Ref<string> = ref('')
 
-  const profiles: Ref<Array<{ id: string, name: string }>> = ref([
-    { id: '1', name: '生年月日' },
-    { id: '2', name: '性別' },
-    { id: '3', name: '運動経験' },
-    { id: '4', name: 'けが・病気' },
-    { id: '5', name: '目的' },
-    { id: '6', name: '目標' },
-    { id: '7', name: 'メモ' },
+  const genders: Ref<Array<{ id: string, title: string }>> = ref([
+    { id: '1', title: '選択しない' },
+    { id: '2', title: '男性' },
+    { id: '3', title: '女性' },
+    { id: '4', title: 'その他' },
+  ])
+
+  const profiles: Ref<Array<{ id: string, title: string, cols: number, sm: number }>> = ref([
+    { id: '1', title: '運動経験', cols: 12, sm: 6 },
+    { id: '2', title: 'けが・病気', cols: 12, sm: 6 },
+    { id: '3', title: '目的', cols: 12, sm: 6 },
+    { id: '4', title: '目標', cols: 12, sm: 6 },
+    { id: '5', title: 'メモ', cols: 12, sm: 12 },
   ])
 
   ////////////////////
@@ -180,6 +185,7 @@ const useMember = () => {
     member,
     filteredMembers,
     searchMemberName,
+    genders,
     profiles,
     whereMember,
     findMember,

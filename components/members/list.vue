@@ -68,7 +68,7 @@ const router = useRouter()
 const defaultImage = ref('/images/account.png')
 
 const onClickMember = (member: any) => {
-  router.push({ path: '/i/members/d', query: { memberId: member.id } })
+  router.push({ path: '/i/members/d/member-personal-data', query: { gymId: member.gymId, memberId: member.id } })
 }
 
 const instructorName = (instructorId: number) => {

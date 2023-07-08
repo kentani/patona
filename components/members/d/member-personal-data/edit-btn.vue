@@ -1,0 +1,26 @@
+<template>
+  <v-btn
+    variant="outlined"
+    rounded="lg"
+    color="green1"
+    block
+    @click="onClickEdit"
+  >
+    <v-icon
+      icon="mdi-pencil"
+    ></v-icon>
+    <span class="">編集</span>
+  </v-btn>
+
+  <members-d-member-personal-data-form
+    ref="form"
+  />
+</template>
+
+<script setup lang="ts">
+const form = ref()
+
+const onClickEdit = () => {
+  form.value.open()
+}
+</script>

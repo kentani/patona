@@ -3,9 +3,7 @@
     variant="flat"
     rounded="lg"
   >
-    <v-card-text
-      class="pa-2"
-    >
+    <v-card-text>
       <v-row
         dense
       >
@@ -67,6 +65,6 @@ const variant = (tab: any): NonNullable<"flat" | "text" | "elevated" | "tonal" |
 }
 
 const onClickTab = (tab: any) => {
-  router.push({ path: `${Props.baseUrl}${tab.to}`, query: { gymId: gym.value?.id } })
+  router.push({ path: `${Props.baseUrl}${tab.to}`, query: route.query })
 }
 </script>

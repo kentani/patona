@@ -1,0 +1,121 @@
+<template>
+  <v-card
+    rounded="lg"
+  >
+    <v-card-text
+      class="pa-2"
+    >
+      <v-row
+        dense
+        justify="center"
+        align="center"
+      >
+        <v-col
+          cols="12"
+        >
+          <v-card
+            variant="flat"
+          >
+            <v-row
+              justify="center"
+              align="center"
+            >
+              <v-col
+                cols="5"
+              >
+                <v-img
+                  max-height="200"
+                  position="top center"
+                  :src="member?.imageUrl || defaultImage"
+                ></v-img>
+              </v-col>
+
+              <v-col
+                cols="7"
+                align-self="center"
+              >
+                <v-card-title
+                  class="text-h5 font-weight-bold"
+                >
+                  {{ member?.name }}
+                </v-card-title>
+
+                <v-card-text
+                  class="text-caption"
+                >
+                  <div
+                    class="py-1"
+                  >
+                    <span class="accent-title mr-2">性別</span>
+                    <span>男性</span>
+                  </div>
+
+                  <div
+                    class="py-1"
+                  >
+                    <span class="accent-title mr-2">生年月日</span>
+                    <span align-self="center">1991/02/12（32歳）</span>
+                  </div>
+                </v-card-text>
+              </v-col>
+            </v-row>
+          </v-card>
+        </v-col>
+
+        <v-divider class="mx-4" />
+
+        <v-col
+          cols="12"
+        >
+          <v-row
+            justify="center"
+            align="center"
+            class="pa-4"
+          >
+            <v-col
+              v-for="(profile, index) in profiles"
+              :key="`profile-${index}`"
+              :cols="profile.cols"
+              :sm="profile.sm"
+            >
+              <v-card
+                variant="flat"
+              >
+                <v-card-title>
+                  <common-underlined-text
+                    :text="profile.title"
+                    class="text-h6 font-weight-bold"
+                  />
+                </v-card-title>
+
+                <v-card-text
+                  class="pb-0 text-body-1"
+                >
+                  {{ member?.detail?.profiles[index]?.data }}
+                </v-card-text>
+              </v-card>
+            </v-col>
+          </v-row>
+        </v-col>
+      </v-row>
+    </v-card-text>
+  </v-card>
+</template>
+
+<script setup lang="ts">
+import { MemberType } from "@/composables/member/member"
+import MemberKey from "@/composables/member/member-key"
+
+const { member, profiles } = inject(MemberKey) as MemberType
+
+const defaultImage = ref('/images/account.png')
+</script>
+
+<style scoped>
+.accent-title {
+  background-color: rgb(var(--v-theme-background));
+  z-index: 100;
+  border-radius: 8px;
+  padding: 6px;
+}
+</style>

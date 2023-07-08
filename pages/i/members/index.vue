@@ -48,7 +48,7 @@ import ScreenControllerKey from "@/composables/screen-controller/screen-controll
 const { appUser, onLoadedAppUser } = inject(AuthKey) as AuthType
 const { gym, findGym } = inject(GymKey) as GymType
 const { instructor, findInstructor, whereInstructor } = inject(InstructorKey) as InstructorType
-const { whereMember, filterMember, resetMembers } = inject(MemberKey) as MemberType
+const { whereMember, filterMember, resetMembers, resetMember } = inject(MemberKey) as MemberType
 const { show } = inject(ScreenControllerKey) as ScreenControllerType
 
 const route = useRoute()
@@ -61,12 +61,18 @@ const breadcrumbs = ref([
 
 onMounted(async () => {
   resetMembers()
+  resetMember()
 
   await onLoadedAppUser().then(async () => {
     await findGym({ id: String(route.query.gymId) })
+
+    if(!gym.value) {
+      throw createError({ statusCode: 404, statusMessage: 'Page Not Found', fatal: true })
+    }
+
     await findInstructor({ userId: appUser.value?.id, gymId: String(route.query.gymId) })
 
-    if(!gym.value || (!appUser.value?.admin && !instructor.value)) {
+    if(!appUser.value?.admin && !instructor.value) {
       throw createError({ statusCode: 404, statusMessage: 'Page Not Found', fatal: true })
     }
 
