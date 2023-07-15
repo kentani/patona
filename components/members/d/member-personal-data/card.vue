@@ -24,9 +24,9 @@
                 cols="5"
               >
                 <v-img
-                  max-height="200"
-                  position="top center"
+                  max-height="180"
                   :src="member?.imageUrl || defaultImage"
+                  cover
                 ></v-img>
               </v-col>
 
@@ -43,19 +43,23 @@
                 <v-card-text
                   class="text-caption"
                 >
-                  <div
+                  <common-accent-block
+                    title="生年月日"
+                    text="1991/02/12"
                     class="py-1"
-                  >
-                    <span class="accent-title mr-2">性別</span>
-                    <span>男性</span>
-                  </div>
+                  />
 
-                  <div
+                  <common-accent-block
+                    title="年齢"
+                    text="32歳"
                     class="py-1"
-                  >
-                    <span class="accent-title mr-2">生年月日</span>
-                    <span align-self="center">1991/02/12（32歳）</span>
-                  </div>
+                  />
+
+                  <common-accent-block
+                    title="性別"
+                    text="男性"
+                    class="py-1"
+                  />
                 </v-card-text>
               </v-col>
             </v-row>
@@ -110,12 +114,3 @@ const { member, profiles } = inject(MemberKey) as MemberType
 
 const defaultImage = ref('/images/account.png')
 </script>
-
-<style scoped>
-.accent-title {
-  background-color: rgb(var(--v-theme-background));
-  z-index: 100;
-  border-radius: 8px;
-  padding: 6px;
-}
-</style>

@@ -10,7 +10,10 @@
         <v-col
           v-for="tab in tabs"
           :key="tab.id"
-          cols="12"
+          :cols="tab.cols || 12"
+          :sm="tab.sm || 12"
+          :md="tab.md || 12"
+          :lg="tab.lg || 12"
         >
           <v-btn
             :variant="variant(tab)"
@@ -47,6 +50,10 @@ interface tabsItem {
   id: string
   title: string
   to: string
+  cols?: number,
+  sm?: number,
+  md?: number,
+  lg?: number,
   disabled?: boolean
 }
 

@@ -47,12 +47,6 @@
                 :text="instructorName(member)"
                 class="py-2"
               />
-
-              <common-accent-block
-                title="登録日"
-                :text="formattedDate(member.createdAt)"
-                class="py-2"
-              />
             </v-card-text>
           </v-card>
         </template>

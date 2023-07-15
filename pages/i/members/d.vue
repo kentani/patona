@@ -7,8 +7,9 @@
     <v-row>
       <v-col
         cols="12"
-        sm="4"
-        md="3"
+        sm="12"
+        md="12"
+        lg="3"
       >
         <common-tabs
           base-url="/i/members/d/member-"
@@ -18,8 +19,9 @@
 
       <v-col
         cols="12"
-        sm="8"
-        md="9"
+        sm="12"
+        md="12"
+        lg="9"
       >
         <NuxtPage page-key="member" />
       </v-col>
@@ -55,10 +57,10 @@ const breadcrumbs = ref([
 ])
 
 const tabs = ref([
-  { id: '1', title: 'パーソナルデータ', to: 'personal-data', disabled: false },
-  { id: '2', title: 'トレーニング履歴', to: 'training-data', disabled: false },
-  { id: '3', title: '身体数値', to: 'physical-data', disabled: false },
-  { id: '4', title: '身体画像', to: 'physical-image', disabled: false },
+  { id: '1', title: 'パーソナルデータ', to: 'personal-data', disabled: false, cols: 6, sm: 3, md: 3, lg: 12 },
+  { id: '2', title: 'トレーニング履歴', to: 'training-data', disabled: false, cols: 6, sm: 3, md: 3, lg: 12 },
+  { id: '3', title: '身体数値', to: 'physical-data', disabled: false, cols: 6, sm: 3, md: 3, lg: 12 },
+  { id: '4', title: '身体画像', to: 'physical-image', disabled: false, cols: 6, sm: 3, md: 3, lg: 12 },
 ])
 
 onMounted(async () => {

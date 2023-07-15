@@ -13,7 +13,7 @@
         class="ma-2"
       >
         <common-underlined-text
-          text="編集"
+          text="会員を編集"
           class="text-body-1 font-weight-bold"
         />
       </v-card-title>
@@ -67,7 +67,11 @@
               density="compact"
               validate-on="blur"
             ></v-text-field>
+          </v-col>
 
+          <v-col
+            cols="12"
+          >
             <v-textarea
               v-model="memberExperience"
               label="運動経験"
@@ -77,7 +81,11 @@
               density="compact"
               validate-on="blur"
             ></v-textarea>
+          </v-col>
 
+          <v-col
+            cols="12"
+          >
             <v-textarea
               v-model="memberInjury"
               label="けが・病気"
@@ -87,7 +95,11 @@
               density="compact"
               validate-on="blur"
             ></v-textarea>
+          </v-col>
 
+          <v-col
+            cols="12"
+          >
             <v-textarea
               v-model="memberPurpose"
               label="目的"
@@ -97,7 +109,11 @@
               density="compact"
               validate-on="blur"
             ></v-textarea>
+          </v-col>
 
+          <v-col
+            cols="12"
+          >
             <v-textarea
               v-model="memberGoal"
               label="目標"
@@ -107,7 +123,11 @@
               density="compact"
               validate-on="blur"
             ></v-textarea>
+          </v-col>
 
+          <v-col
+            cols="12"
+          >
             <v-textarea
               v-model="memberMemo"
               label="メモ"
