@@ -20,11 +20,24 @@
       <v-card-text>
         <v-text-field
           v-model="memberName"
-          variant="underlined"
+          variant="outlined"
           color="green1"
-          hide-details
           label="会員名"
+          density="compact"
         ></v-text-field>
+
+        <v-select
+          v-model="memberInstructors"
+          variant="outlined"
+          :items="instructors"
+          item-title="name"
+          item-value="id"
+          label="担当"
+          color="green1"
+          density="compact"
+          multiple
+          @update:modelValue=""
+        ></v-select>
       </v-card-text>
 
       <v-card-actions>
@@ -57,11 +70,12 @@ import { InstructorType } from "@/composables/instructor/instructor"
 import InstructorKey from "@/composables/instructor/instructor-key"
 
 const { gym } = inject(GymKey) as GymType
-const { instructor } = inject(InstructorKey) as InstructorType
+const { instructor, instructors } = inject(InstructorKey) as InstructorType
 const { createMember, filterMember } = inject(MemberKey) as MemberType
 
 const dialog = ref(false)
 const memberName = ref('')
+const memberInstructors = ref([])
 
 const onClickCancel = async () => {
   close()
@@ -71,6 +85,7 @@ const onClickComplete = async () => {
   await createMember({
     gymId: gym.value?.id,
     instructorId: instructor.value?.id,
+    instructorIds: memberInstructors.value,
     archived: false,
     name: memberName.value,
     imageName: '',
@@ -92,6 +107,7 @@ const open = () => {
 
 const close = () => {
   memberName.value = ''
+  memberInstructors.value = []
   dialog.value = false
 }
 

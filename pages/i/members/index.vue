@@ -77,7 +77,7 @@ onMounted(async () => {
     }
 
     await whereInstructor({ gymId: String(route.query.gymId) })
-    await whereMember({ gymId: String(route.query.gymId), instructorId: instructor.value?.id })
+    await whereMember({ gymId: String(route.query.gymId), instructorIds: [instructor.value?.id] })
 
     filterMember()
   })

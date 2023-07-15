@@ -9,6 +9,11 @@
     </v-card-title>
 
     <v-card-text>
+      <common-underlined-text
+        text="表示オプション"
+        class="text-caption mb-4"
+      />
+
       <v-switch
         v-model="showArchivedMember"
         inset
@@ -19,15 +24,20 @@
         @change="onChangeShowArchivedMemberSwitch"
       ></v-switch>
 
-      <!-- <v-switch
+      <v-switch
         v-model="showOtherMember"
         inset
         hide-details
         density="compact"
         label="担当以外"
         color="green1"
-        @change="onInputSearchMember"
-      ></v-switch> -->
+        @change="onChangeShowOtherMember"
+      ></v-switch>
+
+      <common-underlined-text
+        text="検索"
+        class="text-caption mt-2"
+      />
 
       <v-text-field
         v-model="searchMemberNameModel"
@@ -55,21 +65,36 @@ const { instructor } = inject(InstructorKey) as InstructorType
 const { filteredMembers, whereMember, filterMember, setSearchMemberName } = inject(MemberKey) as MemberType
 
 const showArchivedMember = ref(false)
-
+const showOtherMember = ref (false)
 const searchMemberNameModel = ref('')
 
 const onChangeShowArchivedMemberSwitch = async () => {
-  await whereMember({
-    gymId: gym.value?.id,
-    instructorId: instructor.value?.id,
-    includeArchive: showArchivedMember.value
-  })
+  await fetchMember()
+}
 
-  filterMember()
+const onChangeShowOtherMember = async () => {
+  await fetchMember()
 }
 
 const onInputSearchMember = () => {
   setSearchMemberName(searchMemberNameModel.value)
+  filterMember()
+}
+
+const fetchMember = async () => {
+  if(showOtherMember.value) {
+    await whereMember({
+      gymId: gym.value?.id,
+      includeArchive: showArchivedMember.value
+    })
+  } else {
+    await whereMember({
+      gymId: gym.value?.id,
+      instructorIds: [instructor.value?.id],
+      includeArchive: showArchivedMember.value
+    })
+  }
+
   filterMember()
 }
 </script>

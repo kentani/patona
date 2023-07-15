@@ -35,8 +35,8 @@ const useMember = () => {
   ////////////////////
   // logic
   ////////////////////
-  const whereMember = async (params: { gymId: string, instructorId?: string, includeArchive?: boolean }) => {
-    const { gymId, instructorId, includeArchive } = params
+  const whereMember = async (params: { gymId: string, instructorId?: string, instructorIds?: Array<string>, includeArchive?: boolean }) => {
+    const { gymId, instructorId, instructorIds, includeArchive } = params
 
     let tmpMembers: Array<DocumentData> = []
 
@@ -57,6 +57,31 @@ const useMember = () => {
           collection(db, 'members'),
           where("gymId", "==", gymId),
           where("instructorId", "==", instructorId),
+          where('archived', '==', false),
+          orderBy('createdAt', 'asc')
+        ))
+
+        querySnapshot.forEach((doc) => {
+          tmpMembers.push(doc.data() || null)
+        })
+      }
+    } else if(instructorIds) {
+      if(includeArchive) {
+        const querySnapshot = await getDocs(query(
+          collection(db, 'members'),
+          where("gymId", "==", gymId),
+          where("instructorIds", "array-contains-any", instructorIds),
+          orderBy('createdAt', 'asc')
+        ))
+
+        querySnapshot.forEach((doc) => {
+          tmpMembers.push(doc.data() || null)
+        })
+      } else {
+        const querySnapshot = await getDocs(query(
+          collection(db, 'members'),
+          where("gymId", "==", gymId),
+          where("instructorIds", "array-contains-any", instructorIds),
           where('archived', '==', false),
           orderBy('createdAt', 'asc')
         ))
@@ -119,7 +144,7 @@ const useMember = () => {
     return member.value
   }
 
-  const createMember = async (params: { gymId: string, instructorId: string, archived: boolean, name: string, imageName: string, imageURL: string, detail: any }) => {
+  const createMember = async (params: { gymId: string, instructorId: string, instructorIds: Array<string>, archived: boolean, name: string, imageName: string, imageURL: string, detail: any }) => {
     const docRef = doc(collection(db, "members"))
 
     await setDoc(docRef, {
@@ -136,7 +161,7 @@ const useMember = () => {
     return member.value
   }
 
-  const updateMember = async (id: string, params: { instructorId?: string, archived?: boolean, name?: string, imageName?: string, imageURL?: string, detail?: any }) => {
+  const updateMember = async (id: string, params: { instructorId?: string, instructorIds?: Array<string>, archived?: boolean, name?: string, imageName?: string, imageURL?: string, detail?: any }) => {
     const docRef = doc(db, "members", id)
 
     await updateDoc(docRef, {

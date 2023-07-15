@@ -7,12 +7,12 @@
       v-for="member in filteredMembers"
       :key="member.id"
       cols="6"
-      sm="4"
-      lg="3"
+      md="4"
     >
       <v-hover>
         <template v-slot:default="{ isHovering, props }">
           <v-card
+            class="pb-2"
             v-bind="props"
             variant="elevated"
             rounded="lg"
@@ -21,29 +21,38 @@
             @click="onClickMember(member)"
           >
             <v-img
-              height="140"
-              position="top center"
+              max-height="180"
+              aspect-ratio="1/1"
               :src="member.imageUrl || defaultImage"
               cover
             >
               <div
                 v-if="member.archived"
-                class="font-weight-bold text-body-1 text-white"
-                style="background: rgb(var(--v-theme-green1)); opacity: 0.8; height: 140px; position: relative;"
+                class="font-weight-bold text-body-1 text-white d-flex justify-center align-center"
+                style="background: rgb(var(--v-theme-green1)); opacity: 0.8; height: 100%; position: relative; align-self: center;"
               >
-                <div style="position: absolute; top: 45%; left: 20%;">アーカイブ済み</div>
+                <div>アーカイブ済み</div>
               </div>
             </v-img>
 
-            <v-card-title class="py-0 text-body-1 font-weight-bold">
+            <v-card-title class="py-2 text-h6 font-weight-bold">
               <div>
                 {{ member.name }}
               </div>
             </v-card-title>
 
-            <v-card-text class="text-body-2 text-left">
-              <div>担当: {{ instructorName(member.instructorId) }}</div>
-              <div>登録日: {{ formattedDate(member.createdAt) }}</div>
+            <v-card-text class="py-0 text-body-2 text-left">
+              <common-accent-block
+                title="担当"
+                :text="instructorName(member)"
+                class="py-2"
+              />
+
+              <common-accent-block
+                title="登録日"
+                :text="formattedDate(member.createdAt)"
+                class="py-2"
+              />
             </v-card-text>
           </v-card>
         </template>
@@ -71,9 +80,21 @@ const onClickMember = (member: any) => {
   router.push({ path: '/i/members/d/member-personal-data', query: { gymId: member.gymId, memberId: member.id } })
 }
 
-const instructorName = (instructorId: number) => {
+const instructorName = (member: any) => {
+  const instructorId = member.instructorIds[0]
   const instructor = instructors.value.find(i => i.id === instructorId)
-  return instructor?.name || ''
+
+  let name = instructor?.name || ''
+
+  if(otherInstructorCount(member)) {
+    name = name + `・他${otherInstructorCount(member)}名`
+  }
+
+  return name
+}
+
+const otherInstructorCount = (member: any) => {
+  return member.instructorIds.length - 1
 }
 
 const formattedDate = (timestamp: any) => {
