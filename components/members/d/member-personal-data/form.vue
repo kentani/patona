@@ -1,13 +1,14 @@
 <template>
   <v-dialog
     v-model="dialog"
-    max-width="800"
     persistent
     scrollable
+    fullscreen
   >
     <v-card
       variant="flat"
-      rounded="lg"
+      rounded="0"
+      color="background"
     >
       <v-card-title
         class="ma-2"

@@ -8,7 +8,8 @@
       <v-col
         cols="12"
         sm="4"
-        md="3"
+        md="4"
+        lg="3"
       >
         <v-row>
           <v-col cols="12">
@@ -25,7 +26,8 @@
       <v-col
         cols="12"
         sm="8"
-        md="9"
+        md="8"
+        lg="9"
       >
         <members-list />
       </v-col>

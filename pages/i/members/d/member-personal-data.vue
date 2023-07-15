@@ -1,31 +1,32 @@
 <template>
   <v-row>
     <v-col
-      cols="9"
+      cols="12"
+      class="d-block d-sm-none"
+    >
+      <members-d-member-personal-data-btn-list />
+    </v-col>
+
+    <v-col
+      cols="12"
+      sm="9"
+      md="9"
+      lg="9"
     >
       <members-d-member-personal-data-card />
     </v-col>
 
     <v-col
       cols="3"
+      sm="3"
+      md="3"
+      lg="3"
+      class="d-none d-sm-block"
     >
-      <v-card
-        variant="flat"
-        rounded="lg"
-      >
-        <v-card-text>
-          <members-d-member-personal-data-btn-list />
-        </v-card-text>
-      </v-card>
+      <members-d-member-personal-data-btn-list />
     </v-col>
   </v-row>
 </template>
 
 <script setup lang="ts">
-import { MemberType } from "@/composables/member/member"
-import MemberKey from "@/composables/member/member-key"
-
-const { member, profiles } = inject(MemberKey) as MemberType
-
-const defaultImage = ref('/images/account.png')
 </script>

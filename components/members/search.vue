@@ -36,12 +36,12 @@
 
       <common-underlined-text
         text="検索"
-        class="text-caption mt-2"
+        class="text-caption mt-2 mb-6"
       />
 
       <v-text-field
         v-model="searchMemberNameModel"
-        variant="underlined"
+        variant="outlined"
         density="compact"
         placeholder="会員名を入力"
         color="green1"

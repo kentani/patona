@@ -1,5 +1,6 @@
 <template>
   <v-card
+    variant="flat"
     rounded="lg"
   >
     <v-card-text
@@ -17,6 +18,7 @@
             variant="flat"
           >
             <v-row
+              dense
               justify="center"
               align="center"
             >
@@ -45,7 +47,7 @@
                 >
                   <common-accent-block
                     title="生年月日"
-                    text="1991/02/12"
+                    :text="member?.birthday"
                     class="py-1"
                   />
 
@@ -57,7 +59,13 @@
 
                   <common-accent-block
                     title="性別"
-                    text="男性"
+                    :text="member?.gender"
+                    class="py-1"
+                  />
+
+                  <common-accent-block
+                    title="登録日"
+                    :text="formattedDate(member?.createdAt)"
                     class="py-1"
                   />
                 </v-card-text>
@@ -107,10 +115,20 @@
 </template>
 
 <script setup lang="ts">
+import { format } from 'date-fns'
+
 import { MemberType } from "@/composables/member/member"
 import MemberKey from "@/composables/member/member-key"
 
 const { member, profiles } = inject(MemberKey) as MemberType
 
 const defaultImage = ref('/images/account.png')
+
+const formattedDate = (timestamp: any) => {
+  if(timestamp) {
+    return format(timestamp.toDate(), 'yyyy/MM/dd')
+  } else {
+    return ''
+  }
+}
 </script>
