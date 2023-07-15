@@ -21,6 +21,6 @@
 const form = ref()
 
 const onClickEdit = () => {
-  form.value.open()
+  form.value.open({ isEdit: true })
 }
 </script>

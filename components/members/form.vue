@@ -92,7 +92,7 @@ const onClickComplete = async () => {
     imageURL: '',
     detail: {
       birthday: '',
-      gender: '',
+      genderId: '',
       profiles: []
     },
   })

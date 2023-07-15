@@ -43,21 +43,21 @@
           md="12"
           lg="12"
         >
-      <v-btn
-        variant="outlined"
-        rounded="lg"
-        color="red"
-        block
-        disabled
-        @click=""
-      >
-        <v-icon
-          icon="mdi-delete"
-        ></v-icon>
-        <span class="">削除</span>
-      </v-btn>
-    </v-col>
-  </v-row>
+          <v-btn
+            variant="outlined"
+            rounded="lg"
+            color="red"
+            block
+            disabled
+            @click=""
+          >
+            <v-icon
+              icon="mdi-delete"
+            ></v-icon>
+            <span class="">削除</span>
+          </v-btn>
+        </v-col>
+      </v-row>
     </v-card-text>
   </v-card>
 </template>

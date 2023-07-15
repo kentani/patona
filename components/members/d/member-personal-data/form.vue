@@ -14,7 +14,7 @@
         class="ma-2"
       >
         <common-underlined-text
-          text="会員を編集"
+          :text="isEdit ? '会員を編集' : '会員を追加'"
           class="text-body-1 font-weight-bold"
         />
       </v-card-title>
@@ -39,24 +39,6 @@
           <v-col
             cols="12"
           >
-            <v-select
-              v-model="selectedGender"
-              variant="outlined"
-              :items="genders"
-              item-title="title"
-              item-value="id"
-              label="性別"
-              color="green1"
-              :rules="[rules.required]"
-              density="compact"
-              return-object
-              @update:modelValue=""
-            ></v-select>
-          </v-col>
-
-          <v-col
-            cols="12"
-          >
             <v-text-field
               v-model="memberBirthDay"
               label="生年月日"
@@ -68,6 +50,40 @@
               density="compact"
               validate-on="blur"
             ></v-text-field>
+          </v-col>
+
+          <v-col
+            cols="12"
+          >
+            <v-select
+              v-model="memberGender"
+              variant="outlined"
+              :items="genders"
+              item-title="title"
+              item-value="id"
+              label="性別"
+              color="green1"
+              :rules="[rules.required]"
+              density="compact"
+              @update:modelValue=""
+            ></v-select>
+          </v-col>
+
+          <v-col
+            cols="12"
+          >
+            <v-select
+              v-model="memberInstructors"
+              variant="outlined"
+              :items="instructors"
+              item-title="name"
+              item-value="id"
+              label="担当"
+              color="green1"
+              density="compact"
+              multiple
+              @update:modelValue=""
+            ></v-select>
           </v-col>
 
           <v-col
@@ -173,20 +189,22 @@ import InstructorKey from "@/composables/instructor/instructor-key"
 import { MemberType } from "@/composables/member/member"
 import MemberKey from "@/composables/member/member-key"
 
-const { appUser, updateUser } = inject(AuthKey) as AuthType
-const { gym, createGym, filterGym } = inject(GymKey) as GymType
-const { createInstructor } = inject(InstructorKey) as InstructorType
-const { genders } = inject(MemberKey) as MemberType
+const { appUser } = inject(AuthKey) as AuthType
+const { gym } = inject(GymKey) as GymType
+const { instructor, instructors } = inject(InstructorKey) as InstructorType
+const { genders, createMember, filterMember } = inject(MemberKey) as MemberType
 
+const isEdit = ref(false)
 const dialog = ref(false)
 const memberName = ref('')
 const memberBirthDay = ref('')
+const memberGender = ref(genders.value[0].id)
+const memberInstructors = ref([instructor.value?.id])
 const memberExperience = ref('')
 const memberInjury = ref('')
 const memberPurpose = ref('')
 const memberGoal = ref('')
 const memberMemo = ref('')
-const selectedGender = ref(genders.value[0])
 
 const rules = ref({
   required: (value: any) => !!value || '必須項目です',
@@ -207,14 +225,44 @@ const onClickCancel = async () => {
 }
 
 const onClickComplete = async () => {
+  if(isEdit.value) {
+
+  } else {
+    createMember({
+      gymId: gym.value?.id,
+      instructorId: instructor.value?.id,
+      instructorIds: memberInstructors.value,
+      archived: false,
+      name: memberName.value,
+      imageName: '',
+      imageURL: '',
+      detail: {
+        birthday: memberBirthDay.value,
+        genderId: memberGender.value,
+        profiles: []
+      },
+    })
+  }
+
+  filterMember()
   close()
 }
 
-const open = () => {
+const open = (params: { isEdit: boolean }) => {
+  isEdit.value = params.isEdit
   dialog.value = true
 }
 
 const close = () => {
+  memberName.value = ''
+  memberBirthDay.value = ''
+  memberGender.value = genders.value[0].id
+  memberInstructors.value = [instructor.value?.id]
+  memberExperience.value = ''
+  memberInjury.value = ''
+  memberPurpose.value = ''
+  memberGoal.value = ''
+  memberMemo.value = ''
   dialog.value = false
 }
 

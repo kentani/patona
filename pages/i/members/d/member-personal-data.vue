@@ -17,7 +17,7 @@
     </v-col>
 
     <v-col
-      cols="3"
+      cols="12"
       sm="3"
       md="3"
       lg="3"
@@ -29,4 +29,5 @@
 </template>
 
 <script setup lang="ts">
+const fab = ref(false)
 </script>

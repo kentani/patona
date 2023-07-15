@@ -1,6 +1,6 @@
 <template>
   <v-btn
-    variant="outlined"
+    :variant="variant"
     color="green1"
     rounded="lg"
     :ripple="false"
@@ -13,15 +13,23 @@
     ></v-icon>会員を追加
   </v-btn>
 
-  <members-form
+  <members-d-member-personal-data-form
     ref="form"
   />
 </template>
 
 <script setup lang="ts">
+interface Props {
+  variant?: NonNullable<"outlined" | "flat" | "text" | "elevated" | "tonal" | "plain"> | undefined
+}
+
+const Props = withDefaults(defineProps<Props>(), {
+  variant: 'outlined',
+})
+
 const form = ref()
 
 const onClickAddBtn = () => {
-  form.value.open()
+  form.value.open({ isEdit: false })
 }
 </script>

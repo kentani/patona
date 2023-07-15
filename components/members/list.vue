@@ -11,56 +11,66 @@
         :key="member.id"
         cols="12"
         sm="6"
-        md="4"
+        md="3"
         lg="3"
       >
-      <v-hover>
-        <template v-slot:default="{ isHovering, props }">
-          <v-card
-            v-bind="props"
-            class="pb-2"
-            variant="flat"
-            rounded="lg"
-            :ripple="false"
-            :elevation="isHovering ? 6 : 0"
-            @click="onClickMember(member)"
-          >
-            <v-img
-              max-height="180"
-              aspect-ratio="1/1"
-              :src="member.imageUrl || defaultImage"
-              cover
+        <v-hover>
+          <template v-slot:default="{ isHovering, props }">
+            <v-card
+              v-bind="props"
+              class="pb-2"
+              variant="flat"
+              rounded="lg"
+              height="100%"
+              :ripple="false"
+              :elevation="isHovering ? 6 : 0"
+              @click="onClickMember(member)"
             >
               <div
+                class="text-center pb-2"
+                style="width: 100%;"
+              >
+                <v-avatar
+                  size="180"
+                  rounded="0"
+                  class="pa-2"
+                >
+                  <v-img
+                    cover
+                    :src="member.imageUrl || defaultImage"
+                  ></v-img>
+                </v-avatar>
+              </div>
+
+              <v-card-title class="pt-0 pb-2 text-h6 font-weight-bold">
+                <div>
+                  {{ member.name }}
+                </div>
+              </v-card-title>
+
+              <v-card-text class="pt-0 pb-2 text-caption text-left">
+                <common-accent-block
+                  title="担当"
+                  :text="instructorName(member)"
+                />
+              </v-card-text>
+
+              <div
                 v-if="member.archived"
-                class="font-weight-bold text-body-1 text-white d-flex justify-center align-center"
-                style="background: rgb(var(--v-theme-green1)); opacity: 0.8; height: 100%; position: relative; align-self: center;"
+                class="font-weight-bold text-body-1 text-white d-flex justify-center align-center archive"
               >
                 <div>アーカイブ済み</div>
               </div>
-            </v-img>
-
-            <v-card-title class="pt-0 pb-2 text-h6 font-weight-bold">
-              <div>
-                {{ member.name }}
-              </div>
-            </v-card-title>
-
-            <v-card-text class="py-0 text-body-2 text-left">
-              <common-accent-block
-                title="担当"
-                :text="instructorName(member)"
-                class="py-2"
-              />
-            </v-card-text>
-          </v-card>
-        </template>
-      </v-hover>
+            </v-card>
+          </template>
+        </v-hover>
       </v-col>
     </v-row>
   </div>
 
-  <div
+  <v-card
+    variant="flat"
+    rounded="lg"
     class="d-block d-sm-none"
   >
     <v-row
@@ -84,37 +94,34 @@
           >
             <v-col
               cols="4"
+              class="text-center"
             >
-              <v-img
-                max-height="180"
-                aspect-ratio="1/1"
-                :src="member.imageUrl || defaultImage"
-                cover
+              <v-avatar
+                size="90"
+                rounded="0"
+                class="pa-2"
               >
-                <div
-                  v-if="member.archived"
-                  class="font-weight-bold text-body-1 text-white d-flex justify-center align-center"
-                  style="background: rgb(var(--v-theme-green1)); opacity: 0.8; height: 100%; position: relative; align-self: center;"
-                >
-                  <div>アーカイブ済み</div>
-                </div>
-              </v-img>
+                <v-img
+                  cover
+                  :src="member.imageUrl || defaultImage"
+                ></v-img>
+              </v-avatar>
             </v-col>
 
             <v-col
               cols="8"
+              align-self="center"
             >
-              <v-card-title class="py-2 text-h6 font-weight-bold">
+              <v-card-title class="pt-0 pb-2 text-h6 font-weight-bold">
                 <div>
                   {{ member.name }}
                 </div>
               </v-card-title>
 
-              <v-card-text class="py-0 text-body-2 text-left">
+              <v-card-text class="py-0 text-caption text-left">
                 <common-accent-block
                   title="担当"
                   :text="instructorName(member)"
-                  class="py-2"
                 />
               </v-card-text>
             </v-col>
@@ -124,8 +131,7 @@
         <v-divider />
       </v-col>
     </v-row>
-  </div>
-
+  </v-card>
 </template>
 
 <script setup lang="ts">
@@ -139,7 +145,9 @@ const { filteredMembers } = inject(MemberKey) as MemberType
 
 const router = useRouter()
 
-const defaultImage = ref('/images/account.png')
+// const defaultImage = ref('/images/account.png')
+const defaultImage = ref('https://avataaars.io/?avatarStyle=Transparent&topType=ShortHairShortCurly&accessoriesType=Prescription02&hairColor=Black&facialHairType=Blank&clotheType=Hoodie&clotheColor=White&eyeType=Default&eyebrowType=DefaultNatural&mouthType=Default&skinColor=Light')
+// const defaultImage = ref('https://cdn.vuetifyjs.com/images/profiles/marcus.jpg')
 
 const onClickMember = (member: any) => {
   router.push({ path: '/i/members/d/member-personal-data', query: { gymId: member.gymId, memberId: member.id } })
@@ -162,3 +170,16 @@ const otherInstructorCount = (member: any) => {
   return member.instructorIds.length - 1
 }
 </script>
+
+<style scoped>
+.archive {
+  background: rgb(var(--v-theme-green1));
+  opacity: 0.7;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  align-self: center;
+}
+</style>

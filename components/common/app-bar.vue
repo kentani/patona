@@ -17,6 +17,11 @@
 
       <div class="pr-2 text-body-2">{{ instructor?.name }}</div>
 
+      <!-- <div>{{ $vuetify.display.xs }}</div>
+      <div>{{ $vuetify.display.sm }}</div>
+      <div>{{ $vuetify.display.md }}</div>
+      <div>{{ $vuetify.display.lg }}</div> -->
+
       <v-menu>
         <template v-slot:activator="{ props }">
           <v-btn

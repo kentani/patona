@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container :fluid="!$vuetify.display.lg">
     <common-breadcrumbs
       :breadcrumbs="breadcrumbs"
     />
@@ -8,7 +8,7 @@
       <v-col
         cols="12"
         sm="12"
-        md="12"
+        md="3"
         lg="3"
       >
         <common-tabs
@@ -20,7 +20,7 @@
       <v-col
         cols="12"
         sm="12"
-        md="12"
+        md="9"
         lg="9"
       >
         <NuxtPage page-key="member" />
@@ -53,14 +53,14 @@ const breadcrumbs = ref([
   { id: '1', title: 'ジム一覧', to: '/i/gyms', disabled: false },
   { id: '2', title: 'メニュー', to: `/i/menus?gymId=${route.query.gymId}`, disabled: false },
   { id: '3', title: '会員一覧', to: `/i/members?gymId=${route.query.gymId}`, disabled: false },
-  { id: '4', title: '', to: `/i/members/d/member-personal-data?memberId=${route.query.memberId}`, disabled: true },
+  { id: '4', title: '会員詳細', to: '', disabled: true },
 ])
 
 const tabs = ref([
-  { id: '1', title: 'パーソナルデータ', to: 'personal-data', disabled: false, cols: 6, sm: 3, md: 3, lg: 12 },
-  { id: '2', title: 'トレーニング履歴', to: 'training-data', disabled: false, cols: 6, sm: 3, md: 3, lg: 12 },
-  { id: '3', title: '身体数値', to: 'physical-data', disabled: false, cols: 6, sm: 3, md: 3, lg: 12 },
-  { id: '4', title: '身体画像', to: 'physical-image', disabled: false, cols: 6, sm: 3, md: 3, lg: 12 },
+  { id: '1', title: 'パーソナルデータ', to: 'personal-data', disabled: false, cols: 6, sm: 3, md: 12, lg: 12 },
+  { id: '2', title: 'トレーニング履歴', to: 'training-data', disabled: false, cols: 6, sm: 3, md: 12, lg: 12 },
+  { id: '3', title: '身体数値', to: 'physical-data', disabled: false, cols: 6, sm: 3, md: 12, lg: 12 },
+  { id: '4', title: '身体画像', to: 'physical-image', disabled: false, cols: 6, sm: 3, md: 12, lg: 12 },
 ])
 
 onMounted(async () => {
@@ -83,7 +83,7 @@ onMounted(async () => {
       throw createError({ statusCode: 404, statusMessage: 'Page Not Found', fatal: true })
     }
 
-    breadcrumbs.value[3].title = member.value.name
+    // breadcrumbs.value[3].title = member.value.name
   })
 
   show()

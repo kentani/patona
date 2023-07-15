@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container :fluid="!$vuetify.display.lg">
     <common-breadcrumbs
       :breadcrumbs="breadcrumbs"
     />
@@ -8,7 +8,7 @@
       <v-col
         cols="12"
         sm="4"
-        md="4"
+        md="3"
         lg="3"
       >
         <v-row>
@@ -26,7 +26,7 @@
       <v-col
         cols="12"
         sm="8"
-        md="8"
+        md="9"
         lg="9"
       >
         <members-list />
@@ -79,7 +79,14 @@ onMounted(async () => {
     }
 
     await whereInstructor({ gymId: String(route.query.gymId) })
-    await whereMember({ gymId: String(route.query.gymId), instructorIds: [instructor.value?.id] })
+
+    // if(appUser.value?.admin) {
+    //   await whereMember({ gymId: String(route.query.gymId) })
+    // } else {
+    //   await whereMember({ gymId: String(route.query.gymId), instructorIds: [instructor.value?.id || ''] })
+    // }
+
+    await whereMember({ gymId: String(route.query.gymId), instructorIds: [instructor.value?.id || ''] })
 
     filterMember()
   })

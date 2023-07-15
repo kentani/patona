@@ -1,8 +1,10 @@
 <template>
   <v-breadcrumbs
-    class="px-0 pt-1"
-    color="green1"
     :items="breadcrumbs"
+    class="px-0 pt-1 text-body-2"
+    color="green1"
+    density="compact"
+
   >
     <template v-slot:divider>
       <v-icon icon="mdi-chevron-right"></v-icon>
@@ -26,3 +28,9 @@ const Props = withDefaults(defineProps<Props>(), {
   breadcrumbs: () => []
 })
 </script>
+
+<style>
+.v-breadcrumbs-divider {
+  padding: 0;
+}
+</style>

@@ -9,7 +9,8 @@
       "firebase.json",
       "**/.*",
       "**/node_modules/**"
-    ]
+    ],
+    "trailingSlash": false
   },
   "storage": {
     "rules": "storage.rules"

@@ -14,25 +14,40 @@
         class="text-caption mb-4"
       />
 
-      <v-switch
-        v-model="showArchivedMember"
-        inset
-        hide-details
-        density="compact"
-        label="アーカイブ"
-        color="green1"
-        @change="onChangeShowArchivedMemberSwitch"
-      ></v-switch>
+      <v-row
+        dense
+        no-gutters
+      >
+        <v-col
+          cols="6"
+          sm="12"
+        >
+          <v-switch
+            v-model="showArchivedMember"
+            inset
+            hide-details
+            density="compact"
+            label="アーカイブ"
+            color="green1"
+            @change="onChangeShowArchivedMemberSwitch"
+          ></v-switch>
+        </v-col>
 
-      <v-switch
-        v-model="showOtherMember"
-        inset
-        hide-details
-        density="compact"
-        label="担当以外"
-        color="green1"
-        @change="onChangeShowOtherMember"
-      ></v-switch>
+        <v-col
+          cols="6"
+          sm="12"
+        >
+          <v-switch
+            v-model="showOtherMember"
+            inset
+            hide-details
+            density="compact"
+            label="担当以外"
+            color="green1"
+            @change="onChangeShowOtherMember"
+          ></v-switch>
+        </v-col>
+      </v-row>
 
       <common-underlined-text
         text="検索"
