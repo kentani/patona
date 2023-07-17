@@ -2,28 +2,11 @@
   <v-row>
     <v-col
       cols="12"
-      class="d-block d-sm-none"
-    >
-      <members-d-member-personal-data-btn-list />
-    </v-col>
-
-    <v-col
-      cols="12"
-      sm="8"
-      md="8"
-      lg="8"
+      sm="12"
+      md="12"
+      lg="12"
     >
       <members-d-member-personal-data-card />
-    </v-col>
-
-    <v-col
-      cols="12"
-      sm="4"
-      md="4"
-      lg="4"
-      class="d-none d-sm-block"
-    >
-      <members-d-member-personal-data-btn-list />
     </v-col>
   </v-row>
 </template>

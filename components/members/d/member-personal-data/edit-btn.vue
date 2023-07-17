@@ -4,6 +4,7 @@
     rounded="lg"
     color="green1"
     block
+    :ripple="false"
     @click="onClickEdit"
   >
     <v-icon

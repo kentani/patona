@@ -21,10 +21,10 @@ const useMember = () => {
   ])
 
   const profiles: Ref<Array<{ id: string, title: string, cols: number, sm: number }>> = ref([
-    { id: '1', title: '目的', cols: 12, sm: 12 },
-    { id: '2', title: '目標', cols: 12, sm: 12 },
-    { id: '3', title: '運動経験', cols: 12, sm: 12 },
-    { id: '4', title: 'けが・病気', cols: 12, sm: 12 },
+    { id: '1', title: '目的', cols: 12, sm: 6 },
+    { id: '2', title: '目標', cols: 12, sm: 6 },
+    { id: '3', title: '運動経験', cols: 12, sm: 6 },
+    { id: '4', title: 'けが・病気', cols: 12, sm: 6 },
     { id: '5', title: 'メモ', cols: 12, sm: 12 },
   ])
 

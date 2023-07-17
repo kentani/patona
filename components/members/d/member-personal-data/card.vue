@@ -2,9 +2,10 @@
   <v-card
     variant="flat"
     rounded="lg"
+    class="text-font"
   >
     <v-card-text
-      class="px-2 py-4"
+      class="px-0 py-6"
     >
       <v-row
         dense
@@ -13,7 +14,7 @@
       >
         <v-col
           cols="12"
-          sm="5"
+          sm="12"
         >
           <v-card
             variant="flat"
@@ -23,11 +24,11 @@
             >
               <v-col
                 cols="12"
-                sm="12"
+                sm="6"
                 class="text-center"
               >
                 <v-avatar
-                  size="180"
+                  size="200"
                   rounded="0"
                   class="pa-2"
                 >
@@ -40,17 +41,17 @@
 
               <v-col
                 cols="12"
-                sm="12"
+                sm="6"
                 align-self="center"
               >
                 <v-card-title
-                  class="pb-6 text-h5 font-weight-bold"
+                  class="pt-0 pb-6 text-h5 text-font font-weight-bold"
                 >
                   {{ member?.name }}
                 </v-card-title>
 
                 <v-card-text
-                  class="text-caption"
+                  class="py-0 text-font text-body-2"
                 >
                   <v-row>
                     <v-col
@@ -58,28 +59,8 @@
                       sm="12"
                     >
                       <common-accent-block
-                        title="生年月日"
-                        :text="convertToBirthday(member?.detail?.birthday)"
-                      />
-                    </v-col>
-
-                    <v-col
-                      cols="6"
-                      sm="12"
-                    >
-                      <common-accent-block
-                        title="年齢"
-                        :text="`${convertToAge(member?.detail.birthday)}歳`"
-                      />
-                    </v-col>
-
-                    <v-col
-                      cols="6"
-                      sm="12"
-                    >
-                      <common-accent-block
-                        title="性別"
-                        :text="convertToGender(member?.detail?.genderId)"
+                        title="登録日"
+                        :text="formattedDate(member?.createdAt)"
                       />
                     </v-col>
 
@@ -92,26 +73,24 @@
                         :text="instructorName(member?.instructorIds)"
                       />
                     </v-col>
-
-                    <v-col
-                      cols="12"
-                      sm="12"
-                    >
-                      <common-accent-block
-                        title="登録日"
-                        :text="formattedDate(member?.createdAt)"
-                      />
-                    </v-col>
                   </v-row>
+
+                  <members-d-member-personal-data-btn-list
+                    class="mt-6"
+                  />
                 </v-card-text>
               </v-col>
             </v-row>
           </v-card>
         </v-col>
 
+        <v-divider
+          class="ma-4"
+        />
+
         <v-col
           cols="12"
-          sm="7"
+          sm="12"
         >
           <v-row
             justify="center"

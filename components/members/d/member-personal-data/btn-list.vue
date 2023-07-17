@@ -3,24 +3,26 @@
     variant="flat"
     rounded="lg"
   >
-    <v-card-text>
+    <v-card-text
+      class="pa-0"
+    >
       <v-row
         dense
       >
         <v-col
           cols="4"
-          sm="12"
-          md="12"
-          lg="12"
+          sm="4"
+          md="4"
+          lg="4"
         >
           <members-d-member-personal-data-edit-btn />
         </v-col>
 
         <v-col
           cols="4"
-          sm="12"
-          md="12"
-          lg="12"
+          sm="4"
+          md="4"
+          lg="4"
         >
           <v-btn
             variant="outlined"
@@ -39,9 +41,9 @@
 
         <v-col
           cols="4"
-          sm="12"
-          md="12"
-          lg="12"
+          sm="4"
+          md="4"
+          lg="4"
         >
           <v-btn
             variant="outlined"
