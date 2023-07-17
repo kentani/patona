@@ -4,7 +4,7 @@
     rounded="lg"
   >
     <v-card-text
-      class="pa-2"
+      class="px-2 py-4"
     >
       <v-row
         dense
@@ -88,6 +88,16 @@
                       sm="12"
                     >
                       <common-accent-block
+                        title="担当"
+                        :text="instructorName(member?.instructorIds)"
+                      />
+                    </v-col>
+
+                    <v-col
+                      cols="12"
+                      sm="12"
+                    >
+                      <common-accent-block
                         title="登録日"
                         :text="formattedDate(member?.createdAt)"
                       />
@@ -124,7 +134,7 @@
                 </v-card-title>
 
                 <v-card-text
-                  class="pb-0 text-body-1"
+                  class="pt-2 pb-0 text-body-1 text-font break-text"
                 >
                   {{ member?.detail?.profiles[index]?.data }}
                 </v-card-text>
@@ -140,9 +150,12 @@
 <script setup lang="ts">
 import { format } from 'date-fns'
 
+import { InstructorType } from "@/composables/instructor/instructor"
+import InstructorKey from "@/composables/instructor/instructor-key"
 import { MemberType } from "@/composables/member/member"
 import MemberKey from "@/composables/member/member-key"
 
+const { instructors } = inject(InstructorKey) as InstructorType
 const { member, genders, profiles } = inject(MemberKey) as MemberType
 
 // const defaultImage = ref('/images/account.png')
@@ -196,4 +209,29 @@ const convertToGender = (genderId?: string) => {
 
   return gender?.title || ''
 }
+
+const instructorName = (instructorIds: Array<string>) => {
+  if(!instructorIds) return ''
+
+  let name = ''
+
+  instructorIds.forEach((instructorId: string, index: number) => {
+    let instructor = instructors.value.find(i => i.id === instructorId)
+
+    name = name + instructor?.name
+
+    if(index < instructorIds.length - 1) {
+      name = name + '・'
+    }
+  })
+
+  return name
+}
 </script>
+
+<style scoped>
+.break-text {
+  word-wrap: break-word;
+  white-space: pre-wrap;
+}
+</style>

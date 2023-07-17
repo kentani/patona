@@ -38,4 +38,8 @@ provide(ScreenControllerKey, useScreenController())
 body::-webkit-scrollbar {
   display: none;
 }
+
+html {
+  color: #4e4e4e
+}
 </style>

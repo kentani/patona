@@ -18,9 +18,14 @@
 </template>
 
 <script setup lang="ts">
+import { MemberType } from "@/composables/member/member"
+import MemberKey from "@/composables/member/member-key"
+
+const { member } = inject(MemberKey) as MemberType
+
 const form = ref()
 
 const onClickEdit = () => {
-  form.value.open({ isEdit: true })
+  form.value.open({ isEdit: true, member: member.value })
 }
 </script>

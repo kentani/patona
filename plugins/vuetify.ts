@@ -12,7 +12,8 @@ const customLightTheme: ThemeDefinition = {
     font: '#4e4e4e',
     green1: '#006666',
     green2: 'c85554',
-    black: '#4e4e4e'
+    black: '#4e4e4e',
+    text: '#4e4e4e'
   }
 }
 

@@ -1,5 +1,5 @@
 <template>
-  <v-app v-show="showable && screenShowable">
+  <v-app v-show="showable && screenShowable" class="text-font">
     <common-app-bar />
 
     <v-main>
