@@ -4,7 +4,9 @@
     max-width="500"
     persistent
   >
-    <v-card>
+    <v-card
+      rounded="lg"
+    >
       <v-card-title>
         <common-underlined-text
           text="カテゴリー"

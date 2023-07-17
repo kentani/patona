@@ -1,14 +1,17 @@
 <template>
-  <v-container :fluid="!$vuetify.display.lg">
+  <v-container
+    :fluid="!$vuetify.display.lg"
+  >
     <common-breadcrumbs
       :breadcrumbs="breadcrumbs"
+      class="mb-2"
     />
 
     <v-row>
       <v-col
         cols="12"
         sm="12"
-        md="3"
+        md="12"
         lg="3"
       >
         <common-tabs
@@ -20,7 +23,7 @@
       <v-col
         cols="12"
         sm="12"
-        md="9"
+        md="12"
         lg="9"
       >
         <NuxtPage page-key="member" />
@@ -57,10 +60,10 @@ const breadcrumbs = ref([
 ])
 
 const tabs = ref([
-  { id: '1', title: 'パーソナルデータ', to: 'personal-data', disabled: false, cols: 6, sm: 3, md: 12, lg: 12 },
-  { id: '2', title: 'トレーニング履歴', to: 'training-data', disabled: false, cols: 6, sm: 3, md: 12, lg: 12 },
-  { id: '3', title: '身体数値', to: 'physical-data', disabled: false, cols: 6, sm: 3, md: 12, lg: 12 },
-  { id: '4', title: '身体画像', to: 'physical-image', disabled: false, cols: 6, sm: 3, md: 12, lg: 12 },
+  { id: '1', title: 'パーソナルデータ', to: 'personal-data', disabled: false, cols: 6, sm: 3, md: 3, lg: 12 },
+  { id: '2', title: 'トレーニング履歴', to: 'training-data', disabled: false, cols: 6, sm: 3, md: 3, lg: 12 },
+  { id: '3', title: '身体数値', to: 'physical-data', disabled: false, cols: 6, sm: 3, md: 3, lg: 12 },
+  { id: '4', title: '身体画像', to: 'physical-image', disabled: false, cols: 6, sm: 3, md: 3, lg: 12 },
 ])
 
 onMounted(async () => {
