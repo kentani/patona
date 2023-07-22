@@ -45,9 +45,9 @@ const useTraining = () => {
       })
     }
 
-    training.value = tmpTrainings
+    trainings.value = tmpTrainings
 
-    return training.value
+    return trainings.value
   }
 
   const findTraining = async (params: { id: string }) => {
@@ -60,7 +60,7 @@ const useTraining = () => {
     return training.value
   }
 
-  const createTraining = async (params: { gymId: string, memberId?: string, yyyymmdd: string, detail: any }) => {
+  const createTraining = async (params: { gymId: string, memberId: string, categoryId: string, menuId: string, dateKey: string, detail: any }) => {
     const docRef = doc(collection(db, "trainings"))
 
     await setDoc(docRef, {
@@ -75,7 +75,7 @@ const useTraining = () => {
     return training.value
   }
 
-  const updateTraining = async (id: string, params: { yyyymmdd: string, detail: any }) => {
+  const updateTraining = async (id: string, params: { dateKey: string, detail: any }) => {
     const docRef = doc(db, "trainings", id)
 
     await updateDoc(docRef, {

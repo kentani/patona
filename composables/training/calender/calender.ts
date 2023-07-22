@@ -11,7 +11,8 @@ import {
 const useCalender = () => {
   const today = ref(new Date())
   const currentDate = ref(today.value)
-  const selectedDate: Ref<Number|null> = ref(getDate(today.value))
+  const currentDateKey = ref(format(currentDate.value, 'yyyyMMdd'))
+  const selectedDate: Ref<Number|null> = ref(getDate(currentDate.value))
   const currentYearMonth = ref('')
   const currentYearMonthDate = ref('')
   const week = ref(['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'])
@@ -19,10 +20,20 @@ const useCalender = () => {
 
   const setCurrentDate = (date: any) => {
     currentDate.value = new Date(`${format(currentDate.value, 'yyyy-MM-')}${date}`)
+    currentDateKey.value = format(currentDate.value, 'yyyyMMdd')
+  }
+
+  const setCurrentDateByDateKey = (dateKey: string) => {
+    currentDate.value = new Date(dateKey)
+    currentDateKey.value = format(currentDate.value, 'yyyyMMdd')
   }
 
   const setSelectedDate = (date: Number) => {
     selectedDate.value = date
+  }
+
+  const setCurrentDateKey = (dateKey: string) => {
+    currentDateKey.value = dateKey
   }
 
   const setCurrentYearMonth = () => {
@@ -82,13 +93,16 @@ const useCalender = () => {
   return {
     today,
     currentDate,
+    currentDateKey,
     selectedDate,
     currentYearMonth,
     currentYearMonthDate,
     week,
     dateList,
     setCurrentDate,
+    setCurrentDateKey,
     setSelectedDate,
+    setCurrentDateByDateKey,
     setCurrentYearMonth,
     setCurrentYearMonthDate,
     setDateList,

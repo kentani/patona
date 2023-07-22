@@ -39,7 +39,7 @@
           align-self="center"
         >
           <div
-            class="text-body-1 font-weight-bold"
+            class="text-body-1 font-weight-bold text-font"
           >
             {{ currentYearMonth }}
           </div>
@@ -126,13 +126,12 @@ import { CalenderType } from "@/composables/training/calender/calender"
 import CalenderKey from "@/composables/training/calender/calender-key"
 
 const {
-  today,
-  currentDate,
   selectedDate,
   currentYearMonth,
   week,
   dateList,
   setCurrentDate,
+  setCurrentDateKey,
   setSelectedDate,
   setCurrentYearMonth,
   setCurrentYearMonthDate,

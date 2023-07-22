@@ -14,7 +14,7 @@
           cols="auto"
           align-self="center"
         >
-           {{ currentYearMonthDate }}
+          {{ currentYearMonthDate }}
         </v-col>
 
         <v-spacer />
@@ -34,14 +34,14 @@
         multiple
       >
         <v-expansion-panel
-          v-for="menu in menus"
-          :key="`menu-${menu.id}`"
+          v-for="training in trainingOfDateKey[currentDateKey] || []"
+          :key="`training-${training.id}`"
           :ripple="false"
           rounded="lg"
         >
           <v-expansion-panel-title
             class="pl-0 pr-4"
-            :readonly="menu.memo.length === 0"
+            :readonly="training.detail.memo.length === 0"
           >
             <v-row>
               <v-col
@@ -51,13 +51,13 @@
                 <v-card-title
                   class="pt-0"
                 >
-                  {{ menu.name }}
+                  {{ menuOfId[training.menuId].name }}
                 </v-card-title>
 
                 <v-card-subtitle
                   class="pb-0 mx-1"
                 >
-                  {{ menu.category }}
+                  {{ categoryOfId[training.categoryId].name }}
                 </v-card-subtitle>
               </v-col>
 
@@ -66,6 +66,18 @@
                 sm="6"
               >
                 <v-row>
+                  <v-col cols="6">
+                    <div
+                      class="text-center text-caption text-green1">
+                      セット
+                    </div>
+
+                    <div
+                      class="text-center text-h6 text-green1 font-weight-bold">
+                      {{ training.detail.set }}
+                    </div>
+                  </v-col>
+
                   <v-col
                     cols="6"
                   >
@@ -76,21 +88,16 @@
                     </div>
 
                     <div
-                      class="text-center text-h6 text-green1 font-weight-bold"
+                      class="text-center text-body-2 text-green1 font-weight-bold"
+                      style="text-align: center;"
                     >
-                      {{ menu.kg }}
-                    </div>
-                  </v-col>
-
-                  <v-col cols="6">
-                    <div
-                      class="text-center text-caption text-green1">
-                      セット
-                    </div>
-
-                    <div
-                      class="text-center text-h6 text-green1 font-weight-bold">
-                      {{ menu.set }}
+                      <div
+                        v-for="(kg, index) in training.detail.kg"
+                        :key="index"
+                        class="pa-1"
+                      >
+                        {{ kg }}
+                      </div>
                     </div>
                   </v-col>
                 </v-row>
@@ -102,13 +109,13 @@
                 color="green1"
                 size="large"
               >
-                {{ menu.memo.length > 0 ? '$expand' : 'mdi-border-none-variant' }}
+                {{ training.detail.memo.length > 0 ? '$expand' : 'mdi-border-none-variant' }}
               </v-icon>
             </template>
           </v-expansion-panel-title>
 
           <v-expansion-panel-text>
-            {{ menu.memo }}
+            {{ training.detail.memo }}
           </v-expansion-panel-text>
         </v-expansion-panel>
       </v-expansion-panels>
@@ -119,12 +126,51 @@
 <script setup lang="ts">
 import { CalenderType } from "@/composables/training/calender/calender"
 import CalenderKey from "@/composables/training/calender/calender-key"
+import { TrainingCategoryType } from "@/composables/training-category/training-category"
+import TrainingCategoryKey from "@/composables/training-category/training-category-key"
+import { TrainingMenuType } from "@/composables/training-menu/training-menu"
+import TrainingMenuKey from "@/composables/training-menu/training-menu-key"
+import { TrainingType } from "@/composables/training/training"
+import TrainingKey from "@/composables/training/training-key"
 
-const { currentYearMonthDate } = inject(CalenderKey) as CalenderType
+const { currentDateKey, currentYearMonthDate } = inject(CalenderKey) as CalenderType
+const { trainingCategories } = inject(TrainingCategoryKey) as TrainingCategoryType
+const { trainingMenus } = inject(TrainingMenuKey) as TrainingMenuType
+const { trainings } = inject(TrainingKey) as TrainingType
 
 const panel = ref([])
-const menus = ref([
-  {id: '1', name: 'メニュー', category: 'カテゴリー', kg: '3', set: '3', memo: 'メモ'},
-  {id: '2', name: 'メニュー2', category: 'カテゴリー', kg: '4', set: '2', memo: ''},
-])
+
+const trainingOfDateKey = computed(() => {
+  let trainingHash: any = {}
+
+  trainings.value.forEach(t => {
+    if(!trainingHash[t.dateKey]) {
+      trainingHash[t.dateKey] = []
+    }
+
+    trainingHash[t.dateKey].push(t)
+  })
+
+  return trainingHash
+})
+
+const categoryOfId = computed(() => {
+  let categoryHash: any = {}
+
+  trainingCategories.value.forEach(c => {
+    categoryHash[c.id] = c
+  })
+
+  return categoryHash
+})
+
+const menuOfId = computed(() => {
+  let menuHash: any = {}
+
+  trainingMenus.value.forEach(m => {
+    menuHash[m.id] = m
+  })
+
+  return menuHash
+})
 </script>

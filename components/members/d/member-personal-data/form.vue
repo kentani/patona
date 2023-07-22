@@ -1,13 +1,14 @@
 <template>
   <v-dialog
     v-model="dialog"
-    persistent
+    max-width="600"
+    :fullscreen="$vuetify.display.xs"
     scrollable
-    fullscreen
+    persistent
   >
     <v-card
       variant="flat"
-      rounded="0"
+      :rounded="$vuetify.display.xs ? 0 : 'lg'"
       color="background"
       class="text-font"
     >
@@ -61,7 +62,7 @@
               variant="outlined"
               color="green1"
               type="tel"
-              :rules="[rules.date]"
+              :rules="[rules.counter, rules.date]"
               density="compact"
               validate-on="blur"
             ></v-text-field>
@@ -260,9 +261,9 @@ const memberInjury = ref('')
 const memberMemo = ref('')
 
 const rules = ref({
-  required: (value: any) => (!!value && value.length) || '必須項目です',
-  counter: (value: any) => value.length !== 8 || '入力形式が不正です',
-  date: (value: any) => isValidDate(value) || '入力形式が不正です',
+  required: (value: any) => (!!value && !!value.length) || '必須項目です',
+  counter: (value: any) => value.length === 8 || '入力形式が不正です （例）19910212 ※1991/2/12生まれの場合',
+  date: (value: any) => isValidDate(value) || '入力形式が不正です （例）19910212 ※1991/2/12生まれの場合',
 })
 const isValidDate = (value: any) => {
   if(!value) return true
@@ -284,17 +285,7 @@ const onClickComplete = async () => {
       name: memberName.value,
       imageName: '',
       imageURL: '',
-      detail: {
-        birthday: memberBirthDay.value,
-        genderId: memberGender.value,
-        profiles: [
-          { profileId: profiles.value[0].id, data: memberPurpose.value },
-          { profileId: profiles.value[1].id, data: memberGoal.value },
-          { profileId: profiles.value[2].id, data: memberExperience.value },
-          { profileId: profiles.value[3].id, data: memberInjury.value },
-          { profileId: profiles.value[4].id, data: memberMemo.value },
-        ]
-      },
+      detail: memberDetail(),
     })
   } else {
     await createMember({
@@ -305,23 +296,27 @@ const onClickComplete = async () => {
       name: memberName.value,
       imageName: '',
       imageURL: '',
-      detail: {
-        birthday: memberBirthDay.value,
-        genderId: memberGender.value,
-        profiles: [
-          { profileId: profiles.value[0].id, data: memberPurpose.value },
-          { profileId: profiles.value[1].id, data: memberGoal.value },
-          { profileId: profiles.value[2].id, data: memberExperience.value },
-          { profileId: profiles.value[3].id, data: memberInjury.value },
-          { profileId: profiles.value[4].id, data: memberMemo.value },
-        ]
-      },
+      detail: memberDetail()
     })
 
     filterMember()
   }
 
   close()
+}
+
+const memberDetail = () => {
+  return {
+    birthday: memberBirthDay.value,
+    genderId: memberGender.value,
+    profiles: [
+      { profileId: profiles.value[0].id, data: memberPurpose.value },
+      { profileId: profiles.value[1].id, data: memberGoal.value },
+      { profileId: profiles.value[2].id, data: memberExperience.value },
+      { profileId: profiles.value[3].id, data: memberInjury.value },
+      { profileId: profiles.value[4].id, data: memberMemo.value },
+    ]
+  }
 }
 
 const setMemberProfile = (member: any) => {
