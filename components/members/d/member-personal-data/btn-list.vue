@@ -48,7 +48,7 @@
           <v-btn
             variant="outlined"
             rounded="lg"
-            color="red"
+            color="error"
             block
             disabled
             @click=""

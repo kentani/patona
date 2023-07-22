@@ -14,7 +14,7 @@
           cols="auto"
           align-self="center"
         >
-          YYYY年 M月 D日
+           {{ currentYearMonthDate }}
         </v-col>
 
         <v-spacer />
@@ -117,9 +117,14 @@
 </template>
 
 <script setup lang="ts">
-  const panel = ref([])
-  const menus = ref([
-    {id: '1', name: 'メニュー', category: 'カテゴリー', kg: '3', set: '3', memo: 'メモ'},
-    {id: '2', name: 'メニュー2', category: 'カテゴリー', kg: '4', set: '2', memo: ''},
-  ])
+import { CalenderType } from "@/composables/training/calender/calender"
+import CalenderKey from "@/composables/training/calender/calender-key"
+
+const { currentYearMonthDate } = inject(CalenderKey) as CalenderType
+
+const panel = ref([])
+const menus = ref([
+  {id: '1', name: 'メニュー', category: 'カテゴリー', kg: '3', set: '3', memo: 'メモ'},
+  {id: '2', name: 'メニュー2', category: 'カテゴリー', kg: '4', set: '2', memo: ''},
+])
 </script>

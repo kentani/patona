@@ -23,7 +23,7 @@
             size="large"
             color="green1"
             rounded="lg"
-            @click=""
+            @click="onClickPrevMonth"
           >
             <v-icon
               size="x-large"
@@ -41,7 +41,7 @@
           <div
             class="text-body-1 font-weight-bold"
           >
-            YYYY年 M月
+            {{ currentYearMonth }}
           </div>
         </v-col>
 
@@ -59,7 +59,7 @@
             size="large"
             color="green1"
             rounded="lg"
-            @click=""
+            @click="onClickNextMonth"
           >
             <v-icon
               size="x-large"
@@ -81,6 +81,7 @@
           v-for="(day, index) in week"
           :key="day"
           class="text-center text-caption"
+          :class="weekClass(index)"
           style="width: 14.2%;"
         >
           {{ day }}
@@ -96,13 +97,16 @@
           v-for="date in week"
           :key="date"
           class="text-center"
+          :class="dateClass(date)"
           style="width: 14.2%; min-width: 0px;"
+          :style="dateStyle(date)"
           variant="text"
           size="small"
           elevation="0"
           rounded="lg"
           :ripple="false"
-          @click=""
+          :disabled="!date"
+          @click="onClickDate(date)"
         >
           <span
             class="text-body-2"
@@ -116,11 +120,88 @@
 </template>
 
 <script setup lang="ts">
-const week = ref(['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'])
-const dateList = ref([
-  [1,2,3,4,5,6,7],
-  [1,2,3,4,5,6,7],
-  [1,2,3,4,5,6,7],
-  [1,2,3,4,5,6,7],
-])
+import { format, getDate } from 'date-fns'
+
+import { CalenderType } from "@/composables/training/calender/calender"
+import CalenderKey from "@/composables/training/calender/calender-key"
+
+const {
+  today,
+  currentDate,
+  selectedDate,
+  currentYearMonth,
+  week,
+  dateList,
+  setCurrentDate,
+  setSelectedDate,
+  setCurrentYearMonth,
+  setCurrentYearMonthDate,
+  setDateList,
+  prevMonth,
+  nextMonth,
+  isToday,
+} = inject(CalenderKey) as CalenderType
+
+const onClickPrevMonth = () => {
+  prevMonth()
+}
+
+const onClickNextMonth = () => {
+  nextMonth()
+}
+
+const onClickDate = (date: Number|null) => {
+  if(!date) return
+
+  setCurrentDate(date)
+  setSelectedDate(date)
+  setCurrentYearMonth()
+  setCurrentYearMonthDate()
+}
+
+const weekClass = (index: any) => {
+  let klass = 'text-font'
+
+  if(index === 5) {
+    klass = 'text-blue'
+  } else if(index === 6) {
+    klass = 'text-error'
+  }
+
+  return klass
+}
+
+const dateClass = (date: Number)  => {
+  let klass = 'text-grey'
+
+  if(date === selectedDate.value) {
+    klass = 'font-weight-bold text-green1'
+  }
+
+  if(isToday(date)) {
+    klass = 'text-white'
+  }
+
+  return klass
+}
+
+const dateStyle = (date: Number) => {
+  let style = ''
+
+  if(date === selectedDate.value) {
+    style = 'border: 1px solid rgb(var(--v-theme-green1));'
+  }
+
+  if(isToday(date)) {
+    style = 'background: rgb(var(--v-theme-green1));'
+  }
+
+  return style
+}
+
+onMounted(() => {
+  setCurrentYearMonth()
+  setCurrentYearMonthDate()
+  setDateList()
+})
 </script>

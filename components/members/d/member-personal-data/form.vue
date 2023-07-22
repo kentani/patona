@@ -31,9 +31,9 @@
             />
 
             <span
-              class="text-caption text-red font-weight-bold"
+              class="text-caption text-error font-weight-bold"
             >
-              ※必須
+              ※必須(生年月日以外)
             </span>
           </v-col>
 
@@ -260,7 +260,7 @@ const memberInjury = ref('')
 const memberMemo = ref('')
 
 const rules = ref({
-  required: (value: any) => !!value || '必須項目です',
+  required: (value: any) => (!!value && value.length) || '必須項目です',
   counter: (value: any) => value.length !== 8 || '入力形式が不正です',
   date: (value: any) => isValidDate(value) || '入力形式が不正です',
 })
