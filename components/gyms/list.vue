@@ -30,7 +30,7 @@
 
             <v-card-text class="pb-4 text-caption text-left">
               <common-accent-block
-                title="作成日"
+                title="登録日"
                 :text="formattedDate(gym.createdAt)"
               />
             </v-card-text>

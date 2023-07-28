@@ -1,13 +1,10 @@
 <template>
-  <v-container class="pt-0">
-    <v-breadcrumbs
-      :items="breadcrumbs"
-      class="px-0 pt-1"
-    >
-      <template v-slot:divider>
-        <v-icon icon="mdi-chevron-right"></v-icon>
-      </template>
-    </v-breadcrumbs>
+  <v-container
+    fluid
+  >
+    <common-breadcrumbs
+      :breadcrumbs="breadcrumbs"
+    />
 
     <v-row
       justify="start"
@@ -26,21 +23,49 @@
           @click=""
         >
 
-          <v-card-title>
+          <v-card-title class="pb-4 text-h6 font-weight-bold">
             <div>
               {{ user.name }}
             </div>
           </v-card-title>
 
-          <v-card-text class="text-body-1 text-left">
-            <v-list-group>
-              <v-list-item>
+          <v-card-text class="pb-4 text-caption text-left">
+            <common-accent-block
+              title="admin"
+              :text="user.admin"
+              class="pt-0 pb-2"
+            />
 
-              </v-list-item>
-            </v-list-group>
-            <div>admin: {{ user.admin }}</div>
-            <div>approved: {{ user.approved }}</div>
-            <div>invited: {{ user.invited }}</div>
+            <common-accent-block
+              title="approved"
+              :text="user.approved"
+              class="py-2"
+            />
+
+            <common-accent-block
+              title="invited"
+              :text="user.invited"
+              class="py-2"
+            />
+
+            <common-accent-block
+              title="作成可能なジム数"
+              :text="user.creatableGymCount"
+              class="py-2"
+            />
+
+            <common-accent-block
+              title="作成したジム数"
+              :text="user.createdGymCount"
+              class="py-2"
+            />
+
+
+            <common-accent-block
+              title="登録日"
+              :text="formattedDate(user.createdAt)"
+              class="pt-2 pb-0"
+            />
           </v-card-text>
         </v-card>
       </v-col>
@@ -49,6 +74,8 @@
 </template>
 
 <script setup lang="ts">
+import { format } from 'date-fns'
+
 import { AuthType } from "@/composables/auth/auth"
 import AuthKey from "@/composables/auth/auth-key"
 
@@ -58,6 +85,10 @@ const breadcrumbs = ref([
   { id: '1', title: 'メニュー', to: '/admin/menus', disabled: false },
   { id: '2', title: 'ユーザー一覧', to: '/admin/users', disabled: true },
 ])
+
+const formattedDate = (timestamp: any) => {
+  return format(timestamp.toDate(), 'yyyy-MM-dd')
+}
 
 definePageMeta({
   layout: 'admin'

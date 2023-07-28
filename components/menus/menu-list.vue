@@ -13,27 +13,27 @@
       lg="2"
       :align-self="$vuetify.display.xs ? 'start' : 'center'"
     >
-        <v-hover>
-          <template v-slot:default="{ isHovering, props }">
-            <v-card
-              v-bind="props"
-              variant="elevated"
-              rounded="xl"
-              color="green1"
-              :ripple="false"
-              :disabled="menu.disabled"
-              :elevation="isHovering ? 24 : 8"
-              @click="onClickMenu(menu)"
+      <v-hover>
+        <template v-slot:default="{ isHovering, props }">
+          <v-card
+            v-bind="props"
+            variant="elevated"
+            rounded="xl"
+            color="green1"
+            :ripple="false"
+            :disabled="menu.disabled"
+            :elevation="isHovering ? 24 : 8"
+            @click="onClickMenu(menu)"
+          >
+            <v-card-text
+              class="text-h6 font-weight-bold text-center"
             >
-              <v-card-text
-                class="text-h6 font-weight-bold text-center"
-              >
-                <v-icon size="120">{{ menu.icon }}</v-icon>
-                <p class="pb-2">{{ menu.name }}</p>
-              </v-card-text>
-            </v-card>
-          </template>
-        </v-hover>
+              <v-icon size="120">{{ menu.icon }}</v-icon>
+              <p class="pb-2">{{ menu.name }}</p>
+            </v-card-text>
+          </v-card>
+        </template>
+      </v-hover>
     </v-col>
   </v-row>
 </template>
