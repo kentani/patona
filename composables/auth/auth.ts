@@ -123,7 +123,7 @@ const useAuth = () => {
   const createUser = async (params: { uid: string, name: string|null }) => {
     const { uid, name } = params
 
-    const docRef = doc(collection(db, "users"))
+    const docRef = doc(db, "users", uid)
 
     await setDoc(docRef, {
       id: docRef.id,
