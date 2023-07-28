@@ -120,6 +120,7 @@
               color="green1"
               density="compact"
               hide-details
+              @update:modelValue="onChangeSet"
             >
               <template v-slot:append>
                 <v-text-field
@@ -250,24 +251,25 @@ const {
 } = inject(CalenderKey) as CalenderType
 const { trainingCategories, selectedCategory, setSelectedCategory } = inject(TrainingCategoryKey) as TrainingCategoryType
 const { trainingMenus } = inject(TrainingMenuKey) as TrainingMenuType
-const { whereTraining, createTraining, updateTraining } = inject(TrainingKey) as TrainingType
+const { currentTraining, whereTraining, createTraining, updateTraining } = inject(TrainingKey) as TrainingType
 
 const route = useRoute()
 
 const dialog = ref(false)
-const selectedCategoryModel = ref({ id: '0', name: '' })
-const selectedMenuModel = ref({ id: '0', categoryId: '0', name: '' })
+const selectedCategoryModel: Ref<any> = ref({ id: '0', name: '' })
+const selectedMenuModel: Ref<any> = ref({ id: '0', categoryId: '0', name: '' })
 const currentMenus = ref([{ id: '0', categoryId: '0', name: '' }])
 const trainingDateKey = ref('')
 const set = ref(1)
 const weight = ref([0])
 const memo = ref('')
+const isEdit = ref(false)
 
 const rules = ref({
   required: (value: any) => isRequired(value) || '必須項目です',
   counter: (value: any) => value.length === 8 || '入力形式が不正です （例）19910212',
   date: (value: any) => isValidDate(value) || '入力形式が不正です （例）19910212',
-  set: (value: any) => (1 <= Number(value) && Number(value) <= 5) || '1~10の間で設定してください',
+  set: (value: any) => (1 <= Number(value) && Number(value) <= 5) || '1~5の間で設定してください',
 })
 
 const isRequired = (value: any) => {
@@ -313,35 +315,70 @@ const onUpdateCategory = () => {
   setMenu()
 }
 
+const onChangeSet = () => {
+  console.log('onChangeSet')
+  weight.value = new Array(Number(set.value))
+  for (let key of weight.value.keys()) {
+    weight.value[key] = 0
+  }
+}
+
 const onClickCancel = async () => {
   close()
 }
 
 const onClickComplete = async () => {
-  createTraining({
-    gymId: String(route.query.gymId),
-    memberId: String(route.query.memberId),
-    categoryId: selectedCategoryModel.value.id,
-    menuId: selectedMenuModel.value.id,
-    dateKey: trainingDateKey.value,
-    detail: {
-      set: set.value,
-      kg: weight.value,
-      memo: memo.value
-    }
-  })
+  if(isEdit.value) {
+    await updateTraining(currentTraining.value.id, {
+      categoryId: selectedCategoryModel.value.id,
+      menuId: selectedMenuModel.value.id,
+      dateKey: trainingDateKey.value,
+      detail: {
+        set: set.value,
+        kg: weight.value,
+        memo: memo.value
+      }
+    })
+  } else {
+    await createTraining({
+      gymId: String(route.query.gymId),
+      memberId: String(route.query.memberId),
+      categoryId: selectedCategoryModel.value.id,
+      menuId: selectedMenuModel.value.id,
+      dateKey: trainingDateKey.value,
+      detail: {
+        set: set.value,
+        kg: weight.value,
+        memo: memo.value
+      }
+    })
+  }
 
   whereTraining({ gymId: String(route.query.gymId), memberId: String(route.query.memberId) })
 
   close()
 }
 
-const open = () => {
-  setSelectedCategory(trainingCategories.value[0])
-  setMenu()
-  set.value = 1
-  weight.value = [0]
-  memo.value = ''
+const open = (params: { isEdit: boolean }) => {
+  isEdit.value = params.isEdit
+
+  if (currentTraining.value) {
+    const category = trainingCategories.value.find(c => c.id === currentTraining.value.categoryId)
+    const menu = trainingMenus.value.find(m => m.id === currentTraining.value.menuId)
+    setSelectedCategory(category)
+    setMenu()
+    selectedMenuModel.value = menu
+    set.value = currentTraining.value.detail.set
+    weight.value = currentTraining.value.detail.kg
+    memo.value = currentTraining.value.detail.memo
+  } else {
+    setSelectedCategory(trainingCategories.value[0])
+    setMenu()
+    set.value = 1
+    weight.value = [0]
+    memo.value = ''
+  }
+
   dialog.value = true
 }
 
@@ -358,10 +395,6 @@ watchEffect(() => {
   selectedCategoryModel.value = selectedCategory.value
   currentMenus.value = trainingMenus.value.filter(m => m.categoryId === selectedCategory.value.id).map(m => ({ id: m.id, categoryId: m.categoryId, name: m.name }))
   trainingDateKey.value = format(new Date(`${format(currentDate.value, 'yyyy-MM-')}${selectedDate.value}`), 'yyyyMMdd')
-  weight.value = new Array(Number(set.value))
-  for (let key of weight.value.keys()) {
-    weight.value[key] = 0
-  }
 })
 
 defineExpose({

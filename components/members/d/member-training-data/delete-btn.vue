@@ -1,15 +1,16 @@
 <template>
   <v-btn
-    icon
     variant="outlined"
-    color="green1"
-    size="x-small"
-    @click="onClickAddMenu"
+    rounded="lg"
+    color="error"
+    block
+    disabled
+    @click=""
   >
     <v-icon
-      icon="mdi-plus"
-      size="x-large"
+      icon="mdi-delete"
     ></v-icon>
+    <span class="">削除</span>
   </v-btn>
 
   <members-d-member-training-data-form
@@ -20,7 +21,7 @@
 <script setup lang="ts">
 const trainingDataForm = ref()
 
-const onClickAddMenu = () => {
-  trainingDataForm.value.open({ isEdit: false })
+const onClickEditMenu = () => {
+  trainingDataForm.value.open()
 }
 </script>

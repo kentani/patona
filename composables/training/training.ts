@@ -9,6 +9,7 @@ const useTraining = () => {
   ////////////////////
   const trainings: Ref<Array<DocumentData>> = ref([])
   const training: Ref<DocumentData|null> = ref(null)
+  const currentTraining: Ref<any> = ref(null)
 
   ////////////////////
   // computed
@@ -75,7 +76,7 @@ const useTraining = () => {
     return training.value
   }
 
-  const updateTraining = async (id: string, params: { dateKey: string, detail: any }) => {
+  const updateTraining = async (id: string, params: { categoryId: string, menuId: string, dateKey: string, detail: any }) => {
     const docRef = doc(db, "trainings", id)
 
     await updateDoc(docRef, {
@@ -88,13 +89,19 @@ const useTraining = () => {
     return training.value
   }
 
+  const setTraining = (params: { training: any }) => {
+    currentTraining.value = params.training
+  }
+
   return {
     training,
     trainings,
+    currentTraining,
     whereTraining,
     findTraining,
     createTraining,
     updateTraining,
+    setTraining,
   }
 }
 

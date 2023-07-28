@@ -68,12 +68,14 @@
                 <v-row>
                   <v-col cols="6">
                     <div
-                      class="text-center text-caption text-green1">
+                      class="text-center text-caption text-green1"
+                    >
                       セット
                     </div>
 
                     <div
-                      class="text-center text-h6 text-green1 font-weight-bold">
+                      class="text-center text-h6 text-green1 font-weight-bold"
+                    >
                       {{ training.detail.set }}
                     </div>
                   </v-col>
@@ -99,6 +101,30 @@
                         {{ kg }}
                       </div>
                     </div>
+                  </v-col>
+                </v-row>
+              </v-col>
+
+              <v-col
+                cols="12"
+              >
+                <v-row
+                  dense
+                  :justify="$vuetify.display.xs ? 'center' : 'start'"
+                  class="px-4"
+                >
+                  <v-col
+                    :cols="$vuetify.display.xs ? '6' : '3'"
+                  >
+                    <members-d-member-training-data-edit-btn
+                      @click-edit-menu="onClickEditMenu(training)"
+                    />
+                  </v-col>
+
+                  <v-col
+                    :cols="$vuetify.display.xs ? '6' : '3'"
+                  >
+                    <members-d-member-training-data-delete-btn />
                   </v-col>
                 </v-row>
               </v-col>
@@ -136,7 +162,7 @@ import TrainingKey from "@/composables/training/training-key"
 const { currentDateKey, currentYearMonthDate } = inject(CalenderKey) as CalenderType
 const { trainingCategories } = inject(TrainingCategoryKey) as TrainingCategoryType
 const { trainingMenus } = inject(TrainingMenuKey) as TrainingMenuType
-const { trainings } = inject(TrainingKey) as TrainingType
+const { trainings, setTraining } = inject(TrainingKey) as TrainingType
 
 const panel = ref([])
 
@@ -173,4 +199,8 @@ const menuOfId = computed(() => {
 
   return menuHash
 })
+
+const onClickEditMenu = (training: any) => {
+  setTraining({ training: training })
+}
 </script>

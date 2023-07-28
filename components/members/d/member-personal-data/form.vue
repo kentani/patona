@@ -351,8 +351,8 @@ const open = (params: { isEdit: boolean, member: any }) => {
   const memberProfile = setMemberProfile(member)
 
   isEdit.value = params.isEdit
-  memberName.value = member?.name
-  memberBirthDay.value = member?.detail?.birthday
+  memberName.value = member?.name || ''
+  memberBirthDay.value = member?.detail?.birthday || ''
   memberGender.value = member?.detail?.genderId || genders.value[0].id
   memberInstructors.value = member?.instructorIds || [instructor.value?.id]
   memberPurpose.value = memberProfile.memberPurpose || ''
