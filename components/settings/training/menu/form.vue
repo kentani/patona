@@ -5,51 +5,97 @@
     persistent
   >
     <v-card
+      variant="flat"
       rounded="lg"
     >
-      <v-card-title>
+      <v-card-title
+        class="ma-2"
+      >
         <common-underlined-text
-          text="メニュー"
-          class="text-body-1 font-weight-bold"
+          text="メニューを追加"
+          class="text-h6 font-weight-bold"
         />
       </v-card-title>
 
       <v-card-text>
-        <v-select
-          v-model="selectedCategoryModel"
-          variant="underlined"
-          :items="trainingCategories"
-          item-title="name"
-          item-value="id"
-          :disabled="!trainingCategories.length"
-          label="カテゴリー"
-          return-object
-          @update:modelValue="onChangeCategory"
-        ></v-select>
+        <v-row>
+          <v-col
+            cols="12"
+          >
+            <common-underlined-text
+              text="基本情報"
+              class="text-body-2 font-weight-bold"
+            />
 
-        <v-text-field
-          v-model="menuName"
-          variant="underlined"
-          density="compact"
-          label="メニュー名"
-          hide-details
-        ></v-text-field>
+            <span
+              class="text-caption text-error font-weight-bold"
+            >
+              ※必須
+            </span>
+          </v-col>
+
+          <v-col
+            cols="12"
+          >
+            <v-select
+              v-model="selectedCategoryModel"
+              label="カテゴリー"
+              variant="outlined"
+              density="compact"
+              :items="trainingCategories"
+              item-title="name"
+              item-value="id"
+              :disabled="!trainingCategories.length"
+              return-object
+              color="green1"
+              validate-on="blur"
+              :rules="[rules.required]"
+              @update:modelValue="onChangeCategory"
+            ></v-select>
+          </v-col>
+
+          <v-col
+            cols="12"
+          >
+            <v-text-field
+              v-model="menuName"
+              label="メニュー名"
+              type="text"
+              variant="outlined"
+              density="compact"
+              color="green1"
+              validate-on="blur"
+              :rules="[rules.required]"
+            ></v-text-field>
+          </v-col>
+        </v-row>
+
+
+
       </v-card-text>
 
       <v-card-actions>
         <v-spacer />
+
         <v-btn
-          variant="text"
+          rounded="lg"
+          class="text-grey"
+          :ripple="false"
+          size="large"
           @click="onClickCancel"
         >
-          閉じる
+          キャンセル
         </v-btn>
 
         <v-btn
-          variant="text"
+          color="green1"
+          class="font-weight-bold"
+          rounded="lg"
+          :ripple="false"
+          size="large"
           @click="onClickComplete"
         >
-          完了
+          保存
         </v-btn>
       </v-card-actions>
     </v-card>
@@ -74,6 +120,20 @@ const isEdit = ref(false)
 const menuName = ref('')
 const selectedCategoryModel = ref({ id: '0', name: '' })
 const currentMenu = ref({ id: '0', name: '', categoryId: '0' })
+
+const rules = ref({
+  required: (value: any) => isRequired(value) || '必須項目です',
+})
+
+const isRequired = (value: any) => {
+  if(!value) return false
+
+  if(Array.isArray(value)) return !!value.length
+
+  if(typeof value === 'object') return !!Object.keys(value).length
+
+  return !!value.length
+}
 
 const onClickCancel = () => {
   close()

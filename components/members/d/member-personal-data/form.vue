@@ -44,6 +44,7 @@
             <v-text-field
               v-model="memberName"
               label="会員名"
+              type="text"
               variant="outlined"
               color="green1"
               :rules="[rules.required]"
@@ -58,10 +59,10 @@
             <v-text-field
               v-model="memberBirthDay"
               label="生年月日"
+              type="tel"
               placeholder="例）19910212 ※1991/2/12生まれの場合"
               variant="outlined"
               color="green1"
-              type="tel"
               :rules="[rules.counter, rules.date]"
               density="compact"
               validate-on="blur"
@@ -126,7 +127,6 @@
               label="目的"
               variant="outlined"
               color="green1"
-              type="tel"
               density="compact"
               validate-on="blur"
             ></v-textarea>
@@ -140,7 +140,6 @@
               label="目標"
               variant="outlined"
               color="green1"
-              type="tel"
               density="compact"
               validate-on="blur"
             ></v-textarea>
@@ -169,7 +168,6 @@
               label="運動経験"
               variant="outlined"
               color="green1"
-              type="tel"
               density="compact"
               validate-on="blur"
             ></v-textarea>
@@ -183,7 +181,6 @@
               label="けが・病気"
               variant="outlined"
               color="green1"
-              type="tel"
               density="compact"
               validate-on="blur"
             ></v-textarea>
@@ -197,7 +194,6 @@
               label="メモ"
               variant="outlined"
               color="green1"
-              type="tel"
               density="compact"
               validate-on="blur"
             ></v-textarea>
@@ -261,10 +257,20 @@ const memberInjury = ref('')
 const memberMemo = ref('')
 
 const rules = ref({
-  required: (value: any) => (!!value && !!value.length) || '必須項目です',
+  required: (value: any) => isRequired(value) || '必須項目です',
   counter: (value: any) => value.length === 8 || '入力形式が不正です （例）19910212 ※1991/2/12生まれの場合',
   date: (value: any) => isValidDate(value) || '入力形式が不正です （例）19910212 ※1991/2/12生まれの場合',
 })
+
+const isRequired = (value: any) => {
+  if(!value) return false
+
+  if(Array.isArray(value)) return !!value.length
+
+  if(typeof value === 'object') return !!Object.keys(value).length
+
+  return !!value.length
+}
 const isValidDate = (value: any) => {
   if(!value) return true
 

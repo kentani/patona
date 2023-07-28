@@ -1,5 +1,7 @@
 <template>
-  <v-container>
+  <v-container
+    fluid
+  >
     <common-breadcrumbs
       :breadcrumbs="breadcrumbs"
     />

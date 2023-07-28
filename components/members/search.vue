@@ -4,8 +4,25 @@
     rounded="lg"
   >
     <v-card-title>
-      <span class="text-body-1 text-grey">会員数</span>
-      <span class="mx-2 text-h4 font-weight-bold text-green1">{{ filteredMembers.length }}</span>
+      <v-row
+        dense
+      >
+        <v-col
+          cols="auto"
+        >
+          <span class="text-body-1 text-grey">会員数</span>
+          <span class="mx-2 text-h4 font-weight-bold text-green1">{{ filteredMembers.length }}</span>
+        </v-col>
+
+        <v-spacer />
+
+        <v-col
+          cols="auto"
+          align-self="center"
+        >
+          <members-add-btn />
+        </v-col>
+      </v-row>
     </v-card-title>
 
     <v-card-text>
@@ -56,6 +73,7 @@
 
       <v-text-field
         v-model="searchMemberNameModel"
+        type="search"
         variant="outlined"
         density="compact"
         placeholder="会員名を入力"

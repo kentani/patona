@@ -1,16 +1,15 @@
 <template>
   <v-btn
-    :variant="variant"
+    icon
+    variant="outlined"
     color="green1"
-    rounded="lg"
-    :ripple="false"
-    block
+    size="x-small"
     @click="onClickAddBtn"
   >
     <v-icon
-      size="large"
       icon="mdi-plus"
-    ></v-icon>会員を追加
+      size="x-large"
+    ></v-icon>
   </v-btn>
 
   <members-d-member-personal-data-form

@@ -1,18 +1,18 @@
 <template>
   <v-btn
+    icon
     variant="outlined"
     color="green1"
-    rounded="lg"
-    :ripple="false"
-    :disabled="!addableGym"
-    block
+    size="x-small"
+    :disabled="addableGym"
     @click="onClickAddGym"
   >
     <v-icon
-      size="large"
       icon="mdi-plus"
-    ></v-icon>ジムを追加
+      size="x-large"
+    ></v-icon>
   </v-btn>
+
 
   <gyms-form
     ref="form"

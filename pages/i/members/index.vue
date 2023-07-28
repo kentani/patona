@@ -1,5 +1,7 @@
 <template>
-  <v-container :fluid="!$vuetify.display.lg">
+  <v-container
+    fluid
+  >
     <common-breadcrumbs
       :breadcrumbs="breadcrumbs"
     />
@@ -14,10 +16,6 @@
         <v-row>
           <v-col cols="12">
             <members-search />
-          </v-col>
-
-          <v-col cols="12">
-            <members-add-btn />
           </v-col>
         </v-row>
 

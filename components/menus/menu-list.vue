@@ -2,13 +2,16 @@
   <v-row
     justify="center"
     align="center"
+    :class="$vuetify.display.xs ? '' : 'raise'"
   >
     <v-col
       v-for="menu in menus"
       :key="menu.id"
-      cols="12"
+      cols="6"
       sm="4"
-      lg="3"
+      md="3"
+      lg="2"
+      :align-self="$vuetify.display.xs ? 'start' : 'center'"
     >
         <v-hover>
           <template v-slot:default="{ isHovering, props }">
@@ -23,10 +26,10 @@
               @click="onClickMenu(menu)"
             >
               <v-card-text
-                class="text-body-1 font-weight-bold text-center"
+                class="text-h6 font-weight-bold text-center"
               >
-                <v-icon size="150">{{ menu.icon }}</v-icon>
-                <p class="mb-0">{{ menu.name }}</p>
+                <v-icon size="120">{{ menu.icon }}</v-icon>
+                <p class="pb-2">{{ menu.name }}</p>
               </v-card-text>
             </v-card>
           </template>
@@ -66,3 +69,9 @@ onMounted(async () => {
   })
 })
 </script>
+
+<style scoped>
+.raise {
+  height: 85vh;
+}
+</style>

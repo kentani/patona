@@ -1,5 +1,7 @@
 <template>
-  <v-container>
+  <v-container
+    fluid
+  >
     <common-breadcrumbs
       :breadcrumbs="breadcrumbs"
     />
@@ -13,10 +15,6 @@
         <v-row>
           <v-col cols="12">
             <gyms-search />
-          </v-col>
-
-          <v-col cols="12">
-            <gyms-add-btn />
           </v-col>
         </v-row>
 

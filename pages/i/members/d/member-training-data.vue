@@ -1,8 +1,8 @@
 <template>
   <v-row>
     <v-col
+      v-if="$vuetify.display.xs"
       cols="12"
-      class="d-block d-sm-none"
     >
       <members-d-member-training-data-calender />
     </v-col>
@@ -17,11 +17,11 @@
     </v-col>
 
     <v-col
+      v-if="!$vuetify.display.xs"
       cols="12"
       sm="4"
       md="4"
       lg="4"
-      class="d-none d-sm-block"
     >
       <members-d-member-training-data-calender />
     </v-col>

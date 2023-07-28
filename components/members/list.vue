@@ -11,7 +11,7 @@
         :key="member.id"
         cols="12"
         sm="6"
-        md="3"
+        md="4"
         lg="3"
       >
         <v-hover>

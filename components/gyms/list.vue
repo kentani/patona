@@ -8,7 +8,8 @@
       :key="gym.id"
       cols="12"
       sm="6"
-      lg="4"
+      md="4"
+      lg="3"
     >
       <v-hover>
         <template v-slot:default="{ isHovering, props }">
@@ -21,14 +22,17 @@
             @click="onClickGym(gym)"
           >
 
-            <v-card-title>
+            <v-card-title class="pb-4 text-h6 font-weight-bold">
               <div>
                 {{ gym.name }}
               </div>
             </v-card-title>
 
-            <v-card-text class="text-body-1 text-left">
-              <div>作成日: {{ formattedDate(gym.createdAt) }}</div>
+            <v-card-text class="pb-4 text-caption text-left">
+              <common-accent-block
+                title="作成日"
+                :text="formattedDate(gym.createdAt)"
+              />
             </v-card-text>
           </v-card>
         </template>
