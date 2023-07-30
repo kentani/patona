@@ -394,6 +394,7 @@ const close = () => {
 watchEffect(() => {
   selectedCategoryModel.value = selectedCategory.value
   currentMenus.value = trainingMenus.value.filter(m => m.categoryId === selectedCategory.value.id).map(m => ({ id: m.id, categoryId: m.categoryId, name: m.name }))
+  selectedMenuModel.value = currentMenus.value[0]
   trainingDateKey.value = format(new Date(`${format(currentDate.value, 'yyyy-MM-')}${selectedDate.value}`), 'yyyyMMdd')
 })
 

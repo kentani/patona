@@ -55,8 +55,8 @@
                 >
                   <v-row>
                     <v-col
-                      cols="12"
-                      sm="12"
+                      cols="7"
+                      sm="7"
                     >
                       <common-accent-block
                         title="生年月日"
@@ -65,8 +65,8 @@
                     </v-col>
 
                     <v-col
-                      cols="12"
-                      sm="12"
+                      cols="5"
+                      sm="5"
                     >
                       <common-accent-block
                         title="年齢"
@@ -76,7 +76,6 @@
 
                     <v-col
                       cols="12"
-                      sm="12"
                     >
                       <common-accent-block
                         title="性別"
@@ -86,7 +85,6 @@
 
                     <v-col
                       cols="12"
-                      sm="12"
                     >
                       <common-accent-block
                         title="登録日"
@@ -96,7 +94,6 @@
 
                     <v-col
                       cols="12"
-                      sm="12"
                     >
                       <common-accent-block
                         title="担当"
