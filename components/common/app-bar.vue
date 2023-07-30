@@ -17,11 +17,6 @@
 
       <div class="pr-2 text-body-2">{{ instructor?.name }}</div>
 
-      <!-- <div>{{ $vuetify.display.xs }}</div>
-      <div>{{ $vuetify.display.sm }}</div>
-      <div>{{ $vuetify.display.md }}</div>
-      <div>{{ $vuetify.display.lg }}</div> -->
-
       <v-menu>
         <template v-slot:activator="{ props }">
           <v-btn
@@ -47,6 +42,18 @@
           >
             <v-list-item-title class="pa-0 text-caption">{{ menu.title }}</v-list-item-title>
           </v-list-item>
+
+          <v-list-item
+            v-if="appUser?.admin"
+            v-for="menu in adminMenus"
+            :key="menu.id"
+            density="compact"
+            class="pb-1 px-4"
+            style="min-height: 0px;"
+            @click="onClickMenu(menu)"
+          >
+            <v-list-item-title class="pa-0 text-caption">{{ menu.title }}</v-list-item-title>
+          </v-list-item>
         </v-list>
       </v-menu>
     </template>
@@ -61,23 +68,31 @@ import GymKey from "@/composables/gym/gym-key"
 import { InstructorType } from "@/composables/instructor/instructor"
 import InstructorKey from "@/composables/instructor/instructor-key"
 
-const { logout } = inject(AuthKey) as AuthType
+const { appUser, logout } = inject(AuthKey) as AuthType
 const { gym, resetGym } = inject(GymKey) as GymType
 const { instructor, resetInstructor } = inject(InstructorKey) as InstructorType
 const router = useRouter()
 
 const title = ref('PATONA')
+
 const menus = ref([
   { id: '1', key: 'my-page', title: 'マイページ', disabled: !instructor.value },
-  { id: '2', key: 'logout', title: 'ログアウト', disabled: false },
+  { id: '2', key: 'logout', title: 'ログアウト', disabled: false }
+])
+
+const adminMenus = ref([
+  { id: '1', key: 'to-admin', title: '管理者画面', disabled: !appUser.value?.admin },
 ])
 
 const onClickMenu = async (menu: any) => {
+  resetGym()
+  resetInstructor()
+
   if(menu.key === 'logout') {
-    resetGym()
-    resetInstructor()
     await logout()
     router.replace('/login')
+  } else if(menu.key === 'to-admin') {
+    router.push('/admin/menus')
   }
 }
 </script>
