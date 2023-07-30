@@ -1,12 +1,15 @@
 <template>
   <v-dialog
     v-model="dialog"
-    max-width="500"
+    max-width="600"
+    :fullscreen="$vuetify.display.xs"
     persistent
   >
     <v-card
       variant="flat"
-      rounded="lg"
+      :rounded="$vuetify.display.xs ? 0 : 'lg'"
+      color="background"
+      class="text-font"
     >
       <v-card-title
         class="ma-2"

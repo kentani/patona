@@ -16,7 +16,7 @@
         class="ma-2"
       >
         <common-underlined-text
-          text="トレーニング履歴を追加"
+          :text="isEdit ? 'トレーニング履歴を編集' : 'トレーニング履歴を追加'"
           class="text-h6 font-weight-bold"
         />
       </v-card-title>
