@@ -59,6 +59,36 @@
                       sm="12"
                     >
                       <common-accent-block
+                        title="生年月日"
+                        :text="convertToBirthday(member?.detail?.birthday)"
+                      />
+                    </v-col>
+
+                    <v-col
+                      cols="12"
+                      sm="12"
+                    >
+                      <common-accent-block
+                        title="年齢"
+                        :text="`${convertToAge(member?.detail?.birthday)}歳`"
+                      />
+                    </v-col>
+
+                    <v-col
+                      cols="12"
+                      sm="12"
+                    >
+                      <common-accent-block
+                        title="性別"
+                        :text="convertToGender(member?.detail?.genderId)"
+                      />
+                    </v-col>
+
+                    <v-col
+                      cols="12"
+                      sm="12"
+                    >
+                      <common-accent-block
                         title="登録日"
                         :text="formattedDate(member?.createdAt)"
                       />

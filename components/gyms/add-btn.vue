@@ -4,7 +4,7 @@
     variant="outlined"
     color="green1"
     size="x-small"
-    :disabled="addableGym"
+    :disabled="!addableGym"
     @click="onClickAddGym"
   >
     <v-icon
