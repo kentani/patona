@@ -28,8 +28,14 @@
           >
             <common-underlined-text
               text="日付"
-              class="text-body-1 font-weight-bold"
+              class="text-body-2 font-weight-bold"
             />
+
+            <span
+              class="text-caption text-error font-weight-bold"
+            >
+              ※必須
+            </span>
           </v-col>
 
           <v-col
@@ -60,8 +66,14 @@
           >
             <common-underlined-text
               text="メニュー"
-              class="text-body-1 font-weight-bold"
+              class="text-body-2 font-weight-bold"
             />
+
+            <span
+              class="text-caption text-error font-weight-bold"
+            >
+              ※必須
+            </span>
           </v-col>
 
           <v-col
@@ -104,9 +116,15 @@
             cols="12"
           >
             <common-underlined-text
-              text="セット"
-              class="text-body-1 font-weight-bold"
+              text="内容"
+              class="text-body-2 font-weight-bold"
             />
+
+            <span
+              class="text-caption text-error font-weight-bold"
+            >
+              ※必須
+            </span>
           </v-col>
 
           <v-col
@@ -114,6 +132,7 @@
           >
             <v-slider
               v-model="set"
+              label="セット数"
               :min="1"
               :max="5"
               :step="1"
@@ -138,15 +157,6 @@
           </v-col>
 
           <v-col
-            cols="12"
-          >
-            <common-underlined-text
-              text="重量"
-              class="text-body-1 font-weight-bold"
-            />
-          </v-col>
-
-          <v-col
             v-for="(w, index) in weight"
             :key="index"
             cols="12"
@@ -157,7 +167,7 @@
               :max="100"
               :step="1"
               color="green1"
-              :label="`${index + 1}セット`"
+              :label="`${index + 1}セット目の重量`"
               density="compact"
               hide-details
             >
@@ -179,9 +189,15 @@
             cols="12"
           >
             <common-underlined-text
-              text="メモ"
-              class="text-body-1 font-weight-bold"
+              text="その他"
+              class="text-body-2 font-weight-bold"
             />
+
+            <span
+              class="text-caption text-error font-weight-bold"
+            >
+              ※必須
+            </span>
           </v-col>
 
           <v-col
@@ -316,7 +332,6 @@ const onUpdateCategory = () => {
 }
 
 const onChangeSet = () => {
-  console.log('onChangeSet')
   weight.value = new Array(Number(set.value))
   for (let key of weight.value.keys()) {
     weight.value[key] = 0

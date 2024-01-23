@@ -174,6 +174,20 @@ const useMember = () => {
     return member.value
   }
 
+  const onLoadedMember = async (params?: { timeout?: number, interval?: number }) => {
+    return new Promise<void>((resolve) => {
+      const timeout = params?.timeout || 10
+      const interval = params?.interval || 200
+      let count = 0
+      const intervalId = setInterval(() => {
+        count++
+        if(!member.value && count <= timeout) return
+        clearInterval(intervalId)
+        resolve()
+      }, interval)
+    });
+  }
+
   const setFilteredMembers = (members: Array<DocumentData>) => {
     filteredMembers.value = members
   }
@@ -216,6 +230,7 @@ const useMember = () => {
     findMember,
     createMember,
     updateMember,
+    onLoadedMember,
     setFilteredMembers,
     setSearchMemberName,
     resetMembers,

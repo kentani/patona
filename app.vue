@@ -25,6 +25,8 @@ import useCalender from "@/composables/training/calender/calender"
 import CalenderKey from "@/composables/training/calender/calender-key"
 import usePhysicalData from "@/composables/physical-data/physical-data"
 import PhysicalDataKey from "@/composables/physical-data/physical-data-key"
+import useDateSelector from "@/composables/physical-data/date-selector/date-selector"
+import DateSelectorKey from "@/composables/physical-data/date-selector/date-selector-key"
 import useScreenController from "@/composables/screen-controller/screen-controller"
 import ScreenControllerKey from "@/composables/screen-controller/screen-controller-key"
 
@@ -37,6 +39,7 @@ provide(TrainingMenuKey, useTrainingMenu())
 provide(TrainingKey, useTraining())
 provide(CalenderKey, useCalender())
 provide(PhysicalDataKey, usePhysicalData())
+provide(DateSelectorKey, useDateSelector())
 provide(ScreenControllerKey, useScreenController())
 </script>
 

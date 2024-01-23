@@ -7,9 +7,19 @@ const usePhysicalData = () => {
   ////////////////////
   // data
   ////////////////////
-  const trainings: Ref<Array<DocumentData>> = ref([])
-  const training: Ref<DocumentData|null> = ref(null)
-  const currentTraining: Ref<any> = ref(null)
+  const physicalNumValues: Ref<Array<DocumentData>> = ref([])
+  const physicalNumValue: Ref<DocumentData|null> = ref(null)
+  const beforeDate: Ref<any> = ref(null)
+  const afterDate: Ref<any> = ref(null)
+  const physicalDataLoaded: Ref<any> = ref(false)
+  const physicalNumValueSettings: Ref<any> = ref([
+    { id: '1', name: '体重', suffix: 'kg', key: 'weight', width: 70 },
+    { id: '2', name: '体脂肪率', suffix: '%', key: 'fat', width: 90 },
+    { id: '3', name: '身体年齢', suffix: '歳', key: 'bodyAge', width: 90 },
+    { id: '4', name: 'BMI', suffix: '', key: 'bmi', width: 70 },
+    { id: '5', name: '基礎代謝量', suffix: 'kcal', key: 'metabolism', width: 120 },
+    { id: '6', name: '内臓脂肪レベル', suffix: '', key: 'visceral', width: 130 },
+  ])
 
   ////////////////////
   // computed
@@ -18,51 +28,39 @@ const usePhysicalData = () => {
   ////////////////////
   // logic
   ////////////////////
-  const whereTraining = async (params: { gymId: string, memberId?: string }) => {
+  const wherePhysicalNumValue = async (params: { gymId: string, memberId: string }) => {
     const { gymId, memberId } = params
 
-    let tmpTrainings: Array<DocumentData> = []
+    let tmpValues: Array<DocumentData> = []
 
-    if(memberId) {
-      const querySnapshot = await getDocs(query(
-        collection(db, 'trainings'),
-        where("gymId", "==", gymId),
-        where("memberId", "==", memberId),
-        orderBy('createdAt', 'asc')
-      ))
+    const querySnapshot = await getDocs(query(
+      collection(db, 'physical-num-values'),
+      where("gymId", "==", gymId),
+      where("memberId", "==", memberId),
+      orderBy('dateKey', 'asc')
+    ))
 
-      querySnapshot.forEach((doc) => {
-        tmpTrainings.push(doc.data() || null)
-      })
-    } else {
-      const querySnapshot = await getDocs(query(
-        collection(db, 'trainings'),
-        where("gymId", "==", gymId),
-        orderBy('createdAt', 'asc')
-      ))
+    querySnapshot.forEach((doc) => {
+      tmpValues.push(doc.data())
+    })
 
-      querySnapshot.forEach((doc) => {
-        tmpTrainings.push(doc.data() || null)
-      })
-    }
+    physicalNumValues.value = tmpValues
 
-    trainings.value = tmpTrainings
-
-    return trainings.value
+    return physicalNumValues.value
   }
 
-  const findTraining = async (params: { id: string }) => {
+  const findPhysicalNumValue = async (params: { id: string }) => {
     const { id } = params
-    const docRef = doc(db, "trainings", id)
+    const docRef = doc(db, "physical-num-values", id)
     const docSnap = await getDoc(docRef)
 
-    training.value = docSnap.data() || null
+    physicalNumValue.value = docSnap.data() || null
 
-    return training.value
+    return physicalNumValue.value
   }
 
-  const createTraining = async (params: { gymId: string, memberId: string, categoryId: string, menuId: string, dateKey: string, detail: any }) => {
-    const docRef = doc(collection(db, "trainings"))
+  const createPhysicalNumValue  = async (params: { gymId: string, memberId: string, dateKey: string, detail: any }) => {
+    const docRef = doc(collection(db, "physical-num-values"))
 
     await setDoc(docRef, {
       ...params,
@@ -71,37 +69,50 @@ const usePhysicalData = () => {
       updatedAt: serverTimestamp(),
     })
 
-    await findTraining({ id: docRef.id })
+    await findPhysicalNumValue({ id: docRef.id })
 
-    return training.value
+    return physicalNumValue.value
   }
 
-  const updateTraining = async (id: string, params: { categoryId: string, menuId: string, dateKey: string, detail: any }) => {
-    const docRef = doc(db, "trainings", id)
+  const updatePhysicalNumValue = async (id: string, params: { dateKey: string, detail: any }) => {
+    const docRef = doc(db, "physical-num-values", id)
 
     await updateDoc(docRef, {
       ...params,
       updatedAt: serverTimestamp(),
     })
 
-    await findTraining({ id: id })
+    await findPhysicalNumValue({ id: id })
 
-    return training.value
+    return physicalNumValue.value
   }
 
-  const setTraining = (params: { training: any }) => {
-    currentTraining.value = params.training
+  const onLoadedPhysicalData = async (params?: { timeout?: number, interval?: number }) => {
+    return new Promise<void>((resolve) => {
+      const timeout = params?.timeout || 10
+      const interval = params?.interval || 200
+      let count = 0
+      const intervalId = setInterval(() => {
+        count++
+        if(!physicalDataLoaded.value) return
+        clearInterval(intervalId)
+        resolve()
+      }, interval)
+    });
   }
 
   return {
-    training,
-    trainings,
-    currentTraining,
-    whereTraining,
-    findTraining,
-    createTraining,
-    updateTraining,
-    setTraining,
+    physicalNumValues,
+    physicalNumValue,
+    beforeDate,
+    afterDate,
+    physicalDataLoaded,
+    physicalNumValueSettings,
+    wherePhysicalNumValue,
+    findPhysicalNumValue,
+    createPhysicalNumValue,
+    updatePhysicalNumValue,
+    onLoadedPhysicalData,
   }
 }
 

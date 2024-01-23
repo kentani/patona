@@ -41,16 +41,19 @@ import { TrainingType } from "@/composables/training/training"
 import TrainingKey from "@/composables/training/training-key"
 
 const { gym, onLoadedGym } = inject(GymKey) as GymType
-const { member } = inject(MemberKey) as MemberType
+const { member, onLoadedMember } = inject(MemberKey) as MemberType
 const { whereTrainingCategory } = inject(TrainingCategoryKey) as TrainingCategoryType
 const { whereTrainingMenu } = inject(TrainingMenuKey) as TrainingMenuType
-const { trainings, whereTraining } = inject(TrainingKey) as TrainingType
+const { whereTraining } = inject(TrainingKey) as TrainingType
 
 onMounted(async () => {
   await onLoadedGym().then(async () => {
-    await whereTrainingCategory({ gymId: gym.value?.id  })
-    await whereTrainingMenu({ gymId: gym.value?.id  })
-    await whereTraining({ gymId: gym.value?.id, memberId: member.value?.id })
+    whereTrainingCategory({ gymId: gym.value?.id  })
+    whereTrainingMenu({ gymId: gym.value?.id  })
+
+    onLoadedMember().then(async () => {
+      whereTraining({ gymId: gym.value?.id, memberId: member.value?.id })
+    })
   })
 })
 </script>

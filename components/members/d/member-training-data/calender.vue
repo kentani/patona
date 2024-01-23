@@ -120,8 +120,6 @@
 </template>
 
 <script setup lang="ts">
-import { format, getDate } from 'date-fns'
-
 import { CalenderType } from "@/composables/training/calender/calender"
 import CalenderKey from "@/composables/training/calender/calender-key"
 
