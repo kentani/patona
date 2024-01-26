@@ -108,11 +108,20 @@
           :disabled="!date"
           @click="onClickDate(date)"
         >
-          <span
-            class="text-body-2"
-          >
-            {{ date }}
-          </span>
+          <div>
+            <div
+              class="text-body-2"
+            >
+              {{ date }}
+            </div>
+            <div
+              v-show="true"
+              class="text-h6"
+              style="line-height: 0.5rem;"
+            >
+              {{ isExistTraining({ trainingDates: trainingDates, date: date }) ? "・" : "　" }}
+            </div>
+          </div>
         </v-btn>
       </div>
     </v-card-text>
@@ -122,6 +131,8 @@
 <script setup lang="ts">
 import { CalenderType } from "@/composables/training/calender/calender"
 import CalenderKey from "@/composables/training/calender/calender-key"
+import { TrainingType } from "@/composables/training/training"
+import TrainingKey from "@/composables/training/training-key"
 
 const {
   selectedDate,
@@ -129,7 +140,6 @@ const {
   week,
   dateList,
   setCurrentDate,
-  setCurrentDateKey,
   setSelectedDate,
   setCurrentYearMonth,
   setCurrentYearMonthDate,
@@ -137,7 +147,12 @@ const {
   prevMonth,
   nextMonth,
   isToday,
+  isExistTraining,
 } = inject(CalenderKey) as CalenderType
+
+const { trainings } = inject(TrainingKey) as TrainingType
+
+const trainingDates: Ref<any> = ref([])
 
 const onClickPrevMonth = () => {
   prevMonth()
@@ -196,9 +211,23 @@ const dateStyle = (date: Number) => {
   return style
 }
 
+const buildTrainingDates = () => {
+  trainingDates.value = trainings.value.map(t => {
+    return t.dateKey
+  })
+}
+
+watch(
+  () => trainings.value,
+  () => {
+    buildTrainingDates()
+  }
+)
+
 onMounted(() => {
   setCurrentYearMonth()
   setCurrentYearMonthDate()
   setDateList()
+  buildTrainingDates()
 })
 </script>

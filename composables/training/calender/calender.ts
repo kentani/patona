@@ -70,6 +70,7 @@ const useCalender = () => {
 
   const prevMonth = () => {
     currentDate.value = subMonths(currentDate.value, 1)
+    setCurrentDateKey(format(currentDate.value, 'yyyyMMdd'))
     setCurrentYearMonth()
     setCurrentYearMonthDate()
     setDateList()
@@ -77,6 +78,7 @@ const useCalender = () => {
 
   const nextMonth = () => {
     currentDate.value = addMonths(currentDate.value, 1)
+    setCurrentDateKey(format(currentDate.value, 'yyyyMMdd'))
     setCurrentYearMonth()
     setCurrentYearMonthDate()
     setDateList()
@@ -88,6 +90,13 @@ const useCalender = () => {
     const d = new Date(`${format(currentDate.value, 'yyyy-MM-')}${date}`)
 
     return format(d, 'yyyyMMdd') === format(today.value, 'yyyyMMdd')
+  }
+
+  const isExistTraining = (params: { trainingDates: any, date: any }) => {
+    const { trainingDates, date } = params
+    if (!date) return false;
+    const key = format(new Date(`${format(currentDate.value, 'yyyy-MM-')}${date}`), 'yyyyMMdd')
+    return trainingDates.includes(key)
   }
 
   return {
@@ -109,6 +118,7 @@ const useCalender = () => {
     prevMonth,
     nextMonth,
     isToday,
+    isExistTraining,
   }
 }
 
