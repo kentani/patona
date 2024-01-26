@@ -124,6 +124,13 @@
                   :text="instructorName(member)"
                 />
               </v-card-text>
+
+              <div
+                v-if="member.archived"
+                class="font-weight-bold text-body-1 text-white d-flex justify-center align-center archive"
+              >
+                <div>アーカイブ済み</div>
+              </div>
             </v-col>
           </v-row>
         </v-card>
