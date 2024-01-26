@@ -196,7 +196,7 @@
             <span
               class="text-caption text-error font-weight-bold"
             >
-              ※必須
+              ※任意
             </span>
           </v-col>
 

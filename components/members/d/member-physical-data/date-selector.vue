@@ -14,15 +14,6 @@
           <span class="text-body-1 text-grey">計測数</span>
           <span class="mx-2 text-h4 font-weight-bold text-green1">{{ physicalNumValues.length }}</span>
         </v-col>
-
-        <v-spacer />
-
-        <v-col
-          cols="auto"
-          align-self="center"
-        >
-          <members-d-member-physical-data-add-btn />
-        </v-col>
       </v-row>
     </v-card-title>
 
@@ -30,34 +21,6 @@
       <v-row
         dense
       >
-        <v-col
-          cols="12"
-        >
-          <common-underlined-text
-            text="計測日"
-            class="text-body-2 mb-4"
-          />
-        </v-col>
-
-        <v-col
-          cols="12"
-        >
-          <v-select
-            v-model="currentDateModel"
-            :items="beforeDateSelectOption"
-            item-title="title"
-            item-value="value"
-            return-object
-            color="green1"
-            item-color="green1"
-            variant="solo"
-            density="compact"
-            hide-details
-            :disabled="currentDateDisabled"
-            @update:modelValue="onChangeCurrentDate"
-          ></v-select>
-        </v-col>
-
         <v-col
           cols="12"
         >
@@ -91,7 +54,6 @@
             :items="beforeDateSelectOption"
             item-title="title"
             item-value="value"
-            return-object
             color="green1"
             item-color="green1"
             variant="solo"
@@ -99,7 +61,14 @@
             hide-details
             :disabled="beforeDateDisabled"
             @update:modelValue="onChangeDate"
-          ></v-select>
+          >
+            <template v-slot:item="{ props, item }">
+              <v-list-item
+                v-bind="props"
+                :disabled="item.raw.disabled"
+              ></v-list-item>
+            </template>
+          </v-select>
         </v-col>
 
         <v-col
@@ -117,7 +86,6 @@
             :items="afterDateSelectOption"
             item-title="title"
             item-value="value"
-            return-object
             color="green1"
             item-color="green1"
             variant="solo"
@@ -125,7 +93,14 @@
             hide-details
             :disabled="afterDateDisabled"
             @update:modelValue="onChangeDate"
-          ></v-select>
+          >
+            <template v-slot:item="{ props, item }">
+              <v-list-item
+                v-bind="props"
+                :disabled="item.raw.disabled"
+              ></v-list-item>
+            </template>
+          </v-select>
         </v-col>
       </v-row>
     </v-card-text>
@@ -139,39 +114,16 @@ import { DateSelectorType } from "@/composables/physical-data/date-selector/date
 import DateSelectorKey from "@/composables/physical-data/date-selector/date-selector-key"
 
 const { physicalNumValues, onLoadedPhysicalData } = inject(PhysicalDataKey) as PhysicalDataType
-const { currentDate, beforeDate, afterDate, compare, setCurrentDate, setBeforeDate, setAfterDate,  setCompare } = inject(DateSelectorKey) as DateSelectorType
+const { compare, setCompare, setBeforeDate, setAfterDate } = inject(DateSelectorKey) as DateSelectorType
 
-const compareModel: Ref<boolean> = ref(false)
-const currentDateModel: Ref<any> = ref(null)
+const compareModel: Ref<any> = ref(false)
 const beforeDateModel: Ref<any> = ref(null)
 const afterDateModel: Ref<any> = ref(null)
-const beforeDateSelectOption = computed(() => {
-  return physicalNumValues.value.map(val => {
-    let dateKey = val.dateKey
+const beforeDateSelectOption: Ref<any> = ref([])
+const afterDateSelectOption: Ref<any> = ref([])
 
-    return {
-      title: `${dateKey.slice(0, 4)}-${dateKey.slice(4, 6)}-${dateKey.slice(6, 8)}`,
-      value: dateKey,
-      disabled: false,
-    }
-  })
-})
-const afterDateSelectOption = computed(() => {
-  return physicalNumValues.value.map(val => {
-    let dateKey = val.dateKey
-
-    return {
-      title: `${dateKey.slice(0, 4)}-${dateKey.slice(4, 6)}-${dateKey.slice(6, 8)}`,
-      value: dateKey,
-      disabled: false,
-    }
-  })
-})
 const compareDisabled = computed(() => {
   return physicalNumValues.value.length < 2
-})
-const currentDateDisabled = computed(() => {
-  return compareModel.value || physicalNumValues.value.length < 2
 })
 const beforeDateDisabled = computed(() => {
   return !compareModel.value || physicalNumValues.value.length < 2
@@ -180,32 +132,72 @@ const afterDateDisabled = computed(() => {
   return !compareModel.value || physicalNumValues.value.length < 2
 })
 
-const onChangeCurrentDate = () => {
-  setCurrentDate(currentDateModel.value)
+const buildBeforeDateSelectOption = () => {
+  beforeDateSelectOption.value =  physicalNumValues.value.map(val => {
+    let dateKey = val.dateKey
+
+    return {
+      title: `${dateKey.slice(0, 4)}-${dateKey.slice(4, 6)}-${dateKey.slice(6, 8)}`,
+      value: dateKey,
+      disabled: afterDateModel.value < dateKey,
+    }
+  })
+}
+const buildAfterDateSelectOption = () => {
+  afterDateSelectOption.value = physicalNumValues.value.map(val => {
+    let dateKey = val.dateKey
+
+    return {
+      title: `${dateKey.slice(0, 4)}-${dateKey.slice(4, 6)}-${dateKey.slice(6, 8)}`,
+      value: dateKey,
+      disabled: beforeDateModel.value > dateKey,
+    }
+  })
+}
+
+const onChangeCompare = () => {
+  setCompare(compareModel.value)
 }
 const onChangeDate = () => {
   setBeforeDate(beforeDateModel.value)
   setAfterDate(afterDateModel.value)
+  buildBeforeDateSelectOption()
+  buildAfterDateSelectOption()
 }
-const onChangeCompare = () => {
-  setCompare(compareModel.value)
-}
+
+watch(
+  () => physicalNumValues.value,
+  () => {
+    beforeDateModel.value = physicalNumValues.value[0].dateKey
+    afterDateModel.value = physicalNumValues.value.slice(-1)[0].dateKey
+    setBeforeDate(beforeDateModel.value)
+    setAfterDate(afterDateModel.value)
+    buildBeforeDateSelectOption()
+    buildAfterDateSelectOption()
+  }
+)
 
 watchEffect(async () => {
   await onLoadedPhysicalData().then(async () => {
-    currentDateModel.value = currentDate.value
-    beforeDateModel.value = beforeDate.value
-    afterDateModel.value = afterDate.value
     compareModel.value = compare.value
+    beforeDateModel.value = physicalNumValues.value[0].dateKey
+    afterDateModel.value = physicalNumValues.value.slice(-1)[0].dateKey
+    setBeforeDate(beforeDateModel.value)
+    setAfterDate(afterDateModel.value)
+    buildBeforeDateSelectOption()
+    buildAfterDateSelectOption()
   })
 })
 
 onMounted(async () => {
   await onLoadedPhysicalData().then(async () => {
-    currentDateModel.value = currentDate.value
-    beforeDateModel.value = beforeDate.value
-    afterDateModel.value = afterDate.value
     compareModel.value = compare.value
+    beforeDateModel.value = physicalNumValues.value[0].dateKey
+    afterDateModel.value = physicalNumValues.value.slice(-1)[0].dateKey
+    setBeforeDate(beforeDateModel.value)
+    setAfterDate(afterDateModel.value)
+    buildBeforeDateSelectOption()
+    buildAfterDateSelectOption()
   })
 })
 </script>

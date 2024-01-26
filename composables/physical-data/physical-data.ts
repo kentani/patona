@@ -1,4 +1,4 @@
-import { collection, query, where, getDocs, orderBy, limit, doc, setDoc, serverTimestamp, DocumentData, updateDoc, getDoc, QuerySnapshot } from "firebase/firestore"
+import { collection, query, where, getDocs, orderBy, limit, doc, setDoc, serverTimestamp, DocumentData, updateDoc, getDoc, QuerySnapshot, deleteDoc } from "firebase/firestore"
 import useFirebase from "../firebase/firebase"
 
 const usePhysicalData = () => {
@@ -8,9 +8,7 @@ const usePhysicalData = () => {
   // data
   ////////////////////
   const physicalNumValues: Ref<Array<DocumentData>> = ref([])
-  const physicalNumValue: Ref<DocumentData|null> = ref(null)
-  const beforeDate: Ref<any> = ref(null)
-  const afterDate: Ref<any> = ref(null)
+  const physicalNumValue: Ref<any> = ref(null)
   const physicalDataLoaded: Ref<any> = ref(false)
   const physicalNumValueSettings: Ref<any> = ref([
     { id: '1', name: '体重', suffix: 'kg', key: 'weight', width: 70 },
@@ -18,7 +16,7 @@ const usePhysicalData = () => {
     { id: '3', name: '身体年齢', suffix: '歳', key: 'bodyAge', width: 90 },
     { id: '4', name: 'BMI', suffix: '', key: 'bmi', width: 70 },
     { id: '5', name: '基礎代謝量', suffix: 'kcal', key: 'metabolism', width: 120 },
-    { id: '6', name: '内臓脂肪レベル', suffix: '', key: 'visceral', width: 130 },
+    { id: '6', name: '内臓脂肪レベル', suffix: '', key: 'visceral', width: 120 },
   ])
 
   ////////////////////
@@ -87,6 +85,12 @@ const usePhysicalData = () => {
     return physicalNumValue.value
   }
 
+  const deletePhysicalNumValue = async (id: string) => {
+    const docRef = doc(db, "physical-num-values", id)
+
+    await deleteDoc(docRef);
+  }
+
   const onLoadedPhysicalData = async (params?: { timeout?: number, interval?: number }) => {
     return new Promise<void>((resolve) => {
       const timeout = params?.timeout || 10
@@ -101,18 +105,22 @@ const usePhysicalData = () => {
     });
   }
 
+  const setPhysicalNumValue = (val: any) => {
+    physicalNumValue.value = val
+  }
+
   return {
     physicalNumValues,
     physicalNumValue,
-    beforeDate,
-    afterDate,
     physicalDataLoaded,
     physicalNumValueSettings,
     wherePhysicalNumValue,
     findPhysicalNumValue,
     createPhysicalNumValue,
     updatePhysicalNumValue,
+    deletePhysicalNumValue,
     onLoadedPhysicalData,
+    setPhysicalNumValue,
   }
 }
 

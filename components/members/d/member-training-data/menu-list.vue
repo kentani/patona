@@ -124,7 +124,9 @@
                   <v-col
                     :cols="$vuetify.display.xs ? '6' : '3'"
                   >
-                    <members-d-member-training-data-delete-btn />
+                    <members-d-member-training-data-delete-btn
+                      :training="training"
+                    />
                   </v-col>
                 </v-row>
               </v-col>

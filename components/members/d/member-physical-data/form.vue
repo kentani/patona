@@ -76,96 +76,6 @@
           </v-col>
 
           <v-col
-            cols="12"
-          >
-            <v-text-field
-              v-model="weight"
-              label="体重"
-              type="tel"
-              variant="outlined"
-              color="green1"
-              :rules="[rules.required]"
-              density="compact"
-              validate-on="blur"
-            ></v-text-field>
-          </v-col>
-
-          <v-col
-            cols="12"
-          >
-            <v-text-field
-              v-model="fat"
-              label="体脂肪率"
-              type="tel"
-              variant="outlined"
-              color="green1"
-              :rules="[rules.required]"
-              density="compact"
-              validate-on="blur"
-            ></v-text-field>
-          </v-col>
-
-          <v-col
-            cols="12"
-          >
-            <v-text-field
-              v-model="bodyAge"
-              label="身体年齢"
-              type="tel"
-              variant="outlined"
-              color="green1"
-              :rules="[rules.required]"
-              density="compact"
-              validate-on="blur"
-            ></v-text-field>
-          </v-col>
-
-          <v-col
-            cols="12"
-          >
-            <v-text-field
-              v-model="bmi"
-              label="BMI"
-              type="tel"
-              variant="outlined"
-              color="green1"
-              :rules="[rules.required]"
-              density="compact"
-              validate-on="blur"
-            ></v-text-field>
-          </v-col>
-
-          <v-col
-            cols="12"
-          >
-            <v-text-field
-              v-model="metabolism"
-              label="基礎代謝量"
-              type="tel"
-              variant="outlined"
-              color="green1"
-              :rules="[rules.required]"
-              density="compact"
-              validate-on="blur"
-            ></v-text-field>
-          </v-col>
-
-          <v-col
-            cols="12"
-          >
-            <v-text-field
-              v-model="visceral"
-              label="内臓脂肪レベル"
-              type="tel"
-              variant="outlined"
-              color="green1"
-              :rules="[rules.required]"
-              density="compact"
-              validate-on="blur"
-            ></v-text-field>
-          </v-col>
-
-          <v-col
             v-for="(setting, index) in physicalNumValueSettings"
             :key="setting.id"
             cols="12"
@@ -185,6 +95,16 @@
       </v-card-text>
 
       <v-card-actions>
+        <v-btn
+          rounded="lg"
+          class="text-red"
+          :ripple="false"
+          size="large"
+          @click="onClickDelete"
+        >
+          削除
+        </v-btn>
+
         <v-spacer />
 
         <v-btn
@@ -229,11 +149,12 @@ const {
   setCurrentYearMonthDate
 } = inject(CalenderKey) as CalenderType
 const {
-  physicalNumValues,
+  physicalNumValue,
   physicalNumValueSettings,
   wherePhysicalNumValue,
   createPhysicalNumValue,
-  updatePhysicalNumValue
+  updatePhysicalNumValue,
+  deletePhysicalNumValue
 } = inject(PhysicalDataKey) as PhysicalDataType
 
 const route = useRoute()
@@ -241,12 +162,6 @@ const route = useRoute()
 const isEdit = ref(false)
 const dialog = ref(false)
 const dateKey: Ref<any> = ref('')
-const weight: Ref<any> = ref(null)
-const fat: Ref<any> = ref(null)
-const bodyAge: Ref<any> = ref(null)
-const bmi: Ref<any> = ref(null)
-const metabolism: Ref<any> = ref(null)
-const visceral: Ref<any> = ref(null)
 const numValueModels: Ref<any> = ref(new Array(physicalNumValueSettings.value.length))
 
 const rules = ref({
@@ -275,16 +190,20 @@ const isValidDate = (value: any) => {
 
 const onUpdateFocusedDate = () => {
   if(isValidDate(dateKey.value)) {
-    const year = dateKey.value.slice(0, 4)
-    const month = dateKey.value.slice(4, 6)
-    const date = dateKey.value.slice(6, 8)
-
-    setCurrentDateKey(dateKey.value)
-    setCurrentDateByDateKey(`${year}-${month}-${date}`)
-    setSelectedDate(Number(date))
-    setCurrentYearMonth()
-    setCurrentYearMonthDate()
+    setDateData()
   }
+}
+
+const setDateData = () => {
+  const year = dateKey.value.slice(0, 4)
+  const month = dateKey.value.slice(4, 6)
+  const date = dateKey.value.slice(6, 8)
+
+  setCurrentDateKey(dateKey.value)
+  setCurrentDateByDateKey(`${year}-${month}-${date}`)
+  setSelectedDate(Number(date))
+  setCurrentYearMonth()
+  setCurrentYearMonthDate()
 }
 
 const onClickCancel = () => {
@@ -293,19 +212,29 @@ const onClickCancel = () => {
 
 const onClickComplete = async () => {
   if(isEdit.value) {
-
+    await updatePhysicalNumValue(physicalNumValue.value.id, {
+      dateKey: dateKey.value,
+      detail: {
+        weight: Number(numValueModels.value[0]),
+        fat: Number(numValueModels.value[1]),
+        bodyAge: Number(numValueModels.value[2]),
+        bmi: Number(numValueModels.value[3]),
+        metabolism: Number(numValueModels.value[4]),
+        visceral: Number(numValueModels.value[5]),
+      }
+    })
   } else {
     await createPhysicalNumValue({
       gymId: String(route.query.gymId),
       memberId: String(route.query.memberId),
       dateKey: dateKey.value,
       detail: {
-        weight: Number(weight.value),
-        fat: Number(fat.value),
-        bodyAge: Number(bodyAge.value),
-        bmi: Number(bmi.value),
-        metabolism: Number(metabolism.value),
-        visceral: Number(visceral.value),
+        weight: Number(numValueModels.value[0]),
+        fat: Number(numValueModels.value[1]),
+        bodyAge: Number(numValueModels.value[2]),
+        bmi: Number(numValueModels.value[3]),
+        metabolism: Number(numValueModels.value[4]),
+        visceral: Number(numValueModels.value[5]),
       }
     })
   }
@@ -318,18 +247,43 @@ const onClickComplete = async () => {
   close()
 }
 
+const onClickDelete = async () => {
+  await deletePhysicalNumValue(physicalNumValue.value.id)
+
+  await wherePhysicalNumValue({
+    gymId: String(route.query.gymId),
+    memberId: String(route.query.memberId),
+  })
+
+  close()
+}
+
 const open = (params: { isEdit: boolean }) => {
   isEdit.value = params.isEdit
+
+  if (isEdit.value) {
+    dateKey.value = physicalNumValue.value.dateKey
+
+    setDateData()
+
+    const detail = physicalNumValue.value.detail
+    numValueModels.value[0] = detail.weight
+    numValueModels.value[1] = detail.fat
+    numValueModels.value[2] = detail.bodyAge
+    numValueModels.value[3] = detail.bmi
+    numValueModels.value[4] = detail.metabolism
+    numValueModels.value[5] = detail.visceral
+  }
+
   dialog.value = true
 }
 
 const close = () => {
-  weight.value = null
-  fat.value = null
-  bodyAge.value = null
-  bmi.value = null
-  metabolism.value = null
-  visceral.value = null
+  dateKey.value = format(new Date(), 'yyyyMMdd')
+
+  setDateData()
+
+  numValueModels.value = new Array(physicalNumValueSettings.value.length)
   dialog.value = false
 }
 

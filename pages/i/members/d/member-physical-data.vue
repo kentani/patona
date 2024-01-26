@@ -41,7 +41,7 @@ import DateSelectorKey from "@/composables/physical-data/date-selector/date-sele
 const { gym, onLoadedGym } = inject(GymKey) as GymType
 const { member, onLoadedMember } = inject(MemberKey) as MemberType
 const { physicalNumValues, physicalDataLoaded, wherePhysicalNumValue } = inject(PhysicalDataKey) as PhysicalDataType
-const { setCurrentDate, setBeforeDate, setAfterDate } = inject(DateSelectorKey) as DateSelectorType
+const { setBeforeDate, setAfterDate } = inject(DateSelectorKey) as DateSelectorType
 
 const formattedDate = (dateKey: string) => {
   if(!dateKey) return ''
@@ -55,20 +55,6 @@ onMounted(async () => {
       physicalDataLoaded.value = false
 
       await wherePhysicalNumValue({ gymId: gym.value?.id, memberId: member.value?.id  })
-
-      const valLength = physicalNumValues.value.length
-      setCurrentDate({
-        title: formattedDate(physicalNumValues.value[valLength - 1]?.dateKey),
-        value: physicalNumValues.value[valLength - 1]?.dateKey,
-      })
-      setBeforeDate({
-        title: formattedDate(physicalNumValues.value[valLength - 2]?.dateKey),
-        value: physicalNumValues.value[valLength - 2]?.dateKey,
-      })
-      setAfterDate({
-        title: formattedDate(physicalNumValues.value[valLength - 1]?.dateKey),
-        value: physicalNumValues.value[valLength - 1]?.dateKey,
-      })
 
       physicalDataLoaded.value = true
     })

@@ -1,4 +1,4 @@
-import { collection, query, where, getDocs, orderBy, limit, doc, setDoc, serverTimestamp, DocumentData, updateDoc, getDoc, QuerySnapshot } from "firebase/firestore"
+import { collection, query, where, getDocs, orderBy, limit, doc, setDoc, serverTimestamp, DocumentData, updateDoc, getDoc, QuerySnapshot, deleteDoc } from "firebase/firestore"
 import useFirebase from "../firebase/firebase"
 
 const useMember = () => {
@@ -174,6 +174,13 @@ const useMember = () => {
     return member.value
   }
 
+  const deleteMember = async (id: string) => {
+    const docRef = doc(db, "members", id)
+
+    await deleteDoc(docRef);
+  }
+
+
   const onLoadedMember = async (params?: { timeout?: number, interval?: number }) => {
     return new Promise<void>((resolve) => {
       const timeout = params?.timeout || 10
@@ -230,6 +237,7 @@ const useMember = () => {
     findMember,
     createMember,
     updateMember,
+    deleteMember,
     onLoadedMember,
     setFilteredMembers,
     setSearchMemberName,

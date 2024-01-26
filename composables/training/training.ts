@@ -1,4 +1,4 @@
-import { collection, query, where, getDocs, orderBy, limit, doc, setDoc, serverTimestamp, DocumentData, updateDoc, getDoc, QuerySnapshot } from "firebase/firestore"
+import { collection, query, where, getDocs, orderBy, limit, doc, setDoc, serverTimestamp, DocumentData, updateDoc, getDoc, QuerySnapshot, deleteDoc } from "firebase/firestore"
 import useFirebase from "../firebase/firebase"
 
 const useTraining = () => {
@@ -18,7 +18,7 @@ const useTraining = () => {
   ////////////////////
   // logic
   ////////////////////
-  const whereTraining = async (params: { gymId: string, memberId?: string }) => {
+  const whereTraining = async (params: { gymId: any, memberId?: any }) => {
     const { gymId, memberId } = params
 
     let tmpTrainings: Array<DocumentData> = []
@@ -89,6 +89,12 @@ const useTraining = () => {
     return training.value
   }
 
+  const deleteTraining = async (id: string) => {
+    const docRef = doc(db, "trainings", id)
+
+    await deleteDoc(docRef);
+  }
+
   const setTraining = (params: { training: any }) => {
     currentTraining.value = params.training
   }
@@ -101,6 +107,7 @@ const useTraining = () => {
     findTraining,
     createTraining,
     updateTraining,
+    deleteTraining,
     setTraining,
   }
 }
