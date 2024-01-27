@@ -94,8 +94,8 @@
                       style="text-align: center;"
                     >
                       <div
-                        v-for="(_set, index) in new Array(training.detail.set)"
-                        :key="index"
+                        v-for="(_kg, index) in training.detail.kg"
+                        :key="'set-' + index"
                         class="pa-1"
                       >
                         {{ index + 1 }}
@@ -118,7 +118,7 @@
                     >
                       <div
                         v-for="(kg, index) in training.detail.kg"
-                        :key="index"
+                        :key="'kg-' + index"
                         class="pa-1"
                       >
                         {{ kg }}
@@ -140,11 +140,11 @@
                       style="text-align: center;"
                     >
                       <div
-                        v-for="(kg, index) in training.detail.count"
-                        :key="index"
+                        v-for="(count, index) in training.detail.count"
+                        :key="'count-' + index"
                         class="pa-1"
                       >
-                        {{ kg }}
+                        {{ count }}
                       </div>
                     </div>
                   </v-col>
