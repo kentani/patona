@@ -48,12 +48,12 @@ onMounted(async () => {
             router.replace({ path: '/i/menus', query: { gymId: gym.value?.id } })
           } else {
             await createInstructor({ userId: appUser.value?.id, gymId: gym.value?.id, owner: false, name: appUser.value.name })
-            await updateUser(appUser.value.id, { invited: true })
+            await updateUser(appUser.value.id, { invited: true, createdGymCount: 0 })
             router.replace({ path: '/i/menus', query: { gymId: gym.value?.id } })
           }
         }
       } else {
-        router.replace('/login')
+        router.replace({ path: '/login', query: { redirectPath: encodeURIComponent(route.fullPath) } })
       }
     })
 })

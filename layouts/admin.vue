@@ -19,6 +19,7 @@ import AuthKey from "@/composables/auth/auth-key"
 const { appUser, checkLoginState } = inject(AuthKey) as AuthType
 
 const router = useRouter()
+const route = useRoute()
 
 const showable = ref(false)
 
@@ -32,7 +33,7 @@ onMounted(async () => {
           throw createError({ statusCode: 404, statusMessage: 'Page Not Found', fatal: true })
         }
       } else {
-        router.replace('/login')
+        router.replace({ path: '/login', query: { redirectPath: encodeURIComponent(route.fullPath) } })
       }
     })
 })

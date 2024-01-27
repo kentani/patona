@@ -22,6 +22,7 @@ const { appUser, checkLoginState } = inject(AuthKey) as AuthType
 const { screenShowable } = inject(ScreenControllerKey) as ScreenControllerType
 
 const router = useRouter()
+const route = useRoute()
 
 const showable = ref(false)
 
@@ -35,7 +36,7 @@ onMounted(async () => {
           router.replace('/apply')
         }
       } else {
-        router.replace('/login')
+        router.replace({ path: '/login', query: { redirectPath: encodeURIComponent(route.fullPath) } })
       }
     })
 })

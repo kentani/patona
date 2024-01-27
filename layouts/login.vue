@@ -22,24 +22,31 @@ const { appUser, getLoginResult, checkLoginState } = inject(AuthKey) as AuthType
 const { instructors, whereInstructor } = inject(InstructorKey) as InstructorType
 
 const router = useRouter()
+const route = useRoute()
 
 const showable = ref(false)
 
 onMounted(async () => {
   await getLoginResult()
   await checkLoginState().then(async () => {
+    let redirectPath: any = decodeURIComponent(String(route.query.redirectPath))
+
     if(appUser.value) {
       if(appUser.value.admin) {
-        router.replace('/admin/menus')
+        redirectPath = redirectPath || '/admin/menus'
+        router.replace(redirectPath)
       } else if(appUser.value.approved || appUser.value.invited) {
         await whereInstructor({ userId: appUser.value?.id })
         if(instructors.value.length === 1) {
-          router.replace({ path: '/i/menus', query: { gymId: instructors.value[0].gymId } })
+          redirectPath = redirectPath || { path: '/i/menus', query: { gymId: instructors.value[0].gymId } }
+          router.replace(redirectPath)
         } else {
-          router.replace('/i/gyms')
+          redirectPath = redirectPath || '/i/gyms'
+          router.replace(redirectPath)
         }
       } else {
-        router.replace('/apply')
+        redirectPath = redirectPath || '/apply'
+        router.replace(redirectPath)
       }
     } else {
       showable.value = true

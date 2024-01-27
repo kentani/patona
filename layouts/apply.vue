@@ -22,6 +22,7 @@ const { appUser, checkLoginState } = inject(AuthKey) as AuthType
 const { instructors, whereInstructor } = inject(InstructorKey) as InstructorType
 
 const router = useRouter()
+const route = useRoute()
 
 const showable = ref(false)
 
@@ -42,7 +43,7 @@ onMounted(async () => {
           showable.value = true
         }
       } else {
-        router.replace('/login')
+        router.replace({ path: '/login', query: { redirectPath: encodeURIComponent(route.fullPath) } })
       }
     })
 })
