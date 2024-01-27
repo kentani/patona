@@ -1,4 +1,4 @@
-import { collection, query, where, getDocs, orderBy, limit, doc, setDoc, serverTimestamp, DocumentData, updateDoc, getDoc, QuerySnapshot } from "firebase/firestore"
+import { collection, query, where, getDocs, orderBy, limit, doc, setDoc, serverTimestamp, DocumentData, updateDoc, getDoc, QuerySnapshot, deleteDoc } from "firebase/firestore"
 import useFirebase from "../firebase/firebase"
 
 const useTrainingCategory = () => {
@@ -80,6 +80,12 @@ const useTrainingCategory = () => {
     return trainingCategory.value
   }
 
+  const deleteTrainingCategory = async (id: string) => {
+    const docRef = doc(db, "training-categories", id)
+
+    await deleteDoc(docRef);
+  }
+
   const setTrainingCategory = (category: any) => {
     trainingCategory.value = category
   }
@@ -95,6 +101,7 @@ const useTrainingCategory = () => {
     findTrainingCategory,
     createTrainingCategory,
     updateTrainingCategory,
+    deleteTrainingCategory,
     setTrainingCategory,
     setSelectedCategory,
   }

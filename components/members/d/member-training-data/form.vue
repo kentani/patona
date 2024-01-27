@@ -333,7 +333,7 @@ const isValidDate = (value: any) => {
 }
 
 const setMenu = () => {
-  let tmpMenus = trainingMenus.value.filter(menu => menu.categoryId === selectedCategory.value.id)
+  let tmpMenus = trainingMenus.value.filter(menu => menu.categoryId === selectedCategory.value?.id)
   currentMenus.value = tmpMenus.map(menu => ({ id: menu.id, categoryId: menu.categoryId, name: menu.name }))
 }
 
@@ -375,8 +375,8 @@ const onClickCancel = async () => {
 const onClickComplete = async () => {
   if(isEdit.value) {
     await updateTraining(currentTraining.value.id, {
-      categoryId: selectedCategoryModel.value.id,
-      menuId: selectedMenuModel.value.id,
+      categoryId: selectedCategoryModel.value?.id,
+      menuId: selectedMenuModel.value?.id,
       dateKey: trainingDateKey.value,
       detail: {
         set: set.value,
@@ -389,8 +389,8 @@ const onClickComplete = async () => {
     await createTraining({
       gymId: String(route.query.gymId),
       memberId: String(route.query.memberId),
-      categoryId: selectedCategoryModel.value.id,
-      menuId: selectedMenuModel.value.id,
+      categoryId: selectedCategoryModel.value?.id,
+      menuId: selectedMenuModel.value?.id,
       dateKey: trainingDateKey.value,
       detail: {
         set: set.value,
@@ -443,7 +443,7 @@ const close = () => {
 
 watchEffect(() => {
   selectedCategoryModel.value = selectedCategory.value
-  currentMenus.value = trainingMenus.value.filter(m => m.categoryId === selectedCategory.value.id).map(m => ({ id: m.id, categoryId: m.categoryId, name: m.name }))
+  currentMenus.value = trainingMenus.value.filter(m => m.categoryId === selectedCategory.value?.id).map(m => ({ id: m.id, categoryId: m.categoryId, name: m.name }))
   selectedMenuModel.value = currentMenus.value[0]
   trainingDateKey.value = format(new Date(`${format(currentDate.value, 'yyyy-MM-')}${selectedDate.value}`), 'yyyyMMdd')
 })

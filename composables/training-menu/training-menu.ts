@@ -1,4 +1,4 @@
-import { collection, query, where, getDocs, orderBy, limit, doc, setDoc, serverTimestamp, DocumentData, updateDoc, getDoc, QuerySnapshot } from "firebase/firestore"
+import { collection, query, where, getDocs, orderBy, limit, doc, setDoc, serverTimestamp, DocumentData, updateDoc, getDoc, QuerySnapshot, deleteDoc } from "firebase/firestore"
 import useFirebase from "../firebase/firebase"
 
 const useTrainingMenu = () => {
@@ -79,6 +79,12 @@ const useTrainingMenu = () => {
     return trainingMenu.value
   }
 
+  const deleteTrainingMenu = async (id: string) => {
+    const docRef = doc(db, "training-menus", id)
+
+    await deleteDoc(docRef);
+  }
+
   return {
     trainingMenus,
     trainingMenu,
@@ -86,6 +92,7 @@ const useTrainingMenu = () => {
     findTrainingMenu,
     createTrainingMenu,
     updateTrainingMenu,
+    deleteTrainingMenu,
   }
 }
 

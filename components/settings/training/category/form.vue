@@ -56,6 +56,17 @@
       </v-card-text>
 
       <v-card-actions>
+        <v-btn
+          rounded="lg"
+          class="text-red"
+          :ripple="false"
+          size="large"
+          :disabled="!isDeletable()"
+          @click="onClickDelete"
+        >
+          削除
+        </v-btn>
+
         <v-spacer />
 
         <v-btn
@@ -88,14 +99,22 @@ import { GymType } from "@/composables/gym/gym"
 import GymKey from "@/composables/gym/gym-key"
 import { TrainingCategoryType } from "@/composables/training-category/training-category"
 import TrainingCategoryKey from "@/composables/training-category/training-category-key"
+import { TrainingMenuType } from "@/composables/training-menu/training-menu"
+import TrainingMenuKey from "@/composables/training-menu/training-menu-key"
+import { TrainingType } from "@/composables/training/training"
+import TrainingKey from "@/composables/training/training-key"
 
 const { gym } = inject(GymKey) as GymType
-const { trainingCategory, createTrainingCategory, updateTrainingCategory, setSelectedCategory } = inject(TrainingCategoryKey) as TrainingCategoryType
+const { trainingCategory, whereTrainingCategory, createTrainingCategory, updateTrainingCategory, deleteTrainingCategory, setSelectedCategory } = inject(TrainingCategoryKey) as TrainingCategoryType
+const { whereTrainingMenu, trainingMenus } = inject(TrainingMenuKey) as TrainingMenuType
+const { trainings } = inject(TrainingKey) as TrainingType
 
 const dialog = ref(false)
 const isEdit = ref(false)
 const categoryName = ref('')
 const currentCategory = ref({ id: '0', name: '' })
+
+const route = useRoute()
 
 const rules = ref({
   required: (value: any) => isRequired(value) || '必須項目です',
@@ -124,6 +143,32 @@ const onClickComplete = async () => {
 
   setSelectedCategory(trainingCategory.value)
   close()
+}
+
+const onClickDelete = async () => {
+  await deleteTrainingCategory(currentCategory.value.id)
+
+  await whereTrainingCategory({
+    gymId: String(route.query.gymId),
+  })
+
+  await whereTrainingMenu({
+    gymId: String(route.query.gymId),
+  })
+
+  setSelectedCategory({ id: '0', name: '' })
+
+  close()
+}
+
+const isDeletable = () => {
+  let categoryIds = trainingMenus.value.map(m => m.categoryId)
+  if (categoryIds.includes(currentCategory.value?.id)) return false
+
+  categoryIds = trainings.value.map(m => m.categoryId)
+  if (categoryIds.includes(currentCategory.value?.id)) return false
+
+  return true
 }
 
 const open = (value?: any) => {

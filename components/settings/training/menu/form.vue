@@ -78,6 +78,17 @@
       </v-card-text>
 
       <v-card-actions>
+        <v-btn
+          rounded="lg"
+          class="text-red"
+          :ripple="false"
+          size="large"
+          :disabled="!isDeletable()"
+          @click="onClickDelete"
+        >
+          削除
+        </v-btn>
+
         <v-spacer />
 
         <v-btn
@@ -112,11 +123,15 @@ import { TrainingCategoryType } from "@/composables/training-category/training-c
 import TrainingCategoryKey from "@/composables/training-category/training-category-key"
 import { TrainingMenuType } from "@/composables/training-menu/training-menu"
 import TrainingMenuKey from "@/composables/training-menu/training-menu-key"
-
+import { TrainingType } from "@/composables/training/training"
+import TrainingKey from "@/composables/training/training-key"
 
 const { gym } = inject(GymKey) as GymType
 const { selectedCategory, trainingCategories, setSelectedCategory } = inject(TrainingCategoryKey) as TrainingCategoryType
-const { createTrainingMenu, updateTrainingMenu } = inject(TrainingMenuKey) as TrainingMenuType
+const { whereTrainingMenu, createTrainingMenu, updateTrainingMenu, deleteTrainingMenu } = inject(TrainingMenuKey) as TrainingMenuType
+const { trainings } = inject(TrainingKey) as TrainingType
+
+const route = useRoute()
 
 const dialog = ref(false)
 const isEdit = ref(false)
@@ -152,8 +167,25 @@ const onClickComplete = async () => {
   close()
 }
 
+const onClickDelete = async () => {
+  await deleteTrainingMenu(currentMenu.value.id)
+
+  await whereTrainingMenu({
+    gymId: String(route.query.gymId),
+  })
+
+  close()
+}
+
 const onChangeCategory = () => {
   setSelectedCategory(selectedCategoryModel.value)
+}
+
+const isDeletable = () => {
+  let menuIds = trainings.value.map(m => m.menuId)
+  if (menuIds.includes(currentMenu.value?.id)) return false
+
+  return true
 }
 
 const open = (value?: any) => {

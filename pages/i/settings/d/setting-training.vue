@@ -90,10 +90,13 @@ import { TrainingCategoryType } from "@/composables/training-category/training-c
 import TrainingCategoryKey from "@/composables/training-category/training-category-key"
 import { TrainingMenuType } from "@/composables/training-menu/training-menu"
 import TrainingMenuKey from "@/composables/training-menu/training-menu-key"
+import { TrainingType } from "@/composables/training/training"
+import TrainingKey from "@/composables/training/training-key"
 
 const { gym, onLoadedGym } = inject(GymKey) as GymType
 const { trainingCategories, selectedCategory, whereTrainingCategory, setSelectedCategory } = inject(TrainingCategoryKey) as TrainingCategoryType
 const { whereTrainingMenu } = inject(TrainingMenuKey) as TrainingMenuType
+const { whereTraining } = inject(TrainingKey) as TrainingType
 
 const trainingMenuList = ref()
 const selectedCategoryModel = ref({ id: '0', name: '' })
@@ -111,6 +114,7 @@ onMounted(async () => {
   await onLoadedGym().then(async () => {
     await whereTrainingCategory({ gymId: gym.value?.id  })
     await whereTrainingMenu({ gymId: gym.value?.id  })
+    await whereTraining({ gymId: gym.value?.id  })
     setSelectedCategory(trainingCategories.value[0])
     trainingMenuList.value.setMenu()
   })

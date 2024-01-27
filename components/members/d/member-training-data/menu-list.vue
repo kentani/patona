@@ -51,13 +51,13 @@
                 <v-card-title
                   class="pt-0"
                 >
-                  {{ menuOfId[training.menuId].name }}
+                  {{ menuOfId[training.menuId]?.name }}
                 </v-card-title>
 
                 <v-card-subtitle
                   class="pb-0 mx-1"
                 >
-                  {{ categoryOfId[training.categoryId].name }}
+                  {{ categoryOfId[training.categoryId]?.name }}
                 </v-card-subtitle>
               </v-col>
 

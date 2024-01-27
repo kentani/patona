@@ -36,7 +36,7 @@ const menuForm = ref()
 const currentMenus = ref([{ id: '0', categoryId: '0', name: '' }])
 
 const setMenu = () => {
-  let tmpMenus = trainingMenus.value.filter(menu => menu.categoryId === selectedCategory.value.id)
+  let tmpMenus = trainingMenus.value.filter(menu => menu.categoryId === selectedCategory.value?.id)
   currentMenus.value = tmpMenus.map(menu => ({ id: menu.id, categoryId: menu.categoryId, name: menu.name }))
 }
 
@@ -45,7 +45,7 @@ const onClickMenu = (menu: any) => {
 }
 
 watchEffect(() => {
-  currentMenus.value = trainingMenus.value.filter(m => m.categoryId === selectedCategory.value.id).map(m => ({ id: m.id, categoryId: m.categoryId, name: m.name }))
+  currentMenus.value = trainingMenus.value.filter(m => m.categoryId === selectedCategory.value?.id).map(m => ({ id: m.id, categoryId: m.categoryId, name: m.name }))
 })
 
 defineExpose({
