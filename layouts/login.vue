@@ -29,7 +29,7 @@ const showable = ref(false)
 onMounted(async () => {
   await getLoginResult()
   await checkLoginState().then(async () => {
-    let redirectPath: any = decodeURIComponent(String(route.query.redirectPath))
+    let redirectPath: any = route.query.redirectPath ? decodeURIComponent(String(route.query.redirectPath)) : null
 
     if(appUser.value) {
       if(appUser.value.admin) {
