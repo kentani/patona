@@ -409,7 +409,7 @@ const onClickComplete = async () => {
 const open = (params: { isEdit: boolean }) => {
   isEdit.value = params.isEdit
 
-  if (currentTraining.value) {
+  if (isEdit.value) {
     const category = trainingCategories.value.find(c => c.id === currentTraining.value.categoryId)
     const menu = trainingMenus.value.find(m => m.id === currentTraining.value.menuId)
     setSelectedCategory(category)
