@@ -66,7 +66,7 @@
                 sm="6"
               >
                 <v-row>
-                  <v-col cols="6">
+                  <!-- <v-col cols="auto">
                     <div
                       class="text-center text-caption text-green1"
                     >
@@ -78,10 +78,33 @@
                     >
                       {{ training.detail.set }}
                     </div>
+                  </v-col> -->
+
+                  <v-col
+                    cols="4"
+                  >
+                    <div
+                      class="text-center text-caption text-green1"
+                    >
+                      セット
+                    </div>
+
+                    <div
+                      class="text-center text-body-2 text-green1 font-weight-bold"
+                      style="text-align: center;"
+                    >
+                      <div
+                        v-for="(_set, index) in new Array(training.detail.set)"
+                        :key="index"
+                        class="pa-1"
+                      >
+                        {{ index + 1 }}
+                      </div>
+                    </div>
                   </v-col>
 
                   <v-col
-                    cols="6"
+                    cols="4"
                   >
                     <div
                       class="text-center text-caption text-green1"
@@ -95,6 +118,29 @@
                     >
                       <div
                         v-for="(kg, index) in training.detail.kg"
+                        :key="index"
+                        class="pa-1"
+                      >
+                        {{ kg }}
+                      </div>
+                    </div>
+                  </v-col>
+
+                  <v-col
+                    cols="4"
+                  >
+                    <div
+                      class="text-center text-caption text-green1"
+                    >
+                      回数
+                    </div>
+
+                    <div
+                      class="text-center text-body-2 text-green1 font-weight-bold"
+                      style="text-align: center;"
+                    >
+                      <div
+                        v-for="(kg, index) in training.detail.count"
                         :key="index"
                         class="pa-1"
                       >

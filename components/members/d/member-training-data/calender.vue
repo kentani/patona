@@ -119,7 +119,7 @@
               class="text-h6"
               style="line-height: 0.5rem;"
             >
-              {{ isExistTraining({ trainingDates: trainingDates, date: date }) ? "・" : "　" }}
+              {{ (isNeedTrainingDate() && isExistTraining({ trainingDates: trainingDates, date: date })) ? "・" : "　" }}
             </div>
           </div>
         </v-btn>
@@ -153,6 +153,8 @@ const {
 const { trainings } = inject(TrainingKey) as TrainingType
 
 const trainingDates: Ref<any> = ref([])
+
+const route = useRoute()
 
 const onClickPrevMonth = () => {
   prevMonth()
@@ -215,6 +217,10 @@ const buildTrainingDates = () => {
   trainingDates.value = trainings.value.map(t => {
     return t.dateKey
   })
+}
+
+const isNeedTrainingDate = () => {
+  return route.name === "i-members-d-member-training-data"
 }
 
 watch(

@@ -151,13 +151,14 @@
                   hide-details
                   variant="outlined"
                   :rules="[rules.set]"
+                  @update:modelValue="onChangeSet"
                 ></v-text-field>
               </template>
             </v-slider>
           </v-col>
 
           <v-col
-            v-for="(w, index) in weight"
+            v-for="(_w, index) in weight"
             :key="index"
             cols="12"
           >
@@ -174,6 +175,29 @@
               <template v-slot:append>
                 <v-text-field
                   v-model="weight[index]"
+                  type="tel"
+                  style="width: 80px"
+                  color="green1"
+                  density="compact"
+                  hide-details
+                  variant="outlined"
+                ></v-text-field>
+              </template>
+            </v-slider>
+
+            <v-slider
+              v-model="count[index]"
+              :min="0"
+              :max="100"
+              :step="1"
+              color="green1"
+              :label="`${index + 1}セット目の回数`"
+              density="compact"
+              hide-details
+            >
+              <template v-slot:append>
+                <v-text-field
+                  v-model="count[index]"
                   type="tel"
                   style="width: 80px"
                   color="green1"
@@ -278,6 +302,7 @@ const currentMenus = ref([{ id: '0', categoryId: '0', name: '' }])
 const trainingDateKey = ref('')
 const set = ref(1)
 const weight = ref([0])
+const count = ref([0])
 const memo = ref('')
 const isEdit = ref(false)
 
@@ -336,6 +361,11 @@ const onChangeSet = () => {
   for (let key of weight.value.keys()) {
     weight.value[key] = 0
   }
+
+  count.value = new Array(Number(set.value))
+  for (let key of count.value.keys()) {
+    count.value[key] = 0
+  }
 }
 
 const onClickCancel = async () => {
@@ -350,7 +380,8 @@ const onClickComplete = async () => {
       dateKey: trainingDateKey.value,
       detail: {
         set: set.value,
-        kg: weight.value,
+        kg: weight.value || [0],
+        count: count.value || [0],
         memo: memo.value
       }
     })
@@ -363,7 +394,8 @@ const onClickComplete = async () => {
       dateKey: trainingDateKey.value,
       detail: {
         set: set.value,
-        kg: weight.value,
+        kg: weight.value || [0],
+        count: count.value || [0],
         memo: memo.value
       }
     })
@@ -384,13 +416,15 @@ const open = (params: { isEdit: boolean }) => {
     setMenu()
     selectedMenuModel.value = menu
     set.value = currentTraining.value.detail.set
-    weight.value = currentTraining.value.detail.kg
+    weight.value = currentTraining.value.detail.kg || [0]
+    count.value = currentTraining.value.detail.count || [0]
     memo.value = currentTraining.value.detail.memo
   } else {
     setSelectedCategory(trainingCategories.value[0])
     setMenu()
     set.value = 1
     weight.value = [0]
+    count.value = [0]
     memo.value = ''
   }
 
@@ -402,6 +436,7 @@ const close = () => {
   setMenu()
   set.value = 1
   weight.value = [0]
+  count.value = [0]
   memo.value = ''
   dialog.value = false
 }
