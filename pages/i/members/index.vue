@@ -49,7 +49,7 @@ const { appUser, onLoadedAppUser } = inject(AuthKey) as AuthType
 const { gym, findGym } = inject(GymKey) as GymType
 const { instructor, findInstructor, whereInstructor } = inject(InstructorKey) as InstructorType
 const { whereMember, filterMember, resetMembers, resetMember } = inject(MemberKey) as MemberType
-const { show } = inject(ScreenControllerKey) as ScreenControllerType
+const { hide, show } = inject(ScreenControllerKey) as ScreenControllerType
 
 const route = useRoute()
 
@@ -60,6 +60,8 @@ const breadcrumbs = ref([
 ])
 
 onMounted(async () => {
+  hide()
+
   resetMembers()
   resetMember()
 

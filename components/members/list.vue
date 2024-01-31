@@ -27,17 +27,15 @@
               @click="onClickMember(member)"
             >
               <div
-                class="text-center pb-2"
+                class="text-center pt-6 pb-3"
                 style="width: 100%;"
               >
                 <v-avatar
-                  size="180"
-                  rounded="0"
-                  class="pa-2"
+                  size="160"
                 >
                   <v-img
                     cover
-                    :src="member.imageUrl || defaultImage"
+                    :src="member.imageURL || defaultImage"
                   ></v-img>
                 </v-avatar>
               </div>
@@ -94,16 +92,14 @@
           >
             <v-col
               cols="4"
-              class="text-center"
+              class="text-center py-3"
             >
               <v-avatar
-                size="90"
-                rounded="0"
-                class="pa-2"
+                size="80"
               >
                 <v-img
                   cover
-                  :src="member.imageUrl || defaultImage"
+                  :src="member.imageURL || defaultImage"
                 ></v-img>
               </v-avatar>
             </v-col>
@@ -148,7 +144,7 @@ import { MemberType } from "@/composables/member/member"
 import MemberKey from "@/composables/member/member-key"
 
 const { instructors } = inject(InstructorKey) as InstructorType
-const { filteredMembers } = inject(MemberKey) as MemberType
+const { filteredMembers, setMember } = inject(MemberKey) as MemberType
 
 const router = useRouter()
 
@@ -157,6 +153,7 @@ const defaultImage = ref('https://avataaars.io/?avatarStyle=Transparent&topType=
 // const defaultImage = ref('https://cdn.vuetifyjs.com/images/profiles/marcus.jpg')
 
 const onClickMember = (member: any) => {
+  setMember(member)
   router.push({ path: '/i/members/d/member-personal-data', query: { gymId: member.gymId, memberId: member.id } })
 }
 

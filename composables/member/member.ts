@@ -144,7 +144,7 @@ const useMember = () => {
     return member.value
   }
 
-  const createMember = async (params: { gymId: string, instructorId: string, instructorIds: Array<string>, archived: boolean, name: string, imageName: string, imageURL: string, detail: any }) => {
+  const createMember = async (params: { gymId: string, instructorId: string, instructorIds: Array<string>, archived: boolean, name: string, imageName: string, baseImageURL: string, imageURL: string, tumbnailSize: any, start: any, end: any, diff: any, detail: any }) => {
     const docRef = doc(collection(db, "members"))
 
     await setDoc(docRef, {
@@ -161,7 +161,7 @@ const useMember = () => {
     return member.value
   }
 
-  const updateMember = async (id: string, params: { instructorId?: string, instructorIds?: Array<string>, archived?: boolean, name?: string, imageName?: string, imageURL?: string, detail?: any }) => {
+  const updateMember = async (id: string, params: { instructorId?: string, instructorIds?: Array<string>, archived?: boolean, name?: string, imageName?: string, baseImageURL?: string, imageURL?: string, tumbnailSize?: any, start?: any, end?: any, diff?: any, detail?: any }) => {
     const docRef = doc(db, "members", id)
 
     await updateDoc(docRef, {
@@ -170,6 +170,8 @@ const useMember = () => {
     })
 
     await findMember({ id: id })
+
+    await whereMember({ gymId: member.value?.gymId, instructorId: member.value?.instructorId })
 
     return member.value
   }
@@ -226,6 +228,10 @@ const useMember = () => {
     return filteredMembers.value
   }
 
+  const setMember = (member: any) => {
+    member.value = member
+  }
+
   return {
     members,
     member,
@@ -244,6 +250,7 @@ const useMember = () => {
     resetMembers,
     resetMember,
     filterMember,
+    setMember,
   }
 }
 

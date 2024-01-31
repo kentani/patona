@@ -25,16 +25,14 @@
               <v-col
                 cols="12"
                 sm="6"
-                class="text-center"
+                class="text-center pa-2"
               >
                 <v-avatar
-                  size="200"
-                  rounded="0"
-                  class="pa-2"
+                  size="256"
                 >
                   <v-img
                     cover
-                    :src="member?.imageUrl || defaultImage"
+                    :src="member?.imageURL || defaultImage"
                   ></v-img>
                 </v-avatar>
               </v-col>

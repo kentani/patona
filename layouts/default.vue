@@ -1,14 +1,12 @@
 <template>
-  <v-app v-show="showable && screenShowable" class="text-font">
+  <v-app v-show="showable" class="text-font">
     <common-app-bar />
 
-    <v-main>
+    <v-main v-show="screenShowable">
       <slot />
     </v-main>
-  </v-app>
 
-  <v-app v-show="!showable && !screenShowable">
-    <common-loading />
+    <common-loading v-show="!screenShowable" />
   </v-app>
 </template>
 

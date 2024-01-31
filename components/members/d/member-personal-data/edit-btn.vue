@@ -22,11 +22,11 @@
 import { MemberType } from "@/composables/member/member"
 import MemberKey from "@/composables/member/member-key"
 
-const { member } = inject(MemberKey) as MemberType
+const { member, setMember } = inject(MemberKey) as MemberType
 
 const form = ref()
 
 const onClickEdit = () => {
-  form.value.open({ isEdit: true, member: member.value })
+  form.value.open({ isEdit: true })
 }
 </script>

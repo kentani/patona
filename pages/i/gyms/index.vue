@@ -44,13 +44,15 @@ import ScreenControllerKey from "@/composables/screen-controller/screen-controll
 const { appUser, onLoadedAppUser } = inject(AuthKey) as AuthType
 const { whereGym, filterGym, resetGym } = inject(GymKey) as GymType
 const { instructors, whereInstructor, resetInstructor } = inject(InstructorKey) as InstructorType
-const { show } = inject(ScreenControllerKey) as ScreenControllerType
+const { hide, show } = inject(ScreenControllerKey) as ScreenControllerType
 
 const breadcrumbs = ref([
   { id: '1', title: 'ジム一覧', to: '/i/gyms', disabled: true },
 ])
 
 onMounted(async () => {
+  hide()
+
   resetGym()
   resetInstructor()
 

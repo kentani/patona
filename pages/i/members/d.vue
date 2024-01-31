@@ -48,7 +48,7 @@ const { appUser, onLoadedAppUser } = inject(AuthKey) as AuthType
 const { gym, findGym } = inject(GymKey) as GymType
 const { instructor, whereInstructor, findInstructor } = inject(InstructorKey) as InstructorType
 const { member, findMember } = inject(MemberKey) as MemberType
-const { show } = inject(ScreenControllerKey) as ScreenControllerType
+const { hide, show } = inject(ScreenControllerKey) as ScreenControllerType
 
 const route = useRoute()
 
@@ -67,6 +67,8 @@ const tabs = ref([
 ])
 
 onMounted(async () => {
+  hide()
+
   await onLoadedAppUser().then(async () => {
     await findGym({ id: String(route.query.gymId) })
 

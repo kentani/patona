@@ -42,7 +42,7 @@ import ScreenControllerKey from "@/composables/screen-controller/screen-controll
 const { appUser, onLoadedAppUser } = inject(AuthKey) as AuthType
 const { gym, findGym } = inject(GymKey) as GymType
 const { instructor, findInstructor } = inject(InstructorKey) as InstructorType
-const { show } = inject(ScreenControllerKey) as ScreenControllerType
+const { hide, show } = inject(ScreenControllerKey) as ScreenControllerType
 
 const route = useRoute()
 
@@ -60,6 +60,8 @@ const tabs = ref([
 ])
 
 onMounted(async () => {
+  hide()
+
   await onLoadedAppUser().then(async () => {
     await findGym({ id: String(route.query.gymId) })
     await findInstructor({ userId: appUser.value?.id, gymId: String(route.query.gymId) })
