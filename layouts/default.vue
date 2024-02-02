@@ -25,6 +25,10 @@ const route = useRoute()
 const showable = ref(false)
 
 onMounted(async () => {
+  if (route.name === "index") {
+    router.replace("/login")
+  }
+
   await checkLoginState()
     .then(() => {
       if(appUser.value) {
