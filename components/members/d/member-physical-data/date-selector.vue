@@ -168,8 +168,8 @@ const onChangeDate = () => {
 watch(
   () => physicalNumValues.value,
   () => {
-    beforeDateModel.value = physicalNumValues.value[0].dateKey
-    afterDateModel.value = physicalNumValues.value.slice(-1)[0].dateKey
+    beforeDateModel.value = physicalNumValues.value[0]?.dateKey
+    afterDateModel.value = physicalNumValues.value.slice(-1)[0]?.dateKey
     setBeforeDate(beforeDateModel.value)
     setAfterDate(afterDateModel.value)
     buildBeforeDateSelectOption()
@@ -180,8 +180,8 @@ watch(
 watchEffect(async () => {
   await onLoadedPhysicalData().then(async () => {
     compareModel.value = compare.value
-    beforeDateModel.value = physicalNumValues.value[0].dateKey
-    afterDateModel.value = physicalNumValues.value.slice(-1)[0].dateKey
+    beforeDateModel.value = physicalNumValues.value[0]?.dateKey
+    afterDateModel.value = physicalNumValues.value.slice(-1)[0]?.dateKey
     setBeforeDate(beforeDateModel.value)
     setAfterDate(afterDateModel.value)
     buildBeforeDateSelectOption()
@@ -192,8 +192,8 @@ watchEffect(async () => {
 onMounted(async () => {
   await onLoadedPhysicalData().then(async () => {
     compareModel.value = compare.value
-    beforeDateModel.value = physicalNumValues.value[0].dateKey
-    afterDateModel.value = physicalNumValues.value.slice(-1)[0].dateKey
+    beforeDateModel.value = physicalNumValues.value[0]?.dateKey
+    afterDateModel.value = physicalNumValues.value.slice(-1)[0]?.dateKey
     setBeforeDate(beforeDateModel.value)
     setAfterDate(afterDateModel.value)
     buildBeforeDateSelectOption()

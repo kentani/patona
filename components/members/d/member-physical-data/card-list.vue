@@ -187,8 +187,19 @@ const compareValInfo = (key: string) => {
 }
 
 const setCompareVal = () => {
-  beforeVal.value = physicalNumValues.value.find((v: any) => v.dateKey === beforeDate.value) || {}
-  afterVal.value = physicalNumValues.value.find((v: any) => v.dateKey === afterDate.value) || {}
+  const defaultVal = {
+    detail: {
+      weight: 0,
+      fat: 0,
+      bodyAge: 0,
+      bmi: 0,
+      metabolism: 0,
+      visceral: 0,
+    }
+  }
+
+  beforeVal.value = physicalNumValues.value.find((v: any) => v.dateKey === beforeDate.value) || defaultVal
+  afterVal.value = physicalNumValues.value.find((v: any) => v.dateKey === afterDate.value) || defaultVal
 
   compareVal.value['detail'] = {
     'weight': afterVal.value.detail['weight'] - beforeVal.value.detail['weight'],
