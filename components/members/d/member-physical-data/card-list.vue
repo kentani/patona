@@ -180,7 +180,7 @@ const afterValInfo = (key: string) => {
 }
 const compareValInfo = (key: string) => {
   if (Object.keys(compareVal.value).length) {
-    return compareVal.value.detail[key]
+    return compareVal.value.detail[key].toLocaleString( undefined, { maximumFractionDigits: [1] })
   } else {
     return ''
   }
