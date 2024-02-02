@@ -18,6 +18,7 @@ const usePhysicalData = () => {
     { id: '5', name: '基礎代謝量', suffix: 'kcal', key: 'metabolism', width: 120 },
     { id: '6', name: '内臓脂肪レベル', suffix: '', key: 'visceral', width: 120 },
   ])
+  const currentSetting: Ref<any> = ref(null)
 
   ////////////////////
   // computed
@@ -109,11 +110,16 @@ const usePhysicalData = () => {
     physicalNumValue.value = val
   }
 
+  const setCurrentSetting = (val: any) => {
+    currentSetting.value = val
+  }
+
   return {
     physicalNumValues,
     physicalNumValue,
     physicalDataLoaded,
     physicalNumValueSettings,
+    currentSetting,
     wherePhysicalNumValue,
     findPhysicalNumValue,
     createPhysicalNumValue,
@@ -121,6 +127,7 @@ const usePhysicalData = () => {
     deletePhysicalNumValue,
     onLoadedPhysicalData,
     setPhysicalNumValue,
+    setCurrentSetting,
   }
 }
 

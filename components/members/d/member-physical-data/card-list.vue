@@ -109,7 +109,7 @@
             variant="elevated"
             height="100%"
             rounded="lg"
-            @click=""
+            @click="onClickCompareCard(numSetting)"
           >
             <v-card-title class="justify-center text-center" style="height: 50px;">
               <common-underlined-text
@@ -143,6 +143,12 @@
           </v-card>
         </v-col>
       </v-row>
+
+      <v-row>
+        <v-col cols="12">
+          <members-d-member-physical-data-chart />
+        </v-col>
+      </v-row>
     </v-card-text>
   </v-card>
 
@@ -157,8 +163,8 @@ import PhysicalDataKey from "@/composables/physical-data/physical-data-key"
 import { DateSelectorType } from "@/composables/physical-data/date-selector/date-selector"
 import DateSelectorKey from "@/composables/physical-data/date-selector/date-selector-key"
 
-const { physicalNumValues, physicalNumValueSettings, onLoadedPhysicalData, setPhysicalNumValue } = inject(PhysicalDataKey) as PhysicalDataType
-const { compare, beforeDate, afterDate } = inject(DateSelectorKey) as DateSelectorType
+const { physicalNumValues, physicalNumValueSettings, onLoadedPhysicalData, setPhysicalNumValue, setCurrentSetting } = inject(PhysicalDataKey) as PhysicalDataType
+const { compare, beforeDate, afterDate, setBeforeDate, setAfterDate } = inject(DateSelectorKey) as DateSelectorType
 
 const physicalDataForm = ref()
 const beforeVal: Ref<any> = ref({})
@@ -216,6 +222,10 @@ const onClickNumValue = (numValue: any) => {
   physicalDataForm.value.open({ isEdit: true })
 }
 
+const onClickCompareCard = (setting: any) => {
+  setCurrentSetting(setting)
+}
+
 watch(
   () => [beforeDate.value, afterDate.value],
   () => {
@@ -226,6 +236,7 @@ watch(
 onMounted(async () => {
   await onLoadedPhysicalData().then(async () => {
     setCompareVal()
+    setCurrentSetting(physicalNumValueSettings.value[0])
   })
 })
 </script>

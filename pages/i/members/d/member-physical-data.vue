@@ -51,7 +51,7 @@ const formattedDate = (dateKey: string) => {
 
 onMounted(async () => {
   await onLoadedGym().then(async () => {
-    onLoadedMember().then(async () => {
+    await onLoadedMember().then(async () => {
       physicalDataLoaded.value = false
 
       await wherePhysicalNumValue({ gymId: gym.value?.id, memberId: member.value?.id  })
