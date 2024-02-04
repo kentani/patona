@@ -326,7 +326,7 @@ const isRequired = (value: any) => {
 const isValidDate = (value: any) => {
   if(!value) return true
 
-  const dateString = `${value.slice(0, 4)}-${value.slice(4, 6)}-${value.slice(6, 8)}`
+  const dateString = `${value.slice(0, 4)}/${value.slice(4, 6)}/${value.slice(6, 8)}`
   const day =  new Date(dateString)
 
   return !Number.isNaN(day.getTime())
@@ -344,7 +344,7 @@ const onUpdateFocusedTrainingDate = () => {
     const date = trainingDateKey.value.slice(6, 8)
 
     setCurrentDateKey(trainingDateKey.value)
-    setCurrentDateByDateKey(`${year}-${month}-${date}`)
+    setCurrentDateByDateKey(`${year}/${month}/${date}`)
     setSelectedDate(Number(date))
     setCurrentYearMonth()
     setCurrentYearMonthDate()
@@ -445,7 +445,7 @@ watchEffect(() => {
   selectedCategoryModel.value = selectedCategory.value
   currentMenus.value = trainingMenus.value.filter(m => m.categoryId === selectedCategory.value?.id).map(m => ({ id: m.id, categoryId: m.categoryId, name: m.name }))
   selectedMenuModel.value = currentMenus.value[0]
-  trainingDateKey.value = format(new Date(`${format(currentDate.value, 'yyyy-MM-')}${selectedDate.value}`), 'yyyyMMdd')
+  trainingDateKey.value = format(new Date(`${format(currentDate.value, 'yyyy/MM/')}${selectedDate.value}`), 'yyyyMMdd')
 })
 
 defineExpose({

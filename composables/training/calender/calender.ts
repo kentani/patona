@@ -19,7 +19,7 @@ const useCalender = () => {
   const dateList: Ref<Array<any>> = ref([])
 
   const setCurrentDate = (date: any) => {
-    currentDate.value = new Date(`${format(currentDate.value, 'yyyy-MM-')}${date}`)
+    currentDate.value = new Date(`${format(currentDate.value, 'yyyy/MM/')}${date}`)
     currentDateKey.value = format(currentDate.value, 'yyyyMMdd')
   }
 
@@ -87,7 +87,7 @@ const useCalender = () => {
   const isToday = (date: Number|null) => {
     if(!date) return
 
-    const d = new Date(`${format(currentDate.value, 'yyyy-MM-')}${date}`)
+    const d = new Date(`${format(currentDate.value, 'yyyy/MM/')}${date}`)
 
     return format(d, 'yyyyMMdd') === format(today.value, 'yyyyMMdd')
   }
@@ -95,7 +95,7 @@ const useCalender = () => {
   const isExistTraining = (params: { trainingDates: any, date: any }) => {
     const { trainingDates, date } = params
     if (!date) return false;
-    const key = format(new Date(`${format(currentDate.value, 'yyyy-MM-')}${date}`), 'yyyyMMdd')
+    const key = format(new Date(`${format(currentDate.value, 'yyyy/MM/')}${date}`), 'yyyyMMdd')
     return trainingDates.includes(key)
   }
 

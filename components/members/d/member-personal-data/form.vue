@@ -362,7 +362,7 @@ const isRequired = (value: any) => {
 const isValidDate = (value: any) => {
   if(!value) return true
 
-  const dateString = `${value.slice(0, 4)}-${value.slice(4, 6)}-${value.slice(6, 8)}`
+  const dateString = `${value.slice(0, 4)}/${value.slice(4, 6)}/${value.slice(6, 8)}`
   const day =  new Date(dateString)
 
   return !Number.isNaN(day.getTime())
